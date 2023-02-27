@@ -1,0 +1,16 @@
+//
+// Created by Conner on 2/27/2023.
+//
+
+#ifndef LOGIC_SIM_WIRE_H
+#define LOGIC_SIM_WIRE_H
+
+#include "Node.h"
+
+class Wire {
+private:
+    Node nodeA, nodeB;
+};
+
+
+#endif //LOGIC_SIM_WIRE_H

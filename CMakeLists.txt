@@ -16,9 +16,11 @@ find_package(SDL2_TTF REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
 # Source files
+set(FILES LogicBlock/Node.cpp)
 
 # Create executable
 add_executable(${PROJECT_NAME}
+        ${FILES}
         main.cpp)
 
 # Linking libraries
