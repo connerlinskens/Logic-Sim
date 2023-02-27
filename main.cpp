@@ -1,7 +1,10 @@
 #include <iostream>
 #include <SDL.h>
+#include "Sim/SimManager.h"
 
 int main(int argc, char* argv[]) {
-    std::cout << "Hello, World!" << std::endl;
+    SimManager simManager{};
+    simManager.loop();
+
     return 0;
 }

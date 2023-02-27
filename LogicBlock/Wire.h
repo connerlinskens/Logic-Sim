@@ -9,7 +9,7 @@
 
 class Wire {
 private:
-    Node nodeA, nodeB;
+    Node _nodeA, _nodeB;
 };
 
 

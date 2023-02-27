@@ -5,9 +5,9 @@
 #include "Node.h"
 
 bool Node::State() const {
-    return state;
+    return _state;
 }
 
 void Node::ChangeState() {
-    state = !state;
+    _state = !_state;
 }

@@ -10,7 +10,7 @@ public:
     void ChangeState();
     [[nodiscard]] bool State() const;
 protected:
-    bool state;
+    bool _state;
 };
 
 #endif //LOGIC_SIM_NODE_H

@@ -13,8 +13,8 @@ public:
     virtual ~LogicBlock() = default;
     virtual void Execute() = 0;
 protected:
-    std::vector<Node> inputs;
-    std::vector<Node> outputs;
+    std::vector<Node> _inputs;
+    std::vector<Node> _outputs;
 };
 
 
