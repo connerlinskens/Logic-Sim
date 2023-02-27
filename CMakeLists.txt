@@ -16,7 +16,7 @@ find_package(SDL2_TTF REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
 # Source files
-set(SIM_FILES Sim/SimManager.cpp)
+set(SIM_FILES Sim/SimManager.cpp Sim/RenderManager.cpp)
 set(LOGIC_FILES LogicBlock/Node.cpp)
 
 # Create executable

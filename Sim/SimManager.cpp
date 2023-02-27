@@ -32,6 +32,9 @@ _window{}, _renderer{}, _fullscreen{fullscreen}, _running{true} {
         SDL_SetWindowTitle(_window, "Logic Sim");
         SDL_ShowCursor(1);
     }
+
+    // Create render manager
+    _renderManager = std::make_unique<RenderManager>(*_renderer);
 }
 
 SimManager::~SimManager() {
@@ -69,7 +72,9 @@ void SimManager::render() {
     // Clear screen
     SDL_RenderClear(_renderer);
 
-    // TODO draw all objects to screen
+    _renderManager->RenderRect(100, 100, 50, 50, {255, 0, 0, 255}, true);
+    _renderManager->RenderCircle(150, 100, 50, {0, 0, 255, 255});
+    _renderManager->RenderLine(200, 75, 200, 125);
 
     // Set color to draw background
     SDL_SetRenderDrawColor(_renderer, 50, 50, 50, 255);

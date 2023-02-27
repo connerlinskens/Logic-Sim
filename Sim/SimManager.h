@@ -5,8 +5,10 @@
 #ifndef LOGIC_SIM_SIMMANAGER_H
 #define LOGIC_SIM_SIMMANAGER_H
 
+#include <memory>
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include "RenderManager.h"
 
 class SimManager {
 public:
@@ -24,6 +26,7 @@ private:
 private:
     SDL_Window* _window;
     SDL_Renderer* _renderer;
+    std::unique_ptr<RenderManager> _renderManager;
 
     bool _fullscreen;
     bool _running;
