@@ -33,11 +33,13 @@ _window{}, _renderer{}, _fullscreen{fullscreen}, _running{true} {
         SDL_ShowCursor(1);
     }
 
-    // Create render manager
+    // Create managers
     _renderManager = std::make_unique<RenderManager>(*_renderer);
+    _mouseCollisionManager = std::make_unique<MouseCollisionManager>();
 
     auto& chip = _chips.emplace_back("AND", 2, 1);
     chip.SetPosition({250, 100});
+    _mouseCollisionManager->AddClickable(&chip);
 }
 
 SimManager::~SimManager() {
@@ -56,15 +58,24 @@ void SimManager::loop() {
 }
 
 void SimManager::input() {
-    // TODO expand input and make it more flexible
     SDL_Event e;
-    while(SDL_PollEvent(&e)){
+    while(SDL_PollEvent(&e)) {
         if(e.type == SDL_QUIT){
             exit();
         }
-        if(e.type == SDL_KEYDOWN){
-            if(e.key.keysym.sym == SDLK_ESCAPE){
+        else if(e.type == SDL_KEYDOWN){
+            if(e.key.keysym.sym == SDLK_ESCAPE) { // return true for quit signal
                 exit();
+            }
+        }
+        else if(e.type == SDL_MOUSEBUTTONDOWN){
+            if(e.button.button == 1){
+                int mouseX, mouseY;
+                SDL_GetMouseState(&mouseX, &mouseY);
+                auto object = _mouseCollisionManager->CheckMouseCollision(mouseX, mouseY);
+                if(object){
+                    std::cout << "Clicked an object!" << std::endl;
+                }
             }
         }
     }
