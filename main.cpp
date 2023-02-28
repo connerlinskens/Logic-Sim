@@ -3,7 +3,7 @@
 #include "Sim/SimManager.h"
 
 int main(int argc, char* argv[]) {
-    SimManager simManager{};
+    SimManager simManager{1280, 720, false};
     simManager.loop();
 
     return 0;

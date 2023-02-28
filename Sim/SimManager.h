@@ -9,6 +9,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include "RenderManager.h"
+#include "../LogicBlock/Chip.h"
 
 class SimManager {
 public:
@@ -30,6 +31,8 @@ private:
 
     bool _fullscreen;
     bool _running;
+
+    std::vector<Chip> _chips{};
 };
 
 

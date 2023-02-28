@@ -22,9 +22,12 @@
   <component name="ChangeListManager">
     <list default="true" id="f4b9ff48-cf53-40f2-88b5-415413a67c1a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LogicBlock/Chip.h" beforeDir="false" afterPath="$PROJECT_DIR$/LogicBlock/Chip.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sim/RenderManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Sim/RenderManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sim/RenderManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Sim/RenderManager.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sim/SimManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Sim/SimManager.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sim/SimManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Sim/SimManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,6 +100,8 @@
       <workItem from="1677514586005" duration="762000" />
       <workItem from="1677520673484" duration="2483000" />
       <workItem from="1677534548388" duration="2708000" />
+      <workItem from="1677576222687" duration="2076000" />
+      <workItem from="1677578340954" duration="764000" />
     </task>
     <servers />
   </component>

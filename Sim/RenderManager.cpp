@@ -65,3 +65,24 @@ void RenderManager::RenderLine(int x1, int y1, int x2, int y2, Color color) {
     SDL_RenderDrawLine(&_renderer, x1, y1, x2, y2);
 }
 
+void RenderManager::RenderChip(const ChipDrawData& chipDrawData) {
+    auto pos = chipDrawData.position;
+    int width = 100;
+    int heightFactor = 30;
+    int height = chipDrawData.inputs > chipDrawData.outputs? chipDrawData.inputs * heightFactor : chipDrawData.outputs * heightFactor;
+
+    RenderRect(pos.x, pos.y, width, height, {200, 100, 50, 255}, true);
+
+    int circleSize = 20;
+    int heightStepInputs = height / chipDrawData.inputs;
+    int heightStepOutputs = height / chipDrawData.outputs;
+
+    for(int i = 0; i < chipDrawData.inputs; i++){
+        RenderCircle(pos.x - (width/2), (pos.y + (heightStepInputs * i) + (heightStepInputs/2)) - (height/2), circleSize, {30, 30, 30, 255});
+    }
+
+    for(int i = 0; i < chipDrawData.outputs; i++){
+        RenderCircle(pos.x + (width/2), (pos.y + (heightStepOutputs * i) + (heightStepOutputs/2)) - (height/2), circleSize, {30, 30, 30, 255});
+    }
+}
+

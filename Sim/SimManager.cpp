@@ -2,8 +2,8 @@
 // Created by Conner on 2/27/2023.
 //
 
-#include <iostream>
 #include "SimManager.h"
+#include <iostream>
 
 SimManager::SimManager() : SimManager(1920, 1080, true) {
 }
@@ -35,6 +35,9 @@ _window{}, _renderer{}, _fullscreen{fullscreen}, _running{true} {
 
     // Create render manager
     _renderManager = std::make_unique<RenderManager>(*_renderer);
+
+    auto& chip = _chips.emplace_back("AND", 2, 1);
+    chip.SetPosition({250, 100});
 }
 
 SimManager::~SimManager() {
@@ -56,6 +59,9 @@ void SimManager::input() {
     // TODO expand input and make it more flexible
     SDL_Event e;
     while(SDL_PollEvent(&e)){
+        if(e.type == SDL_QUIT){
+            exit();
+        }
         if(e.type == SDL_KEYDOWN){
             if(e.key.keysym.sym == SDLK_ESCAPE){
                 exit();
@@ -72,12 +78,12 @@ void SimManager::render() {
     // Clear screen
     SDL_RenderClear(_renderer);
 
-    _renderManager->RenderRect(100, 100, 50, 50, {255, 0, 0, 255}, true);
-    _renderManager->RenderCircle(150, 100, 50, {0, 0, 255, 255});
-    _renderManager->RenderLine(200, 75, 200, 125);
+    for(auto& chip : _chips){
+        _renderManager->RenderChip(chip.GetChipDrawData());
+    }
 
     // Set color to draw background
-    SDL_SetRenderDrawColor(_renderer, 50, 50, 50, 255);
+    SDL_SetRenderDrawColor(_renderer, 60, 60, 60, 255);
 
     // Draw buffer to screen
     SDL_RenderPresent(_renderer);
