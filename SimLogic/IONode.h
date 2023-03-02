@@ -11,7 +11,7 @@
 
 class IONode : public IClickable{
 public:
-    explicit IONode(Vector2 startPos = Vector2(), bool manuallyOverridable = true);
+    explicit IONode(Vector2 startPos = Vector2(), bool manuallyOverridable = false);
     void ChangeState();
     [[nodiscard]] bool State() const;
 
@@ -23,7 +23,7 @@ public:
 
     Vector2 AABBPosition() override;
     Vector2 AABBExtends() override;
-    int clickLayer() override;
+    [[nodiscard]] int ClickLayer() const override;
     void Clicked() override;
 
 protected:

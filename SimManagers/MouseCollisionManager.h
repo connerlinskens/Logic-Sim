@@ -13,8 +13,9 @@ class MouseCollisionManager {
 public:
     void AddClickable(IClickable* clickable){
         _currentClickables.push_back(clickable);
+        _currentClickables.sort(CompareClickablePriority);
     }
-    void RemoveClickables(IClickable* clickable){
+    void RemoveClickable(IClickable* clickable){
         _currentClickables.remove(clickable);
     }
     void ClearClickables(){
@@ -22,6 +23,10 @@ public:
     }
 
     IClickable* CheckMouseCollision(int mouseX, int mouseY);
+private:
+    static bool CompareClickablePriority(const IClickable* left, const IClickable* right){
+        return left->ClickLayer() > right->ClickLayer();
+    }
 private:
     std::list<IClickable*> _currentClickables;
 };

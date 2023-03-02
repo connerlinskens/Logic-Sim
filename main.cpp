@@ -1,9 +1,9 @@
 #include <iostream>
 #include <SDL.h>
-#include "Sim/SimManager.h"
+#include "SimManagers/SimManager.h"
 
 int main(int argc, char* argv[]) {
-    SimManager simManager{};
+    SimManager simManager{1280, 720, false};
     simManager.loop();
 
     return 0;

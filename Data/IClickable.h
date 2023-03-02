@@ -12,7 +12,7 @@ public:
     virtual void Clicked() {};
     virtual Vector2 AABBPosition() = 0;
     virtual Vector2 AABBExtends() = 0;
-    virtual int clickLayer() { return 0; };
+    [[nodiscard]] virtual int ClickLayer() const { return 0; };
 };
 
 #endif //LOGIC_SIM_ICLICKABLE_H

@@ -16,13 +16,13 @@ find_package(SDL2_TTF REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
 # Source files
-set(SIM_FILES Sim/SimManager.cpp Sim/RenderManager.cpp Sim/MouseCollisionManager.cpp Sim/SimControlManager.cpp)
-set(LOGIC_FILES LogicBlock/IONode.cpp)
+set(SIM_LOGIC_FILES SimLogic/IONode.cpp SimLogic/Chip.cpp)
+set(SIM_MANAGER_FILES SimManagers/SimManager.cpp SimManagers/RenderManager.cpp SimManagers/MouseCollisionManager.cpp SimManagers/SimControlManager.cpp)
 
 # Create executable
 add_executable(${PROJECT_NAME}
-        ${SIM_FILES}
-        ${LOGIC_FILES}
+        ${SIM_LOGIC_FILES}
+        ${SIM_MANAGER_FILES}
         main.cpp)
 
 # Linking libraries

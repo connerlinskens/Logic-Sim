@@ -7,7 +7,7 @@
 
 #include <string>
 #include <vector>
-#include "../LogicBlock/IONode.h"
+#include "../SimLogic/IONode.h"
 #include "Vector2.h"
 #include "Color.h"
 

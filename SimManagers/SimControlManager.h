@@ -5,7 +5,7 @@
 #ifndef LOGIC_SIM_SIMCONTROLMANAGER_H
 #define LOGIC_SIM_SIMCONTROLMANAGER_H
 
-#include "../LogicBlock/Chip.h"
+#include "../SimLogic/Chip.h"
 
 class SimControlManager {
 public:

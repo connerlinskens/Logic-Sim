@@ -31,8 +31,8 @@ Vector2 IONode::AABBExtends() {
     return {NodeSize,NodeSize};
 }
 
-int IONode::clickLayer() {
-    return 2;
+int IONode::ClickLayer() const {
+    return 3;
 }
 
 void IONode::Clicked() {
