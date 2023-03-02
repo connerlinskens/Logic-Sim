@@ -6,13 +6,18 @@
 #define LOGIC_SIM_CHIPDRAWDATA_H
 
 #include <string>
+#include <vector>
+#include "../LogicBlock/IONode.h"
 #include "Vector2.h"
+#include "Color.h"
 
 struct ChipDrawData{
     std::string name;
     Vector2 position;
-    int inputs;
-    int outputs;
+    Vector2 extends;
+    std::vector<IONode>& inputs;
+    std::vector<IONode>& outputs;
+    Color drawColor = Color();
 };
 
 #endif //LOGIC_SIM_CHIPDRAWDATA_H

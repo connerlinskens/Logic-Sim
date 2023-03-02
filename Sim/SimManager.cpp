@@ -36,10 +36,11 @@ _window{}, _renderer{}, _fullscreen{fullscreen}, _running{true} {
     // Create managers
     _renderManager = std::make_unique<RenderManager>(*_renderer);
     _mouseCollisionManager = std::make_unique<MouseCollisionManager>();
+    _simControlManager = std::make_unique<SimControlManager>();
 
     auto& chip = _chips.emplace_back("AND", 2, 1);
     chip.SetPosition({250, 100});
-    _mouseCollisionManager->AddClickable(&chip);
+    chip.RegisterToCollisionManager(*_mouseCollisionManager);
 }
 
 SimManager::~SimManager() {
@@ -74,15 +75,25 @@ void SimManager::input() {
                 SDL_GetMouseState(&mouseX, &mouseY);
                 auto object = _mouseCollisionManager->CheckMouseCollision(mouseX, mouseY);
                 if(object){
-                    std::cout << "Clicked an object!" << std::endl;
+                    std::cout << "Clicked a clickable object." << std::endl;
+                    object->Clicked();
+
+                    auto chip = dynamic_cast<Chip*>(object);
+                    if(chip)
+                        _simControlManager->AttachChipToMouse(chip);
                 }
             }
+        }
+        else if(e.type == SDL_MOUSEBUTTONUP){
+            _simControlManager->ReleaseChip();
         }
     }
 }
 
 void SimManager::update() {
-    // TODO update sim
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
+    _simControlManager->Update(mouseX, mouseY);
 }
 
 void SimManager::render() {

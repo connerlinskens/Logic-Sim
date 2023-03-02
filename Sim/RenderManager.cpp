@@ -67,22 +67,42 @@ void RenderManager::RenderLine(int x1, int y1, int x2, int y2, Color color) {
 
 void RenderManager::RenderChip(const ChipDrawData& chipDrawData) {
     auto pos = chipDrawData.position;
-    int width = 100;
-    int heightFactor = 30;
-    int height = chipDrawData.inputs > chipDrawData.outputs? chipDrawData.inputs * heightFactor : chipDrawData.outputs * heightFactor;
+    int width = chipDrawData.extends.x;
+    int height = chipDrawData.extends.y;
 
-    RenderRect(pos.x, pos.y, width, height, {200, 100, 50, 255}, true);
+    RenderRect(pos.x, pos.y, width, height, {50, 100, 200, 255}, true);
 
-    int circleSize = 20;
-    int heightStepInputs = height / chipDrawData.inputs;
-    int heightStepOutputs = height / chipDrawData.outputs;
-
-    for(int i = 0; i < chipDrawData.inputs; i++){
-        RenderCircle(pos.x - (width/2), (pos.y + (heightStepInputs * i) + (heightStepInputs/2)) - (height/2), circleSize, {30, 30, 30, 255});
+    for(auto& inputNode : chipDrawData.inputs){
+        Color nodeColor = GetNodeDrawColor(inputNode.State());
+        RenderCircle(inputNode.Position().x, inputNode.Position().y, inputNode.AABBExtends().x, nodeColor);
     }
 
-    for(int i = 0; i < chipDrawData.outputs; i++){
-        RenderCircle(pos.x + (width/2), (pos.y + (heightStepOutputs * i) + (heightStepOutputs/2)) - (height/2), circleSize, {30, 30, 30, 255});
+    for(auto& outputNode : chipDrawData.outputs){
+        Color nodeColor = GetNodeDrawColor(outputNode.State());
+        RenderCircle(outputNode.Position().x, outputNode.Position().y, outputNode.AABBExtends().x, nodeColor);
     }
+
+//    int circleSize = chipDrawData.inputs.at(0).AABBExtends().x;
+//    int inputAmount = static_cast<int>(chipDrawData.inputs.size());
+//    int outputAmount = static_cast<int>(chipDrawData.outputs.size());
+//    int heightStepInputs = height / inputAmount;
+//    int heightStepOutputs = height / outputAmount;
+//
+//    for(int i = 0; i < inputAmount; i++){
+//        Color nodeColor = GetNodeDrawColor(chipDrawData.inputs[i].State());
+//        RenderCircle(pos.x - (width/2), (pos.y + (heightStepInputs * i) + (heightStepInputs/2)) - (height/2), circleSize, nodeColor);
+//    }
+//
+//    for(int i = 0; i < outputAmount; i++){
+//        Color nodeColor = GetNodeDrawColor(chipDrawData.outputs[i].State());
+//        RenderCircle(pos.x + (width/2), (pos.y + (heightStepOutputs * i) + (heightStepOutputs/2)) - (height/2), circleSize, nodeColor);
+//    }
+}
+
+Color RenderManager::GetNodeDrawColor(bool state) {
+    if(state)
+        return NodeOnStateColor;
+    else
+        return NodeOffStateColor;
 }
 

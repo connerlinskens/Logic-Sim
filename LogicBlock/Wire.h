@@ -5,7 +5,7 @@
 #ifndef LOGIC_SIM_WIRE_H
 #define LOGIC_SIM_WIRE_H
 
-#include "Node.h"
+#include "IONode.h"
 
 class Wire {
 private:

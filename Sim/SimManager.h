@@ -11,6 +11,7 @@
 #include "RenderManager.h"
 #include "../LogicBlock/Chip.h"
 #include "MouseCollisionManager.h"
+#include "SimControlManager.h"
 
 class SimManager {
 public:
@@ -30,6 +31,7 @@ private:
     SDL_Renderer* _renderer;
     std::unique_ptr<RenderManager> _renderManager;
     std::unique_ptr<MouseCollisionManager> _mouseCollisionManager;
+    std::unique_ptr<SimControlManager> _simControlManager;
 
     bool _fullscreen;
     bool _running;

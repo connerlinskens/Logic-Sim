@@ -21,13 +21,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4b9ff48-cf53-40f2-88b5-415413a67c1a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/LogicBlock/IONode.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LogicBlock/IONode.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/ChipDrawData.h" beforeDir="false" afterPath="$PROJECT_DIR$/Data/ChipDrawData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/IClickable.h" beforeDir="false" afterPath="$PROJECT_DIR$/Data/IClickable.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Vector2.h" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Vector2.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LogicBlock/Chip.h" beforeDir="false" afterPath="$PROJECT_DIR$/LogicBlock/Chip.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LogicBlock/Node.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/LogicBlock/Node.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LogicBlock/Node.h" beforeDir="false" afterPath="$PROJECT_DIR$/LogicBlock/Node.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LogicBlock/Node.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LogicBlock/Node.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LogicBlock/Wire.h" beforeDir="false" afterPath="$PROJECT_DIR$/LogicBlock/Wire.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sim/RenderManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Sim/RenderManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sim/RenderManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Sim/RenderManager.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sim/SimManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Sim/SimManager.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sim/SimManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Sim/SimManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,12 +86,12 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="Logic_Sim" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Logic_Sim" TARGET_NAME="Logic_Sim" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Logic_Sim" RUN_TARGET_NAME="Logic_Sim">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="Logic_Sim" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Logic_Sim" TARGET_NAME="Logic_Sim" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Logic_Sim" RUN_TARGET_NAME="Logic_Sim">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -104,6 +113,10 @@
       <workItem from="1677578340954" duration="764000" />
       <workItem from="1677599011258" duration="1172000" />
       <workItem from="1677606721258" duration="4866000" />
+      <workItem from="1677696916758" duration="173000" />
+      <workItem from="1677711169795" duration="688000" />
+      <workItem from="1677748854807" duration="2956000" />
+      <workItem from="1677762673048" duration="2368000" />
     </task>
     <servers />
   </component>

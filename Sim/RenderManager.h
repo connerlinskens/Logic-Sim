@@ -9,6 +9,9 @@
 #include "../Data/Color.h"
 #include "../Data/ChipDrawData.h"
 
+#define NodeOffStateColor Color(40,40,40,255)
+#define NodeOnStateColor Color(230, 70, 70, 255)
+
 class RenderManager {
 public:
     explicit RenderManager(SDL_Renderer& renderer);
@@ -18,6 +21,8 @@ public:
     void RenderLine(int x1, int y1, int x2, int y2, Color color = {});
 
     void RenderChip(const ChipDrawData& chipDrawData);
+private:
+    static Color GetNodeDrawColor(bool state);
 private:
     SDL_Renderer& _renderer;
 };
