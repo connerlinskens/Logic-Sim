@@ -9,12 +9,20 @@
 
 class SimControlManager {
 public:
+    SimControlManager();
+
     void AttachChipToMouse(Chip* chip);
     void ReleaseChip();
+
+    void PlaceWire(IONode* node);
+    void CancelWire();
+    [[nodiscard]] bool PlacingWire() const;
 
     void Update(int mouseX, int mouseY);
 private:
     Chip* _selectedChip;
+    bool _placingWire;
+    IONode* _tempIONodeWire;
 };
 
 

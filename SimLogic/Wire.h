@@ -7,9 +7,16 @@
 
 #include "IONode.h"
 
+class IONode;
+
 class Wire {
+public:
+    Wire(IONode& inputNode, IONode& outputNode);
+    void UpdateConnection(bool state);
+    [[nodiscard]] const IONode& InputNode() const;
+    [[nodiscard]] const IONode& OutputNode() const;
 private:
-    IONode _nodeA, _nodeB;
+    IONode& _inputNode, &_outputNode;
 };
 
 

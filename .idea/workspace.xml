@@ -21,23 +21,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4b9ff48-cf53-40f2-88b5-415413a67c1a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/SimLogic/Wire.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/ChipDrawData.h" beforeDir="false" afterPath="$PROJECT_DIR$/Data/ChipDrawData.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/IClickable.h" beforeDir="false" afterPath="$PROJECT_DIR$/Data/IClickable.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LogicBlock/Chip.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/Chip.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LogicBlock/IONode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/IONode.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LogicBlock/IONode.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/IONode.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LogicBlock/Wire.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/Wire.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sim/MouseCollisionManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/MouseCollisionManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sim/MouseCollisionManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/MouseCollisionManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sim/RenderManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/RenderManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sim/RenderManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/RenderManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sim/SimControlManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimControlManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sim/SimControlManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimControlManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sim/SimManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sim/SimManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/Chip.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/Chip.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/Chip.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/Chip.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/IONode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/IONode.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/IONode.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/IONode.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/Wire.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/Wire.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimManagers/RenderManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/RenderManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimManagers/SimControlManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimControlManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimManagers/SimControlManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimControlManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimManagers/SimManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimManagers/SimManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimManager.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +114,9 @@
       <workItem from="1677711169795" duration="688000" />
       <workItem from="1677748854807" duration="2956000" />
       <workItem from="1677762673048" duration="2676000" />
-      <workItem from="1677773682020" duration="2249000" />
+      <workItem from="1677773682020" duration="2390000" />
+      <workItem from="1677780600272" duration="2262000" />
+      <workItem from="1677789347046" duration="2999000" />
     </task>
     <servers />
   </component>

@@ -23,7 +23,7 @@ public:
     virtual ~Chip() = default;
     virtual void Execute() {};
 
-    void SetPosition(const Vector2 position);
+    void SetPosition(const Vector2& position);
     Vector2 Position() { return _position; }
 
     void RegisterToCollisionManager(MouseCollisionManager& mouseCollisionManager);

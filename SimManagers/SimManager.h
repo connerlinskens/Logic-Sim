@@ -36,7 +36,7 @@ private:
     bool _fullscreen;
     bool _running;
 
-    std::vector<Chip> _chips{};
+    std::vector<std::unique_ptr<Chip>> _chips{};
 };
 
 

@@ -38,9 +38,13 @@ _window{}, _renderer{}, _fullscreen{fullscreen}, _running{true} {
     _mouseCollisionManager = std::make_unique<MouseCollisionManager>();
     _simControlManager = std::make_unique<SimControlManager>();
 
-    auto& chip = _chips.emplace_back("AND", 2, 1);
-    chip.SetPosition({250, 100});
-    chip.RegisterToCollisionManager(*_mouseCollisionManager);
+    auto& chip = _chips.emplace_back(std::make_unique<Chip>("AND", 0, 5));
+    chip->SetPosition({250, 100});
+    chip->RegisterToCollisionManager(*_mouseCollisionManager);
+
+    auto& chip2 = _chips.emplace_back(std::make_unique<Chip>("AND", 4, 1));
+    chip2->SetPosition({500, 100});
+    chip2->RegisterToCollisionManager(*_mouseCollisionManager);
 }
 
 SimManager::~SimManager() {
@@ -65,8 +69,11 @@ void SimManager::input() {
             exit();
         }
         else if(e.type == SDL_KEYDOWN){
-            if(e.key.keysym.sym == SDLK_ESCAPE) { // return true for quit signal
-                exit();
+            if(e.key.keysym.sym == SDLK_ESCAPE) {
+                if(_simControlManager->PlacingWire())
+                    _simControlManager->CancelWire();
+                else
+                    exit();
             }
         }
         else if(e.type == SDL_MOUSEBUTTONDOWN){
@@ -75,17 +82,42 @@ void SimManager::input() {
                 SDL_GetMouseState(&mouseX, &mouseY);
                 auto object = _mouseCollisionManager->CheckMouseCollision(mouseX, mouseY);
                 if(object){
-                    std::cout << "Clicked a clickable object." << std::endl;
-                    object->Clicked();
+                    std::cout << "Left clicked a clickable object." << std::endl;
 
                     auto chip = dynamic_cast<Chip*>(object);
-                    if(chip)
+                    if(chip){
                         _simControlManager->AttachChipToMouse(chip);
+                        return;
+                    }
+
+                    auto node = dynamic_cast<IONode*>(object);
+                    if(node){
+                        _simControlManager->PlaceWire(node);
+                        return;
+                    }
+
+                    object->Clicked();
+                }
+            }
+            else if(e.button.button == 3){
+                int mouseX, mouseY;
+                SDL_GetMouseState(&mouseX, &mouseY);
+                auto object = _mouseCollisionManager->CheckMouseCollision(mouseX, mouseY);
+                if(object){
+                    std::cout << "Right clicked a clickable object." << std::endl;
+
+                    auto node = dynamic_cast<IONode*>(object);
+                    if(node){
+                        object->Clicked();
+                        return;
+                    }
                 }
             }
         }
         else if(e.type == SDL_MOUSEBUTTONUP){
-            _simControlManager->ReleaseChip();
+            if(e.button.button == 1){
+                _simControlManager->ReleaseChip();
+            }
         }
     }
 }
@@ -101,7 +133,7 @@ void SimManager::render() {
     SDL_RenderClear(_renderer);
 
     for(auto& chip : _chips){
-        _renderManager->RenderChip(chip.GetChipDrawData());
+        _renderManager->RenderChip(chip->GetChipDrawData());
     }
 
     // Set color to draw background
