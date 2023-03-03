@@ -17,10 +17,13 @@ public:
     void PlaceWire(IONode* node);
     void CancelWire();
     [[nodiscard]] bool PlacingWire() const;
+    [[nodiscard]] Vector2 SelectedNodeForWire() const;
 
     void Update(int mouseX, int mouseY);
 private:
     Chip* _selectedChip;
+    Vector2 _selectedChipStartOffset;
+
     bool _placingWire;
     IONode* _tempIONodeWire;
 };

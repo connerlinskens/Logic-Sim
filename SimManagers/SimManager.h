@@ -37,6 +37,8 @@ private:
     bool _running;
 
     std::vector<std::unique_ptr<Chip>> _chips{};
+
+    int _mouseX, _mouseY;
 };
 
 

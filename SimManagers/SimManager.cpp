@@ -63,6 +63,9 @@ void SimManager::loop() {
 }
 
 void SimManager::input() {
+    // Get mouse position
+    SDL_GetMouseState(&_mouseX, &_mouseY);
+    
     SDL_Event e;
     while(SDL_PollEvent(&e)) {
         if(e.type == SDL_QUIT){
@@ -78,9 +81,7 @@ void SimManager::input() {
         }
         else if(e.type == SDL_MOUSEBUTTONDOWN){
             if(e.button.button == 1){
-                int mouseX, mouseY;
-                SDL_GetMouseState(&mouseX, &mouseY);
-                auto object = _mouseCollisionManager->CheckMouseCollision(mouseX, mouseY);
+                auto object = _mouseCollisionManager->CheckMouseCollision(_mouseX, _mouseY);
                 if(object){
                     std::cout << "Left clicked a clickable object." << std::endl;
 
@@ -100,9 +101,7 @@ void SimManager::input() {
                 }
             }
             else if(e.button.button == 3){
-                int mouseX, mouseY;
-                SDL_GetMouseState(&mouseX, &mouseY);
-                auto object = _mouseCollisionManager->CheckMouseCollision(mouseX, mouseY);
+                auto object = _mouseCollisionManager->CheckMouseCollision(_mouseX, _mouseY);
                 if(object){
                     std::cout << "Right clicked a clickable object." << std::endl;
 
@@ -123,17 +122,22 @@ void SimManager::input() {
 }
 
 void SimManager::update() {
-    int mouseX, mouseY;
-    SDL_GetMouseState(&mouseX, &mouseY);
-    _simControlManager->Update(mouseX, mouseY);
+    _simControlManager->Update(_mouseX, _mouseY);
 }
 
 void SimManager::render() {
     // Clear screen
     SDL_RenderClear(_renderer);
 
+    // Render all chips to screen
     for(auto& chip : _chips){
         _renderManager->RenderChip(chip->GetChipDrawData());
+    }
+
+    // TODO if placing a wire, draw a temp wire
+    if(_simControlManager->PlacingWire()){
+        auto node = _simControlManager->SelectedNodeForWire();
+        _renderManager->RenderLine(node.x, node.y, _mouseX, _mouseY, NodeOffStateColor);
     }
 
     // Set color to draw background
