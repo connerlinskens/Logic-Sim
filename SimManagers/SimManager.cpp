@@ -3,6 +3,7 @@
 //
 
 #include "SimManager.h"
+#include "../SimLogic/BasicChip.h"
 #include <iostream>
 
 SimManager::SimManager() : SimManager(1920, 1080, true) {
@@ -29,7 +30,7 @@ _window{}, _renderer{}, _fullscreen{fullscreen}, _running{true} {
         }
 
         // Setting some window properties
-        SDL_SetWindowTitle(_window, "Logic SimManagers");
+        SDL_SetWindowTitle(_window, "Digital Logic Sim");
         SDL_ShowCursor(1);
     }
 
@@ -38,13 +39,25 @@ _window{}, _renderer{}, _fullscreen{fullscreen}, _running{true} {
     _mouseCollisionManager = std::make_unique<MouseCollisionManager>();
     _simControlManager = std::make_unique<SimControlManager>();
 
-    auto& chip = _chips.emplace_back(std::make_unique<Chip>("AND", 0, 5));
+    auto& chip = _chips.emplace_back(std::make_unique<Chip>("AND", 0, 5, Color{30, 200, 50, 255}));
     chip->SetPosition({250, 100});
     chip->RegisterToCollisionManager(*_mouseCollisionManager);
 
-    auto& chip2 = _chips.emplace_back(std::make_unique<Chip>("AND", 4, 1));
+    auto& chip2 = _chips.emplace_back(std::make_unique<Chip>("AND", 4, 1, Color{30, 200, 50, 255}));
     chip2->SetPosition({500, 100});
     chip2->RegisterToCollisionManager(*_mouseCollisionManager);
+
+    auto& basicChipAND = _chips.emplace_back(std::make_unique<BasicChip>("AND", 2, 1, [](bool a, bool b) -> bool{return a&&b;}, Color{30, 200, 50, 255}));
+    basicChipAND->SetPosition({250, 250});
+    basicChipAND->RegisterToCollisionManager(*_mouseCollisionManager);
+
+    auto& basicChipOR = _chips.emplace_back(std::make_unique<BasicChip>("OR", 2, 1, [](bool a, bool b) -> bool{return a||b;}, Color{30, 200, 50, 255}));
+    basicChipOR->SetPosition({500, 250});
+    basicChipOR->RegisterToCollisionManager(*_mouseCollisionManager);
+
+    auto& basicChipNOT = _chips.emplace_back(std::make_unique<BasicChip>("NOT", 1, 1, [](bool a, bool b) -> bool{return !a;}, Color{30, 200, 50, 255}));
+    basicChipNOT->SetPosition({400, 250});
+    basicChipNOT->RegisterToCollisionManager(*_mouseCollisionManager);
 }
 
 SimManager::~SimManager() {
@@ -123,6 +136,10 @@ void SimManager::input() {
 
 void SimManager::update() {
     _simControlManager->Update(_mouseX, _mouseY);
+
+    for(auto& chip : _chips){
+        chip->Execute();
+    }
 }
 
 void SimManager::render() {
@@ -134,7 +151,6 @@ void SimManager::render() {
         _renderManager->RenderChip(chip->GetChipDrawData());
     }
 
-    // TODO if placing a wire, draw a temp wire
     if(_simControlManager->PlacingWire()){
         auto node = _simControlManager->SelectedNodeForWire();
         _renderManager->RenderLine(node.x, node.y, _mouseX, _mouseY, NodeOffStateColor);

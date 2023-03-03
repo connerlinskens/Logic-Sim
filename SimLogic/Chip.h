@@ -18,7 +18,7 @@
 
 class Chip : public IClickable{
 public:
-    Chip(std::string name, int inputs, int outputs);
+    Chip(std::string name, int inputs, int outputs, Color color = {});
 
     virtual ~Chip() = default;
     virtual void Execute() {};
@@ -29,7 +29,7 @@ public:
     void RegisterToCollisionManager(MouseCollisionManager& mouseCollisionManager);
 
     ChipDrawData GetChipDrawData(){
-        return ChipDrawData{_name, _position, _extends, _inputs, _outputs};
+        return ChipDrawData{_name, _position, _extends, _inputs, _outputs, _color};
     }
 
     Vector2 AABBPosition() override{
@@ -46,6 +46,8 @@ protected:
     std::string _name;
     Vector2 _position;
     Vector2 _extends;
+
+    Color _color;
 };
 
 

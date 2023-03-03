@@ -4,9 +4,10 @@
 
 #include "Chip.h"
 
-Chip::Chip(std::string name, int inputs, int outputs) : _name{std::move(name)}, _position{Vector2()} {
+Chip::Chip(std::string name, int inputs, int outputs, Color color) : _name{std::move(name)}, _position{Vector2()} {
     int maxNodes = inputs > outputs? inputs : outputs;
     _extends = {100, maxNodes * NodeHeightStep};
+    _color = color;
 
     if(inputs > 0){
         int heightStepInputs = _extends.y / inputs;

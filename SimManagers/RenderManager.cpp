@@ -70,7 +70,7 @@ void RenderManager::RenderChip(const ChipDrawData& chipDrawData) {
     int width = chipDrawData.extends.x;
     int height = chipDrawData.extends.y;
 
-    RenderRect(pos.x, pos.y, width, height, {50, 100, 200, 255}, true);
+    RenderRect(pos.x, pos.y, width, height, chipDrawData.drawColor, true);
 
     // Draw all input nodes
     for(auto& inputNode : chipDrawData.inputs){
