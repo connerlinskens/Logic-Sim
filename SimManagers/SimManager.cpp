@@ -6,6 +6,7 @@
 #include "../SimLogic/BasicChips/ChipAND.h"
 #include "../SimLogic/BasicChips/ChipOR.h"
 #include "../SimLogic/BasicChips/ChipNOT.h"
+#include "../SimLogic/ProgrammableChip.h"
 #include <iostream>
 
 SimManager::SimManager() : SimManager(1920, 1080, true) {
@@ -41,17 +42,11 @@ _window{}, _renderer{}, _fullscreen{fullscreen}, _running{true} {
     _mouseCollisionManager = std::make_unique<MouseCollisionManager>();
     _simControlManager = std::make_unique<SimControlManager>();
 
-    auto& chipAND = _chips.emplace_back(std::make_unique<ChipAND>());
-    chipAND->SetPosition({250, 250});
-    chipAND->RegisterToCollisionManager(*_mouseCollisionManager);
-
-    auto& chipOR = _chips.emplace_back(std::make_unique<ChipOR>());
-    chipOR->SetPosition({400, 250});
-    chipOR->RegisterToCollisionManager(*_mouseCollisionManager);
-
-    auto& chipNOT = _chips.emplace_back(std::make_unique<ChipNOT>());
-    chipNOT->SetPosition({550, 250});
-    chipNOT->RegisterToCollisionManager(*_mouseCollisionManager);
+    // Start with empty programmable chip
+    _topLevelChip = std::make_unique<ProgrammableChip>("",1,1);
+    _currentChip = _topLevelChip.get();
+    auto& chip = _currentChip->AddChip<ChipAND>(Vector2{250,100});
+    chip.RegisterToCollisionManager(*_mouseCollisionManager);
 }
 
 SimManager::~SimManager() {
@@ -131,7 +126,7 @@ void SimManager::input() {
 void SimManager::update() {
     _simControlManager->Update(_mouseX, _mouseY);
 
-    for(auto& chip : _chips){
+    for(auto& chip : _currentChip->InternalChips()){
         chip->Execute();
     }
 }
@@ -141,7 +136,7 @@ void SimManager::render() {
     SDL_RenderClear(_renderer);
 
     // Render all chips to screen
-    for(auto& chip : _chips){
+    for(auto& chip : _currentChip->InternalChips()){
         _renderManager->RenderChip(chip->GetChipDrawData());
     }
 

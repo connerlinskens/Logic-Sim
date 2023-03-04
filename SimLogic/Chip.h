@@ -39,6 +39,12 @@ public:
     }
     Vector2 AABBExtends() override { return _extends; }
     [[nodiscard]] int ClickLayer() const override { return 1; }
+
+    // TODO REMOVE THIS
+    // THIS IS A TEST FUNCTION REMOVE THIS
+    IONode* GetIONode(bool input, int index);
+    // THIS IS A TEST FUNCTION REMOVE THIS
+
 protected:
     std::vector<IONode> _inputs;
     std::vector<IONode> _outputs;

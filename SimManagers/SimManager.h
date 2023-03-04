@@ -12,6 +12,7 @@
 #include "../SimLogic/Chip.h"
 #include "MouseCollisionManager.h"
 #include "SimControlManager.h"
+#include "../SimLogic/ProgrammableChip.h"
 
 class SimManager {
 public:
@@ -36,7 +37,9 @@ private:
     bool _fullscreen;
     bool _running;
 
-    std::vector<std::unique_ptr<Chip>> _chips{};
+//    std::vector<std::unique_ptr<Chip>> _chips{};
+    std::unique_ptr<ProgrammableChip> _topLevelChip;
+    ProgrammableChip* _currentChip;
 
     int _mouseX, _mouseY;
 };

@@ -46,3 +46,13 @@ void Chip::RegisterToCollisionManager(MouseCollisionManager &mouseCollisionManag
     mouseCollisionManager.AddClickable(this);
 }
 
+// TODO REMOVE THIS
+// THIS IS A TEST FUNCTION REMOVE THIS
+IONode *Chip::GetIONode(bool input, int index) {
+    if(input)
+        return &_inputs.at(index);
+    else
+        return &_outputs.at(index);
+}
+// THIS IS A TEST FUNCTION REMOVE THIS
+

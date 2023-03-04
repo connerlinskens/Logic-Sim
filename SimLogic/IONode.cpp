@@ -62,10 +62,10 @@ void IONode::SetState(bool newState) {
 }
 
 void IONode::AddWire(IONode* node) {
-    if(IONodeType() == IONodeType::OUTPUT){
+//    if(IONodeType() == IONodeType::OUTPUT){
         auto& wire = _wires.emplace_back(*node, *this);
         wire.UpdateConnection(State());
-    }
+//    }
 }
 
 const std::vector<Wire>& IONode::Wires() const{
