@@ -21,7 +21,7 @@ public:
     Chip(std::string name, int inputs, int outputs, Color color = {});
 
     virtual ~Chip() = default;
-    virtual void Execute() {};
+    virtual void Execute() = 0;
 
     void SetPosition(const Vector2& position);
     Vector2 Position() { return _position; }

@@ -3,7 +3,9 @@
 //
 
 #include "SimManager.h"
-#include "../SimLogic/BasicChip.h"
+#include "../SimLogic/BasicChips/ChipAND.h"
+#include "../SimLogic/BasicChips/ChipOR.h"
+#include "../SimLogic/BasicChips/ChipNOT.h"
 #include <iostream>
 
 SimManager::SimManager() : SimManager(1920, 1080, true) {
@@ -39,25 +41,17 @@ _window{}, _renderer{}, _fullscreen{fullscreen}, _running{true} {
     _mouseCollisionManager = std::make_unique<MouseCollisionManager>();
     _simControlManager = std::make_unique<SimControlManager>();
 
-    auto& chip = _chips.emplace_back(std::make_unique<Chip>("AND", 0, 5, Color{30, 200, 50, 255}));
-    chip->SetPosition({250, 100});
-    chip->RegisterToCollisionManager(*_mouseCollisionManager);
+    auto& chipAND = _chips.emplace_back(std::make_unique<ChipAND>());
+    chipAND->SetPosition({250, 250});
+    chipAND->RegisterToCollisionManager(*_mouseCollisionManager);
 
-    auto& chip2 = _chips.emplace_back(std::make_unique<Chip>("AND", 4, 1, Color{30, 200, 50, 255}));
-    chip2->SetPosition({500, 100});
-    chip2->RegisterToCollisionManager(*_mouseCollisionManager);
+    auto& chipOR = _chips.emplace_back(std::make_unique<ChipOR>());
+    chipOR->SetPosition({400, 250});
+    chipOR->RegisterToCollisionManager(*_mouseCollisionManager);
 
-    auto& basicChipAND = _chips.emplace_back(std::make_unique<BasicChip>("AND", 2, 1, [](bool a, bool b) -> bool{return a&&b;}, Color{30, 200, 50, 255}));
-    basicChipAND->SetPosition({250, 250});
-    basicChipAND->RegisterToCollisionManager(*_mouseCollisionManager);
-
-    auto& basicChipOR = _chips.emplace_back(std::make_unique<BasicChip>("OR", 2, 1, [](bool a, bool b) -> bool{return a||b;}, Color{30, 200, 50, 255}));
-    basicChipOR->SetPosition({500, 250});
-    basicChipOR->RegisterToCollisionManager(*_mouseCollisionManager);
-
-    auto& basicChipNOT = _chips.emplace_back(std::make_unique<BasicChip>("NOT", 1, 1, [](bool a, bool b) -> bool{return !a;}, Color{30, 200, 50, 255}));
-    basicChipNOT->SetPosition({400, 250});
-    basicChipNOT->RegisterToCollisionManager(*_mouseCollisionManager);
+    auto& chipNOT = _chips.emplace_back(std::make_unique<ChipNOT>());
+    chipNOT->SetPosition({550, 250});
+    chipNOT->RegisterToCollisionManager(*_mouseCollisionManager);
 }
 
 SimManager::~SimManager() {

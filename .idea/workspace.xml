@@ -21,13 +21,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4b9ff48-cf53-40f2-88b5-415413a67c1a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SimLogic/BasicChip.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SimLogic/BasicChip.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SimLogic/Chip.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/Chip.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/BasicChip.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/BasicChip.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/SimLogic/Chip.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/Chip.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SimManagers/RenderManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/RenderManager.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimManagers/SimManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimManager.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -76,14 +74,18 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\CLion Projects\Logic-Sim\cmake-build-debug" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\CLion Projects\Logic-Sim\SimLogic\BasicChips" />
+      <recent name="D:\CLion Projects\Logic-Sim\SimLogic\ChipBehaviour" />
+    </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="Logic_Sim" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Logic_Sim" TARGET_NAME="Logic_Sim" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Logic_Sim" RUN_TARGET_NAME="Logic_Sim">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Logic_Sim" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Logic_Sim" TARGET_NAME="Logic_Sim" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Logic_Sim" RUN_TARGET_NAME="Logic_Sim">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -114,7 +116,8 @@
       <workItem from="1677789347046" duration="2999000" />
       <workItem from="1677833133442" duration="1379000" />
       <workItem from="1677840529623" duration="2317000" />
-      <workItem from="1677851403239" duration="3995000" />
+      <workItem from="1677851403239" duration="4848000" />
+      <workItem from="1677938857859" duration="1415000" />
     </task>
     <servers />
   </component>

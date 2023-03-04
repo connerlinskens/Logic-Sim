@@ -16,7 +16,7 @@ find_package(SDL2_TTF REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
 # Source files
-set(SIM_LOGIC_FILES SimLogic/IONode.cpp SimLogic/Chip.cpp SimLogic/Wire.cpp SimLogic/BasicChip.cpp)
+set(SIM_LOGIC_FILES SimLogic/IONode.cpp SimLogic/Chip.cpp SimLogic/Wire.cpp SimLogic/BasicChips/ChipAND.cpp SimLogic/BasicChips/ChipOR.cpp SimLogic/BasicChips/ChipOR.h SimLogic/BasicChips/ChipNOT.cpp SimLogic/BasicChips/ChipNOT.h)
 set(SIM_MANAGER_FILES SimManagers/SimManager.cpp SimManagers/RenderManager.cpp SimManagers/MouseCollisionManager.cpp SimManagers/SimControlManager.cpp)
 
 # Create executable
