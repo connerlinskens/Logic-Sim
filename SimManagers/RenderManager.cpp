@@ -113,3 +113,7 @@ void RenderManager::RenderChipInternal(const ChipDrawData& chipDrawData) {
 Vector2 RenderManager::WindowSize() const {
     return {_windowWidth, _windowHeight};
 }
+
+void RenderManager::RenderButton(const Button& button) {
+    RenderRect(button.Position().x, button.Position().y, button.AABBExtends().x, button.AABBExtends().y, {200, 200, 200, 255}, false);
+}

@@ -13,7 +13,7 @@ SimManager::SimManager() : SimManager(1920, 1080, true) {
 }
 
 SimManager::SimManager(int windowWidth, int windowHeight, bool fullscreen) :
-_window{}, _renderer{}, _fullscreen{fullscreen}, _running{true}, _mouseX{0}, _mouseY{0}, _currentChip{nullptr} {
+        _window{}, _renderer{}, _fullscreen{fullscreen}, _running{true}, _mouseX{0}, _mouseY{0}, _viewedChip{nullptr} {
     // Setting up SDL and SDL_ttf
     {
         // Init sdl
@@ -42,10 +42,23 @@ _window{}, _renderer{}, _fullscreen{fullscreen}, _running{true}, _mouseX{0}, _mo
     _mouseCollisionManager = std::make_unique<MouseCollisionManager>();
     _simControlManager = std::make_unique<SimControlManager>();
 
+    // Create buttons
+    auto& button1 = _placeButtons.emplace_back(Button{"AND", {50, windowHeight - 40}, {50, 25}, [&]()->void{
+        _simControlManager->SelectChip(ChipType::AND);
+    }});
+
+    auto& button2 = _placeButtons.emplace_back(Button{"OR", {110, windowHeight - 40}, {50, 25}, [&]()->void{
+        _simControlManager->SelectChip(ChipType::OR);
+    }});
+
+    auto& button3 = _placeButtons.emplace_back(Button{"NOT", {170, windowHeight - 40}, {50, 25}, [&]()->void{
+        _simControlManager->SelectChip(ChipType::NOT);
+    }});
+
     // Start with empty programmable chip
     _topLevelChip = std::make_unique<ProgrammableChip>("",2,1);
     auto& chip = _topLevelChip->AddChip<ChipAND>(Vector2{250,100}); // Remove this
-    SetCurrentChip(_topLevelChip.get());
+    SetViewedChip(_topLevelChip.get());
 }
 
 SimManager::~SimManager() {
@@ -76,6 +89,9 @@ void SimManager::input() {
             if(e.key.keysym.sym == SDLK_ESCAPE) {
                 if(_simControlManager->PlacingWire())
                     _simControlManager->CancelWire();
+                else if(_simControlManager->PlacingChip()){
+                    _simControlManager->CancelChip();
+                }
                 else
                     exit();
             }
@@ -100,6 +116,9 @@ void SimManager::input() {
                     }
 
                     object->Clicked();
+                }
+                else if(_simControlManager->PlacingChip()){
+                    _simControlManager->PlaceChip(_viewedChip, {_mouseX, _mouseY}, {}, _mouseCollisionManager.get());
                 }
             }
             else if(e.button.button == 3){
@@ -126,7 +145,7 @@ void SimManager::input() {
 void SimManager::update() {
     _simControlManager->Update(_mouseX, _mouseY);
 
-    for(auto& chip : _currentChip->InternalChips()){
+    for(auto& chip : _viewedChip->InternalChips()){
         chip->Execute();
     }
 }
@@ -135,18 +154,23 @@ void SimManager::render() {
     // Clear screen
     SDL_RenderClear(_renderer);
 
-    // Render chip environment
-    if(_currentChip){
-        _renderManager->RenderChipInternal(_currentChip->GetChipDrawData());
-        _renderManager->RenderIONodesWithWires(_currentChip->Inputs());
-        _renderManager->RenderIONodesWithWires(_currentChip->Outputs());
+    // Render chip internal
+    if(_viewedChip){
+        _renderManager->RenderChipInternal(_viewedChip->GetChipDrawData());
+        _renderManager->RenderIONodesWithWires(_viewedChip->Inputs());
+        _renderManager->RenderIONodesWithWires(_viewedChip->Outputs());
 
         // Render all chips
-        for(auto& chip : _currentChip->InternalChips()){
+        for(auto& chip : _viewedChip->InternalChips()){
             _renderManager->RenderChip(chip->GetChipDrawData());
             _renderManager->RenderIONodesWithWires(chip->Inputs());
             _renderManager->RenderIONodesWithWires(chip->Outputs());
         }
+    }
+
+    // Render buttons
+    for(auto& button : _placeButtons){
+        _renderManager->RenderButton(button);
     }
 
     // Render temp wire when placing a new wire
@@ -166,21 +190,27 @@ void SimManager::exit() {
     _running = false;
 }
 
-void SimManager::SetCurrentChip(ProgrammableChip* chip) {
+void SimManager::SetViewedChip(ProgrammableChip* chip) {
     if(!chip) {return;}
 
     // Reset current chip
-    if(_currentChip){
-        _currentChip->RepositionIONodes();
+    if(_viewedChip){
+        _viewedChip->RepositionIONodes();
     }
     _mouseCollisionManager->ClearClickables();
 
-    // Set new current chip
-    _currentChip = chip;
-    _currentChip->RepositionIONodesForInternalView(_renderManager->WindowSize());
-    _currentChip->RegisterToCollisionManager(*_mouseCollisionManager, false);
+    // Set new viewed chip
+    _viewedChip = chip;
+    _viewedChip->RepositionIONodesForInternalView(_renderManager->WindowSize());
+    _viewedChip->RegisterToCollisionManager(*_mouseCollisionManager, false);
 
+    // Add all internal chips to collision manager
     for(auto& c : chip->InternalChips()){
         c->RegisterToCollisionManager(*_mouseCollisionManager);
+    }
+
+    // Add all buttons to collision manager
+    for(auto& b : _placeButtons){
+        _mouseCollisionManager->AddClickable(&b);
     }
 }

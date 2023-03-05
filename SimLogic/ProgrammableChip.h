@@ -22,6 +22,8 @@ public:
         return newChip;
     }
 
+    Chip& AddChip(const Chip& chip);
+
     const std::vector<std::unique_ptr<Chip>>& InternalChips();
 private:
     std::vector<std::unique_ptr<Chip>> _internalChips;

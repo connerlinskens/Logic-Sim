@@ -16,6 +16,13 @@
 
 #define NodeHeightStep 30
 
+enum class ChipType{
+    AND,
+    OR,
+    NOT,
+    PROGRAMMABLE
+};
+
 class Chip : public IClickable{
 public:
     Chip(std::string name, int inputs, int outputs, Color color = {});

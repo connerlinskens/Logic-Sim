@@ -28,7 +28,7 @@ private:
 
     void exit();
 
-    void SetCurrentChip(ProgrammableChip* chip);
+    void SetViewedChip(ProgrammableChip* chip);
 private:
     SDL_Window* _window;
     SDL_Renderer* _renderer;
@@ -40,7 +40,9 @@ private:
     bool _running;
 
     std::unique_ptr<ProgrammableChip> _topLevelChip;
-    ProgrammableChip* _currentChip;
+    ProgrammableChip* _viewedChip;
+
+    std::vector<Button> _placeButtons;
 
     int _mouseX, _mouseY;
 };

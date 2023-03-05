@@ -5,8 +5,11 @@
 #include <iostream>
 #include "SimControlManager.h"
 #include "RenderManager.h"
+#include "../SimLogic/BasicChips/ChipAND.h"
+#include "../SimLogic/BasicChips/ChipOR.h"
+#include "../SimLogic/BasicChips/ChipNOT.h"
 
-SimControlManager::SimControlManager() : _placingWire{false}, _selectedChip{nullptr}, _tempIONodeWire{nullptr} {
+SimControlManager::SimControlManager() : _placingWire{false}, _selectedChip{nullptr}, _tempIONodeWire{nullptr}, _placingChip{false}, _selectedChipType{ChipType::PROGRAMMABLE} {
 }
 
 void SimControlManager::AttachChipToMouse(Chip *chip) {
@@ -42,21 +45,6 @@ void SimControlManager::PlaceWire(IONode* node) {
     else{
         _placingWire = false;
         _tempIONodeWire->AddWire(node);
-
-//        // Cant connect two inputs or outputs together
-//        if(node->IONodeType() == _tempIONodeWire->IONodeType()) { return; }
-//
-//        _placingWire = false;
-//        // Create Wire in OUTPUT Node
-//        if(node->IONodeType() == IONodeType::OUTPUT){
-//            node->AddWire(_tempIONodeWire);
-//        }
-//        else if(_tempIONodeWire->IONodeType() == IONodeType::OUTPUT){
-//            _tempIONodeWire->AddWire(node);
-//        }
-//        else{
-//            std::cerr << "Found IO Node with unknown type in PlaceWire() from SimControlManager" << std::endl;
-//        }
     }
 }
 
@@ -73,4 +61,39 @@ Vector2 SimControlManager::SelectedNodeForWire() const {
     if(!_placingWire) return {};
 
     return _tempIONodeWire->Position();
+}
+
+void SimControlManager::SelectChip(ChipType chipType) {
+    _placingChip = true;
+    _selectedChipType = chipType;
+}
+
+void SimControlManager::PlaceChip(ProgrammableChip* parentChip, Vector2 position, const std::string& chipData, MouseCollisionManager* mouseCollisionManager) {
+    if(_selectedChipType == ChipType::AND){
+        auto& chip = parentChip->AddChip<ChipAND>(position);
+        if(mouseCollisionManager)
+            chip.RegisterToCollisionManager(*mouseCollisionManager);
+    }
+    else if(_selectedChipType == ChipType::OR){
+        auto& chip = parentChip->AddChip<ChipOR>(position);
+        if(mouseCollisionManager)
+            chip.RegisterToCollisionManager(*mouseCollisionManager);
+    }
+    else if(_selectedChipType == ChipType::NOT){
+        auto& chip = parentChip->AddChip<ChipNOT>(position);
+        if(mouseCollisionManager)
+            chip.RegisterToCollisionManager(*mouseCollisionManager);
+    }
+    else if(_selectedChipType == ChipType::PROGRAMMABLE){
+        // TODO implement placing programmable chips
+    }
+    _placingChip = false;
+}
+
+bool SimControlManager::PlacingChip() const {
+    return _placingChip;
+}
+
+void SimControlManager::CancelChip() {
+    _placingChip = false;
 }

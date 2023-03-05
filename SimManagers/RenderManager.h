@@ -8,6 +8,7 @@
 #include <SDL.h>
 #include "../Data/Color.h"
 #include "../Data/ChipDrawData.h"
+#include "../SimLogic/Button.h"
 
 #define NodeOffStateColor Color(40,40,40,255)
 #define NodeOnStateColor Color(230, 70, 70, 255)
@@ -23,6 +24,8 @@ public:
     void RenderChip(const ChipDrawData& chipDrawData);
     void RenderIONodesWithWires(const std::vector<IONode>& nodes);
     void RenderChipInternal(const ChipDrawData& chipDrawData);
+
+    void RenderButton(const Button& button);
 
     void UpdateWindowSize(int windowWidth, int windowHeight);
     [[nodiscard]] Vector2 WindowSize() const;

@@ -6,6 +6,7 @@
 #define LOGIC_SIM_SIMCONTROLMANAGER_H
 
 #include "../SimLogic/Chip.h"
+#include "../SimLogic/ProgrammableChip.h"
 
 class SimControlManager {
 public:
@@ -19,6 +20,11 @@ public:
     [[nodiscard]] bool PlacingWire() const;
     [[nodiscard]] Vector2 SelectedNodeForWire() const;
 
+    void SelectChip(ChipType chipType);
+    [[nodiscard]] bool PlacingChip() const;
+    void PlaceChip(ProgrammableChip* parentChip, Vector2 position, const std::string& chipData = {}, MouseCollisionManager* mouseCollisionManager = nullptr);
+    void CancelChip();
+
     void Update(int mouseX, int mouseY);
 private:
     Chip* _selectedChip;
@@ -26,6 +32,9 @@ private:
 
     bool _placingWire;
     IONode* _tempIONodeWire;
+
+    bool _placingChip;
+    ChipType _selectedChipType;
 };
 
 
