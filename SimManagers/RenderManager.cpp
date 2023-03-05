@@ -5,7 +5,15 @@
 #include "RenderManager.h"
 #include <cmath>
 
-RenderManager::RenderManager(SDL_Renderer& renderer) : _renderer{renderer} {
+#define WindowWidthMargin 50
+#define WindowHeightMargin 125
+
+RenderManager::RenderManager(SDL_Renderer& renderer, int windowWidth, int windowHeight) : _renderer{renderer}, _windowWidth{windowWidth}, _windowHeight{windowHeight} {
+}
+
+void RenderManager::UpdateWindowSize(int windowWidth, int windowHeight) {
+    _windowWidth = windowWidth;
+    _windowHeight = windowHeight;
 }
 
 void RenderManager::RenderRect(int x, int y, int w, int h, Color color, bool fill) {
@@ -71,22 +79,19 @@ void RenderManager::RenderChip(const ChipDrawData& chipDrawData) {
     int height = chipDrawData.extends.y;
 
     RenderRect(pos.x, pos.y, width, height, chipDrawData.drawColor, true);
+}
 
-    // Draw all input nodes
-    for(auto& inputNode : chipDrawData.inputs){
-        Color nodeColor = GetNodeDrawColor(inputNode.State());
-        RenderCircle(inputNode.Position().x, inputNode.Position().y, inputNode.AABBExtends().x, nodeColor);
-    }
+void RenderManager::RenderIONodesWithWires(const std::vector<IONode> &nodes) {
+    for(auto& node : nodes){
+        // Render IONode
+        Color nodeColor = GetNodeDrawColor(node.State());
+        RenderCircle(node.Position().x, node.Position().y, node.AABBExtends().x, nodeColor);
 
-    // Draw all output nodes
-    for(auto& outputNode : chipDrawData.outputs){
-        Color nodeColor = GetNodeDrawColor(outputNode.State());
-        RenderCircle(outputNode.Position().x, outputNode.Position().y, outputNode.AABBExtends().x, nodeColor);
-
-        // Draw all wires
-        for(auto& wire : outputNode.Wires()){
-            auto otherNodePosition = wire.InputNode().Position();
-            RenderLine(outputNode.Position().x, outputNode.Position().y, otherNodePosition.x, otherNodePosition.y, nodeColor);
+        // Render wires
+        auto& wires = node.Wires();
+        for(auto& wire : wires){
+            auto attachedNodePosition = wire.InputNode().Position();
+            RenderLine(node.Position().x, node.Position().y, attachedNodePosition.x, attachedNodePosition.y, nodeColor);
         }
     }
 }
@@ -98,3 +103,13 @@ Color RenderManager::GetNodeDrawColor(bool state) {
         return NodeOffStateColor;
 }
 
+void RenderManager::RenderChipInternal(const ChipDrawData& chipDrawData) {
+    // Draw chip borders
+    Vector2 chipPos = {_windowWidth/2, _windowHeight/2};
+    Vector2 chipExtends = {_windowWidth - WindowWidthMargin, _windowHeight - WindowHeightMargin};
+    RenderRect(chipPos.x, chipPos.y, chipExtends.x, chipExtends.y, {150, 150, 150, 255}, false);
+}
+
+Vector2 RenderManager::WindowSize() const {
+    return {_windowWidth, _windowHeight};
+}

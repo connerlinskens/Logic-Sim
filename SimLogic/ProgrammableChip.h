@@ -15,7 +15,6 @@ public:
 
     void Execute() override;
 
-
     template<typename C, typename... Args>
     C& AddChip(Args... args, Vector2 position = {}){
         C& newChip = static_cast<C&>(*_internalChips.emplace_back(std::make_unique<C>(args...)));

@@ -27,6 +27,8 @@ private:
     void render();
 
     void exit();
+
+    void SetCurrentChip(ProgrammableChip* chip);
 private:
     SDL_Window* _window;
     SDL_Renderer* _renderer;
@@ -37,7 +39,6 @@ private:
     bool _fullscreen;
     bool _running;
 
-//    std::vector<std::unique_ptr<Chip>> _chips{};
     std::unique_ptr<ProgrammableChip> _topLevelChip;
     ProgrammableChip* _currentChip;
 

@@ -26,10 +26,10 @@ public:
     void SetPosition(const Vector2& position);
     Vector2 Position() { return _position; }
 
-    void RegisterToCollisionManager(MouseCollisionManager& mouseCollisionManager);
+    void RegisterToCollisionManager(MouseCollisionManager& mouseCollisionManager, bool RegisterChip = true, bool RegisterNodes = true);
 
     ChipDrawData GetChipDrawData(){
-        return ChipDrawData{_name, _position, _extends, _inputs, _outputs, _color};
+        return ChipDrawData{_name, _position, _extends, _color};
     }
 
     Vector2 AABBPosition() override{
@@ -37,14 +37,14 @@ public:
         return {Position().x - extends.x/2, Position().y - extends.y/2};
 
     }
-    Vector2 AABBExtends() override { return _extends; }
+    [[nodiscard]] Vector2 AABBExtends() const override { return _extends; }
     [[nodiscard]] int ClickLayer() const override { return 1; }
 
-    // TODO REMOVE THIS
-    // THIS IS A TEST FUNCTION REMOVE THIS
-    IONode* GetIONode(bool input, int index);
-    // THIS IS A TEST FUNCTION REMOVE THIS
+    [[nodiscard]] const std::vector<IONode>& Inputs() const;
+    [[nodiscard]] const std::vector<IONode>& Outputs() const;
 
+    void RepositionIONodes();
+    void RepositionIONodesForInternalView(Vector2 windowSize);
 protected:
     std::vector<IONode> _inputs;
     std::vector<IONode> _outputs;

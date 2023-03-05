@@ -15,8 +15,6 @@ struct ChipDrawData{
     std::string name;
     Vector2 position;
     Vector2 extends;
-    std::vector<IONode>& inputs;
-    std::vector<IONode>& outputs;
     Color drawColor = Color();
 };
 

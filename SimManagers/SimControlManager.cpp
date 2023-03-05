@@ -40,20 +40,23 @@ void SimControlManager::PlaceWire(IONode* node) {
     }
     // Finish wire placement
     else{
-        // Cant connect two inputs or outputs together
-        if(node->IONodeType() == _tempIONodeWire->IONodeType()) { return; }
-
         _placingWire = false;
-        // Create Wire in OUTPUT Node
-        if(node->IONodeType() == IONodeType::OUTPUT){
-            node->AddWire(_tempIONodeWire);
-        }
-        else if(_tempIONodeWire->IONodeType() == IONodeType::OUTPUT){
-            _tempIONodeWire->AddWire(node);
-        }
-        else{
-            std::cerr << "Found IO Node with unknown type in PlaceWire() from SimControlManager" << std::endl;
-        }
+        _tempIONodeWire->AddWire(node);
+
+//        // Cant connect two inputs or outputs together
+//        if(node->IONodeType() == _tempIONodeWire->IONodeType()) { return; }
+//
+//        _placingWire = false;
+//        // Create Wire in OUTPUT Node
+//        if(node->IONodeType() == IONodeType::OUTPUT){
+//            node->AddWire(_tempIONodeWire);
+//        }
+//        else if(_tempIONodeWire->IONodeType() == IONodeType::OUTPUT){
+//            _tempIONodeWire->AddWire(node);
+//        }
+//        else{
+//            std::cerr << "Found IO Node with unknown type in PlaceWire() from SimControlManager" << std::endl;
+//        }
     }
 }
 

@@ -10,18 +10,18 @@ Chip::Chip(std::string name, int inputs, int outputs, Color color) : _name{std::
     _color = color;
 
     if(inputs > 0){
-        int heightStepInputs = _extends.y / inputs;
         for(int i = 0; i < inputs; i++){
-            auto node = _inputs.emplace_back(IONodeType::INPUT, Vector2{_position.x - (_extends.x / 2), (_position.y + (heightStepInputs * i) + (heightStepInputs / 2)) - (_extends.y / 2)});
+            auto node = _inputs.emplace_back(IONodeType::INPUT);
         }
     }
 
     if(outputs > 0){
-        int heightStepOutputs = _extends.y / outputs;
         for(int o = 0; o < outputs; o++){
-            auto node = _outputs.emplace_back(IONodeType::OUTPUT, Vector2{_position.x + (_extends.x / 2), (_position.y + (heightStepOutputs * o) + (heightStepOutputs / 2)) - (_extends.y / 2)});
+            auto node = _outputs.emplace_back(IONodeType::OUTPUT);
         }
     }
+
+    RepositionIONodes();
 }
 
 void Chip::SetPosition(const Vector2& position) {
@@ -35,24 +35,53 @@ void Chip::SetPosition(const Vector2& position) {
     _position = position;
 }
 
-void Chip::RegisterToCollisionManager(MouseCollisionManager &mouseCollisionManager) {
-    // Add all nodes to manager
-    for(auto& node : _inputs)
-        mouseCollisionManager.AddClickable(&node);
-    for(auto& node : _outputs)
-        mouseCollisionManager.AddClickable(&node);
+void Chip::RegisterToCollisionManager(MouseCollisionManager &mouseCollisionManager, bool RegisterChip, bool RegisterNodes) {
+    if(RegisterNodes){
+        // Add all nodes to manager
+        for(auto& node : _inputs)
+            mouseCollisionManager.AddClickable(&node);
+        for(auto& node : _outputs)
+            mouseCollisionManager.AddClickable(&node);
+    }
 
-    // Add this chip to manager
-    mouseCollisionManager.AddClickable(this);
+    if(RegisterChip){
+        // Add this chip to manager
+        mouseCollisionManager.AddClickable(this);
+    }
 }
 
-// TODO REMOVE THIS
-// THIS IS A TEST FUNCTION REMOVE THIS
-IONode *Chip::GetIONode(bool input, int index) {
-    if(input)
-        return &_inputs.at(index);
-    else
-        return &_outputs.at(index);
+const std::vector<IONode> &Chip::Inputs() const {
+    return _inputs;
 }
-// THIS IS A TEST FUNCTION REMOVE THIS
 
+const std::vector<IONode> &Chip::Outputs() const {
+    return _outputs;
+}
+
+void Chip::RepositionIONodes() {
+    int inputs = static_cast<int>(_inputs.size());
+    int heightStepInputs = _extends.y / inputs;
+    for(int i = 0; i < inputs; i++){
+        _inputs[i].SetPosition({_position.x - (_extends.x / 2), (_position.y + (heightStepInputs * i) + (heightStepInputs / 2)) - (_extends.y / 2)});
+    }
+
+    int outputs = static_cast<int>(_outputs.size());
+    int heightStepOutputs = _extends.y / outputs;
+    for(int o = 0; o < outputs; o++){
+        _outputs[o].SetPosition({_position.x + (_extends.x / 2), (_position.y + (heightStepOutputs * o) + (heightStepOutputs / 2)) - (_extends.y / 2)});
+    }
+}
+
+void Chip::RepositionIONodesForInternalView(Vector2 windowSize) {
+    int inputs = static_cast<int>(_inputs.size());
+    int heightStepInputs = windowSize.y / inputs;
+    for(int i = 0; i < inputs; i++){
+        _inputs[i].SetPosition({25, (heightStepInputs * i) + (heightStepInputs / 2)});
+    }
+
+    int outputs = static_cast<int>(_outputs.size());
+    int heightStepOutputs = windowSize.y / outputs;
+    for(int o = 0; o < outputs; o++){
+        _outputs[o].SetPosition({windowSize.x - 25, (heightStepOutputs * o) + (heightStepOutputs / 2)});
+    }
+}

@@ -30,7 +30,7 @@ Vector2 IONode::AABBPosition() {
     return {_position.x - (NodeSize/2), _position.y - (NodeSize/2)};
 }
 
-Vector2 IONode::AABBExtends() {
+Vector2 IONode::AABBExtends() const {
     return {NodeSize,NodeSize};
 }
 
@@ -62,12 +62,15 @@ void IONode::SetState(bool newState) {
 }
 
 void IONode::AddWire(IONode* node) {
-//    if(IONodeType() == IONodeType::OUTPUT){
-        auto& wire = _wires.emplace_back(*node, *this);
-        wire.UpdateConnection(State());
-//    }
+    // TODO change how wires are made
+    auto& wire = _wires.emplace_back(*node, *this);
+    wire.UpdateConnection(State());
 }
 
 const std::vector<Wire>& IONode::Wires() const{
     return _wires;
+}
+
+void IONode::SetPosition(Vector2 position) {
+    _position = position;
 }

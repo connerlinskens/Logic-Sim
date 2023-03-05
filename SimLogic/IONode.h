@@ -31,9 +31,10 @@ public:
 
     void Translate(Vector2 translation);
     [[nodiscard]] Vector2 Position() const;
+    void SetPosition(Vector2 position);
 
     Vector2 AABBPosition() override;
-    Vector2 AABBExtends() override;
+    [[nodiscard]] Vector2 AABBExtends() const override;
     [[nodiscard]] int ClickLayer() const override;
     void Clicked() override;
 

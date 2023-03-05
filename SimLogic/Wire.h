@@ -16,6 +16,7 @@ public:
     [[nodiscard]] const IONode& InputNode() const;
     [[nodiscard]] const IONode& OutputNode() const;
 private:
+    // TODO change these variable names and probably change how wires work with it
     IONode& _inputNode, &_outputNode;
 };
 
