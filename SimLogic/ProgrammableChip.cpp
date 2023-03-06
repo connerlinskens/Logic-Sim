@@ -19,7 +19,3 @@ void ProgrammableChip::Execute() {
 const std::vector<std::unique_ptr<Chip>>& ProgrammableChip::InternalChips() {
     return _internalChips;
 }
-
-Chip& ProgrammableChip::AddChip(const Chip& chip) {
-
-}

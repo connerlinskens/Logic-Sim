@@ -4,9 +4,12 @@
 
 #include "MouseCollisionManager.h"
 
-IClickable *MouseCollisionManager::CheckMouseCollision(int mouseX, int mouseY) {
-    for(auto& clickable : _currentClickables){
-        Vector2 extA = {2,2};
+#define MouseBufferSize 2
+
+IClickable *MouseCollisionManager::CheckMouseAABBCollision(int mouseX, int mouseY) {
+    for(auto& clickable : _activeClickables){
+        Vector2 extA = {MouseBufferSize,MouseBufferSize};
+        // Set mouse position to top left for AABB collision checking
         Vector2 posA = {mouseX - extA.x/2, mouseY - extA.y/2};
 
         Vector2 posB = clickable->AABBPosition();

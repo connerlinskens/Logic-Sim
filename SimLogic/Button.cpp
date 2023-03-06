@@ -22,7 +22,7 @@ Vector2 Button::AABBExtends() const {
 }
 
 int Button::ClickLayer() const {
-    return 2;
+    return 5;
 }
 
 Vector2 Button::Position() const {

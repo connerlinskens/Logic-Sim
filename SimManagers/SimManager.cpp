@@ -99,7 +99,7 @@ void SimManager::input() {
         else if(e.type == SDL_MOUSEBUTTONDOWN){
             std::cout << "Clicked on position " << _mouseX << ":" << _mouseY << std::endl;
             if(e.button.button == 1){
-                auto object = _mouseCollisionManager->CheckMouseCollision(_mouseX, _mouseY);
+                auto object = _mouseCollisionManager->CheckMouseAABBCollision(_mouseX, _mouseY);
                 if(object){
                     std::cout << "Left clicked a clickable object." << std::endl;
 
@@ -122,7 +122,7 @@ void SimManager::input() {
                 }
             }
             else if(e.button.button == 3){
-                auto object = _mouseCollisionManager->CheckMouseCollision(_mouseX, _mouseY);
+                auto object = _mouseCollisionManager->CheckMouseAABBCollision(_mouseX, _mouseY);
                 if(object){
                     std::cout << "Right clicked a clickable object." << std::endl;
 
