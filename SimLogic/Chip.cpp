@@ -3,6 +3,7 @@
 //
 
 #include "Chip.h"
+#include <iostream>
 
 Chip::Chip(std::string name, int inputs, int outputs, Color color) : _name{std::move(name)}, _position{Vector2()} {
     int maxNodes = inputs > outputs? inputs : outputs;
@@ -74,9 +75,9 @@ void Chip::RepositionIONodes() {
 
 void Chip::RepositionIONodesForInternalView(Vector2 windowSize) {
     int inputs = static_cast<int>(_inputs.size());
-    int heightStepInputs = windowSize.y / inputs;
+    int heightStepInputs = (windowSize.y-125) / inputs;
     for(int i = 0; i < inputs; i++){
-        _inputs[i].SetPosition({25, (heightStepInputs * i) + (heightStepInputs / 2)});
+        _inputs[i].SetPosition({25, static_cast<int>(63 + (heightStepInputs * i) + (heightStepInputs / 2))});
     }
 
     int outputs = static_cast<int>(_outputs.size());

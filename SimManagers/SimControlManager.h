@@ -15,7 +15,7 @@ public:
     void AttachChipToMouse(Chip* chip);
     void ReleaseChip();
 
-    void PlaceWire(IONode* node);
+    void PlaceWire(IONode* node, ProgrammableChip& parentChip);
     void CancelWire();
     [[nodiscard]] bool PlacingWire() const;
     [[nodiscard]] Vector2 SelectedNodeForWire() const;

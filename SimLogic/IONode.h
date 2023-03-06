@@ -6,6 +6,7 @@
 #define LOGIC_SIM_IONODE_H
 
 #include <vector>
+#include <list>
 #include "../Data/IClickable.h"
 #include "Wire.h"
 
@@ -40,15 +41,20 @@ public:
 
     void SetState(bool newState);
 
-    void AddWire(IONode* node);
-    [[nodiscard]] const std::vector<Wire>& Wires() const;
+    void AddWire(Wire* wire);
+    void RemoveWire(Wire& wire);
+    void ClearWires();
+    [[nodiscard]] const std::list<Wire*>& Wires() const;
 
+    [[nodiscard]] int ID() const {return _id;}
 protected:
     bool _state;
     bool _manuallyOverridable;
     Vector2 _position;
     enum IONodeType _ioNodeType;
-    std::vector<Wire> _wires;
+    std::list<Wire*> _wires;
+    int _id;
+    static int globalIDCounter;
 };
 
 #endif //LOGIC_SIM_IONODE_H

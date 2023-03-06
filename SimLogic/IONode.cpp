@@ -4,7 +4,9 @@
 
 #include "IONode.h"
 
-IONode::IONode(enum IONodeType ioNodeType, Vector2 startPos, bool manuallyOverridable) : _state {false}, _manuallyOverridable{manuallyOverridable}, _position{startPos}, _ioNodeType{ioNodeType} {
+int IONode::globalIDCounter = 0;
+
+IONode::IONode(enum IONodeType ioNodeType, Vector2 startPos, bool manuallyOverridable) : _state {false}, _manuallyOverridable{manuallyOverridable}, _position{startPos}, _ioNodeType{ioNodeType}, _id{globalIDCounter++} {
 }
 
 bool IONode::State() const {
@@ -13,8 +15,8 @@ bool IONode::State() const {
 
 void IONode::ChangeState() {
     _state = !_state;
-    for(auto& wire : _wires){
-        wire.UpdateConnection(_state);
+    for(auto wire : _wires){
+        wire->UpdateConnection(_state);
     }
 }
 
@@ -61,16 +63,23 @@ void IONode::SetState(bool newState) {
         ChangeState();
 }
 
-void IONode::AddWire(IONode* node) {
-    // TODO change how wires are made
-    auto& wire = _wires.emplace_back(*node, *this);
-    wire.UpdateConnection(State());
+void IONode::AddWire(Wire* wire) {
+    _wires.push_back(wire);
+    wire->UpdateConnection(State());
 }
 
-const std::vector<Wire>& IONode::Wires() const{
+const std::list<Wire*>& IONode::Wires() const{
     return _wires;
 }
 
 void IONode::SetPosition(Vector2 position) {
     _position = position;
+}
+
+void IONode::RemoveWire(Wire& wire) {
+    _wires.remove(&wire);
+}
+
+void IONode::ClearWires() {
+    _wires.clear();
 }

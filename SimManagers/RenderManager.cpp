@@ -81,18 +81,10 @@ void RenderManager::RenderChip(const ChipDrawData& chipDrawData) {
     RenderRect(pos.x, pos.y, width, height, chipDrawData.drawColor, true);
 }
 
-void RenderManager::RenderIONodesWithWires(const std::vector<IONode> &nodes) {
+void RenderManager::RenderIONodes(const std::vector<IONode> &nodes) {
     for(auto& node : nodes){
-        // Render IONode
         Color nodeColor = GetNodeDrawColor(node.State());
         RenderCircle(node.Position().x, node.Position().y, node.AABBExtends().x, nodeColor);
-
-        // Render wires
-        auto& wires = node.Wires();
-        for(auto& wire : wires){
-            auto attachedNodePosition = wire.InputNode().Position();
-            RenderLine(node.Position().x, node.Position().y, attachedNodePosition.x, attachedNodePosition.y, nodeColor);
-        }
     }
 }
 
@@ -116,4 +108,13 @@ Vector2 RenderManager::WindowSize() const {
 
 void RenderManager::RenderButton(const Button& button) {
     RenderRect(button.Position().x, button.Position().y, button.AABBExtends().x, button.AABBExtends().y, {200, 200, 200, 255}, false);
+}
+
+void RenderManager::RenderWires(const std::vector<std::unique_ptr<Wire>>& wires) {
+    for(auto& wire : wires){
+        Color wireColor = GetNodeDrawColor(wire->NodeA().State());
+        Vector2 posA = wire->NodeA().Position();
+        Vector2 posB = wire->NodeB().Position();
+        RenderLine(posA.x, posA.y, posB.x, posB.y, wireColor);
+    }
 }

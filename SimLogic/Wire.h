@@ -11,13 +11,12 @@ class IONode;
 
 class Wire {
 public:
-    Wire(IONode& inputNode, IONode& outputNode);
+    Wire(IONode* nodeA, IONode* nodeB);
     void UpdateConnection(bool state);
-    [[nodiscard]] const IONode& InputNode() const;
-    [[nodiscard]] const IONode& OutputNode() const;
+    [[nodiscard]] const IONode& NodeA() const;
+    [[nodiscard]] const IONode& NodeB() const;
 private:
-    // TODO change these variable names and probably change how wires work with it
-    IONode& _inputNode, &_outputNode;
+    IONode* _nodeA, *_nodeB;
 };
 
 

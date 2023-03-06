@@ -22,9 +22,13 @@ public:
         return newChip;
     }
 
+    Wire& AddInternalWire(IONode* nodeA, IONode* nodeB);
+
     const std::vector<std::unique_ptr<Chip>>& InternalChips();
+    const std::vector<std::unique_ptr<Wire>>& InternalWires();
 private:
     std::vector<std::unique_ptr<Chip>> _internalChips;
+    std::vector<std::unique_ptr<Wire>> _internalWires;
 };
 
 

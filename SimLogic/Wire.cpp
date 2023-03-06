@@ -4,17 +4,18 @@
 
 #include "Wire.h"
 
-Wire::Wire(IONode& inputNode, IONode& outputNode) : _inputNode{inputNode}, _outputNode{outputNode} {
+Wire::Wire(IONode* nodeA, IONode* nodeB) : _nodeA{nodeA}, _nodeB{nodeB} {
 }
 
 void Wire::UpdateConnection(bool state) {
-    _inputNode.SetState(state);
+    _nodeB->SetState(state);
+    _nodeA->SetState(state);
 }
 
-const IONode& Wire::InputNode() const {
-    return _inputNode;
+const IONode& Wire::NodeA() const {
+    return *_nodeA;
 }
 
-const IONode& Wire::OutputNode() const {
-    return _outputNode;
+const IONode& Wire::NodeB() const {
+    return *_nodeB;
 }

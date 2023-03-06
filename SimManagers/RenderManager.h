@@ -6,6 +6,7 @@
 #define LOGIC_SIM_RENDERMANAGER_H
 
 #include <SDL.h>
+#include <memory>
 #include "../Data/Color.h"
 #include "../Data/ChipDrawData.h"
 #include "../SimLogic/Button.h"
@@ -22,8 +23,9 @@ public:
     void RenderLine(int x1, int y1, int x2, int y2, Color color = {});
 
     void RenderChip(const ChipDrawData& chipDrawData);
-    void RenderIONodesWithWires(const std::vector<IONode>& nodes);
+    void RenderIONodes(const std::vector<IONode>& nodes);
     void RenderChipInternal(const ChipDrawData& chipDrawData);
+    void RenderWires(const std::vector<std::unique_ptr<Wire>>& wires);
 
     void RenderButton(const Button& button);
 

@@ -57,7 +57,6 @@ SimManager::SimManager(int windowWidth, int windowHeight, bool fullscreen) :
 
     // Start with empty programmable chip
     _topLevelChip = std::make_unique<ProgrammableChip>("",2,1);
-    auto& chip = _topLevelChip->AddChip<ChipAND>(Vector2{250,100}); // Remove this
     SetViewedChip(_topLevelChip.get());
 }
 
@@ -111,7 +110,7 @@ void SimManager::input() {
 
                     auto node = dynamic_cast<IONode*>(object);
                     if(node){
-                        _simControlManager->PlaceWire(node);
+                        _simControlManager->PlaceWire(node, *_viewedChip);
                         return;
                     }
 
@@ -157,14 +156,15 @@ void SimManager::render() {
     // Render chip internal
     if(_viewedChip){
         _renderManager->RenderChipInternal(_viewedChip->GetChipDrawData());
-        _renderManager->RenderIONodesWithWires(_viewedChip->Inputs());
-        _renderManager->RenderIONodesWithWires(_viewedChip->Outputs());
+        _renderManager->RenderIONodes(_viewedChip->Inputs());
+        _renderManager->RenderIONodes(_viewedChip->Outputs());
+        _renderManager->RenderWires(_viewedChip->InternalWires());
 
         // Render all chips
         for(auto& chip : _viewedChip->InternalChips()){
             _renderManager->RenderChip(chip->GetChipDrawData());
-            _renderManager->RenderIONodesWithWires(chip->Inputs());
-            _renderManager->RenderIONodesWithWires(chip->Outputs());
+            _renderManager->RenderIONodes(chip->Inputs());
+            _renderManager->RenderIONodes(chip->Outputs());
         }
     }
 

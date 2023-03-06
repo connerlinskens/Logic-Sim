@@ -35,16 +35,44 @@ void SimControlManager::Update(int mouseX, int mouseY) {
     }
 }
 
-void SimControlManager::PlaceWire(IONode* node) {
+void SimControlManager::PlaceWire(IONode* node, ProgrammableChip& parentChip) {
+    // Return if trying to connect to the same node
+    if(_tempIONodeWire == node) {return;}
+
     // Start wire placement
     if(!_placingWire){
         _placingWire = true;
         _tempIONodeWire = node;
     }
     // Finish wire placement
-    else{
+    else if(_tempIONodeWire->IONodeType() != node->IONodeType()){
         _placingWire = false;
-        _tempIONodeWire->AddWire(node);
+        parentChip.AddInternalWire(_tempIONodeWire, node);
+    }
+    else {
+        bool parentNodeFound {false};
+        for(auto& input : parentChip.Inputs()){
+            if(input.ID() == _tempIONodeWire->ID() || input.ID() == node->ID()){
+                parentNodeFound = true;
+                break;
+            }
+        }
+
+        if(!parentNodeFound){
+            for(auto& output : parentChip.Outputs()){
+                if(output.ID() == _tempIONodeWire->ID() || output.ID() == node->ID()){
+                    parentNodeFound = true;
+                    break;
+                }
+            }
+        }
+
+        if(parentNodeFound){
+            if(_tempIONodeWire->IONodeType() == node->IONodeType()){
+                _placingWire = false;
+                parentChip.AddInternalWire(_tempIONodeWire, node);
+            }
+        }
     }
 }
 
