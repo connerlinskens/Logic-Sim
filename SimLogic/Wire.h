@@ -13,8 +13,8 @@ class Wire {
 public:
     Wire(IONode* nodeA, IONode* nodeB);
     void UpdateConnection(bool state);
-    [[nodiscard]] const IONode& NodeA() const;
-    [[nodiscard]] const IONode& NodeB() const;
+    [[nodiscard]] IONode& NodeA() const;
+    [[nodiscard]] IONode& NodeB() const;
 private:
     IONode* _nodeA, *_nodeB;
 };

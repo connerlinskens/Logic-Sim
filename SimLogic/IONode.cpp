@@ -6,7 +6,8 @@
 
 int IONode::globalIDCounter = 0;
 
-IONode::IONode(enum IONodeType ioNodeType, Vector2 startPos, bool manuallyOverridable) : _state {false}, _manuallyOverridable{manuallyOverridable}, _position{startPos}, _ioNodeType{ioNodeType}, _id{globalIDCounter++} {
+IONode::IONode(enum IONodeType ioNodeType, Vector2 startPos, bool manuallyOverridable)
+: _state {false}, _manuallyOverridable{manuallyOverridable}, _position{startPos}, _ioNodeType{ioNodeType}, _id{globalIDCounter++} {
 }
 
 bool IONode::State() const {

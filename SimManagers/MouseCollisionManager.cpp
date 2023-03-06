@@ -24,3 +24,17 @@ IClickable *MouseCollisionManager::CheckMouseAABBCollision(int mouseX, int mouse
     }
     return nullptr;
 }
+
+Wire* MouseCollisionManager::CheckMouseWireCollision(int mouseX, int mouseY, const std::vector<std::unique_ptr<Wire>>& wires) {
+    for(auto& wire : wires){
+        float lineLength = Vector2::Distance(wire->NodeA().Position(), wire->NodeB().Position());
+        float d1 = Vector2::Distance({mouseX, mouseY}, wire->NodeA().Position());
+        float d2 = Vector2::Distance({mouseX, mouseY}, wire->NodeB().Position());
+
+        if(d1+d2 >= lineLength-MouseBufferSize && d1+d2 <= lineLength+MouseBufferSize){
+            return wire.get();
+        }
+    }
+
+    return nullptr;
+}

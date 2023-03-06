@@ -26,6 +26,9 @@ public:
 
     const std::vector<std::unique_ptr<Chip>>& InternalChips();
     const std::vector<std::unique_ptr<Wire>>& InternalWires();
+
+    void RemoveWire(Wire *wire);
+
 private:
     std::vector<std::unique_ptr<Chip>> _internalChips;
     std::vector<std::unique_ptr<Wire>> _internalWires;

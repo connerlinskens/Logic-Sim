@@ -4,6 +4,7 @@
 
 #include "ProgrammableChip.h"
 #include <utility>
+#include <algorithm>
 
 ProgrammableChip::ProgrammableChip(std::string name, int inputs, int outputs, Color color) : Chip(std::move(name), inputs, outputs, color) {
 }
@@ -27,4 +28,17 @@ Wire& ProgrammableChip::AddInternalWire(IONode* nodeA, IONode* nodeB) {
 
 const std::vector<std::unique_ptr<Wire>>& ProgrammableChip::InternalWires() {
     return _internalWires;
+}
+
+void ProgrammableChip::RemoveWire(Wire* wire) {
+    if(!wire) { return; }
+
+    auto it = std::find_if(_internalWires.begin(), _internalWires.end(),
+                           [&](std::unique_ptr<Wire>& w){return w.get() == wire;});
+    if(it != _internalWires.end()){
+        wire->NodeA().RemoveWire(*wire);
+        wire->NodeB().RemoveWire(*wire);
+
+        _internalWires.erase(std::remove(_internalWires.begin(), _internalWires.end(), *it), _internalWires.end());
+    }
 }

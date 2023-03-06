@@ -7,6 +7,7 @@
 
 
 #include <list>
+#include <memory>
 #include "../Data/IClickable.h"
 #include "../SimLogic/Wire.h"
 
@@ -24,6 +25,7 @@ public:
     }
 
     IClickable* CheckMouseAABBCollision(int mouseX, int mouseY);
+    Wire* CheckMouseWireCollision(int mouseX, int mouseY, const std::vector<std::unique_ptr<Wire>>& wires);
 private:
     static bool CompareClickablePriority(const IClickable* left, const IClickable* right){
         return left->ClickLayer() > right->ClickLayer();

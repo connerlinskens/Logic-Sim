@@ -94,6 +94,12 @@ void SimManager::input() {
                 else
                     exit();
             }
+            else if(e.key.keysym.sym == SDLK_DELETE){
+                Wire* overlappingWire = _mouseCollisionManager->CheckMouseWireCollision(_mouseX, _mouseY, _viewedChip->InternalWires());
+                if(overlappingWire){
+                    _viewedChip->RemoveWire(overlappingWire);
+                }
+            }
         }
         else if(e.type == SDL_MOUSEBUTTONDOWN){
             std::cout << "Clicked on position " << _mouseX << ":" << _mouseY << std::endl;

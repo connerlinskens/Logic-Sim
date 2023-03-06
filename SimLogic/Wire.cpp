@@ -12,10 +12,10 @@ void Wire::UpdateConnection(bool state) {
     _nodeA->SetState(state);
 }
 
-const IONode& Wire::NodeA() const {
+IONode& Wire::NodeA() const {
     return *_nodeA;
 }
 
-const IONode& Wire::NodeB() const {
+IONode& Wire::NodeB() const {
     return *_nodeB;
 }
