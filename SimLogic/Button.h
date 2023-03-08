@@ -15,6 +15,7 @@ public:
     ~Button() = default;
 
     [[nodiscard]] Vector2 Position() const;
+    [[nodiscard]] std::string Text() const;
 
     Vector2 AABBPosition() override;
     [[nodiscard]] Vector2 AABBExtends() const override;

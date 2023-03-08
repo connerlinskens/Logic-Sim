@@ -28,3 +28,7 @@ int Button::ClickLayer() const {
 Vector2 Button::Position() const {
     return _position;
 }
+
+std::string Button::Text() const {
+    return _text;
+}

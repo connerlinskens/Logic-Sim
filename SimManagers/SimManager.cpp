@@ -196,6 +196,10 @@ void SimManager::render() {
         auto node = _simControlManager->SelectedNodeForWire();
         _renderManager->RenderLine(node.x, node.y, _mouseX, _mouseY, NodeOffStateColor);
     }
+    // Render indicator when placing a new chip
+    else if(_simControlManager->PlacingChip()){
+        _renderManager->RenderCircle(_mouseX, _mouseY, 20, {50, 194, 79, 255});
+    }
 
     // Set color to draw background
     SDL_SetRenderDrawColor(_renderer, 60, 60, 60, 255);

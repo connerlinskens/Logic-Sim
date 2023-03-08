@@ -111,6 +111,7 @@ Vector2 RenderManager::WindowSize() const {
 
 void RenderManager::RenderButton(const Button& button) {
     RenderRect(button.Position().x, button.Position().y, button.AABBExtends().x, button.AABBExtends().y, {200, 200, 200, 255}, false);
+    RenderText(button.Text(), "ShareTechMono", 20, button.Position());
 }
 
 void RenderManager::RenderWires(const std::vector<std::unique_ptr<Wire>>& wires) {
