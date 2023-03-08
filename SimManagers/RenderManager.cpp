@@ -5,6 +5,7 @@
 #include "RenderManager.h"
 #include <cmath>
 #include <stdexcept>
+#include <iostream>
 
 #define WindowWidthMargin 50
 #define WindowHeightMargin 125
@@ -80,6 +81,7 @@ void RenderManager::RenderChip(const ChipDrawData& chipDrawData) {
     int height = chipDrawData.extends.y;
 
     RenderRect(pos.x, pos.y, width, height, chipDrawData.drawColor, true);
+    RenderText(chipDrawData.name, "ShareTechMono", 25, chipDrawData.position);
 }
 
 void RenderManager::RenderIONodes(const std::vector<std::unique_ptr<IONode>> &nodes) {
@@ -147,9 +149,30 @@ TTF_Font& RenderManager::LoadFont(const std::string& fontName, int fontSize) {
     throw std::runtime_error("No resource found with given path. In LoadFont()");
 }
 
-void RenderManager::RenderText(const std::string &text, const std::string &font, int fontSize) {
+void RenderManager::RenderText(const std::string& text, const std::string& font, int fontSize, Vector2 position, Color color) {
     if(text.empty()) {return;}
 
-    auto& fontResource = LoadFont(font, fontSize);
+    auto& fontRef = LoadFont(font, fontSize);
 
+    auto textSurface = TTF_RenderText_Solid(&fontRef, text.c_str(), {color.red, color.green, color.blue, color.alpha});
+    if(!textSurface){
+        std::cerr << "Unable to load text to surface, Error: " << TTF_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Rect dstRect{
+        position.x - (textSurface->w/2),
+        position.y - (textSurface->h/2),
+        textSurface->w,
+        textSurface->h };
+
+    auto textTexture = SDL_CreateTextureFromSurface(&_renderer, textSurface);
+    SDL_FreeSurface(textSurface);
+    if(!textTexture){
+        std::cerr << "Unable to create texture from surface, Error: " << TTF_GetError() << std::endl;
+        return;
+    }
+
+    SDL_RenderCopy(&_renderer, textTexture, nullptr, &dstRect);
+    SDL_DestroyTexture(textTexture);
 }

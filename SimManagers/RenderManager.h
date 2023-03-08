@@ -23,7 +23,7 @@ public:
     void RenderRect(int x, int y, int w, int h, Color color = {}, bool fill = false);
     void RenderCircle(int x, int y, int radius, Color color = {});
     void RenderLine(int x1, int y1, int x2, int y2, Color color = {});
-    void RenderText(const std::string& text, const std::string& font, int fontSize);
+    void RenderText(const std::string& text, const std::string& font, int fontSize, Vector2 position, Color color = {});
 
     void RenderChip(const ChipDrawData& chipDrawData);
     void RenderIONodes(const std::vector<std::unique_ptr<IONode>>& nodes);
