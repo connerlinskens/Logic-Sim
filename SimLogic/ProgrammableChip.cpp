@@ -57,11 +57,19 @@ void ProgrammableChip::RemoveChip(Chip* chip, MouseCollisionManager& mouseCollis
                 auto wireIt = std::find_if(_internalWires.begin(), _internalWires.end(),
                                        [&](std::unique_ptr<Wire>& w){return w.get() == wire;});
                 if(wireIt != _internalWires.end()){
+                    // Update the state of the attached node
                     wireIt->get()->UpdateConnection(false);
+
+                    // Remove reference from other end of the wire
+                    if(&wireIt->get()->NodeA() != node.get())
+                        wireIt->get()->NodeA().RemoveWire(*wire);
+                    else if(&wireIt->get()->NodeB() != node.get())
+                        wireIt->get()->NodeB().RemoveWire(*wire);
+
+                    // Remove wire
                     _internalWires.erase(std::remove(_internalWires.begin(), _internalWires.end(), *wireIt), _internalWires.end());
                 }
             }
-            node->ClearWires();
 
             // Remove node
             mouseCollisionManager.RemoveClickable(node.get());
@@ -73,11 +81,19 @@ void ProgrammableChip::RemoveChip(Chip* chip, MouseCollisionManager& mouseCollis
                 auto wireIt = std::find_if(_internalWires.begin(), _internalWires.end(),
                                            [&](std::unique_ptr<Wire>& w){return w.get() == wire;});
                 if(wireIt != _internalWires.end()){
+                    // Update the state of the attached node
                     wireIt->get()->UpdateConnection(false);
+
+                    // Remove reference from other end of the wire
+                    if(&wireIt->get()->NodeA() != node.get())
+                        wireIt->get()->NodeA().RemoveWire(*wire);
+                    else if(&wireIt->get()->NodeB() != node.get())
+                        wireIt->get()->NodeB().RemoveWire(*wire);
+
+                    // Remove wire
                     _internalWires.erase(std::remove(_internalWires.begin(), _internalWires.end(), *wireIt), _internalWires.end());
                 }
             }
-            node->ClearWires();
 
             // Remove node
             mouseCollisionManager.RemoveClickable(node.get());
