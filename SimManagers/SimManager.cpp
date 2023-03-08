@@ -42,6 +42,8 @@ SimManager::SimManager(int windowWidth, int windowHeight, bool fullscreen) :
     _mouseCollisionManager = std::make_unique<MouseCollisionManager>();
     _simControlManager = std::make_unique<SimControlManager>();
 
+    _renderManager->AddFontResource("ShareTechMono", "res/ShareTechMono-Regular.ttf");
+
     // Create buttons
     auto& button1 = _placeButtons.emplace_back(Button{"AND", {50, windowHeight - 40}, {50, 25}, [&]()->void{
         _simControlManager->SelectChip(ChipType::AND);

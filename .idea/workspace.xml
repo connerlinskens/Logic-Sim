@@ -11,6 +11,7 @@
   </component>
   <component name="CMakeRunConfigurationManager">
     <generated>
+      <config projectName="Logic_Sim" targetName="copy_resources" />
       <config projectName="Logic_Sim" targetName="Logic_Sim" />
     </generated>
   </component>
@@ -22,7 +23,13 @@
   <component name="ChangeListManager">
     <list default="true" id="f4b9ff48-cf53-40f2-88b5-415413a67c1a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/IONode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/IONode.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimLogic/ProgrammableChip.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/ProgrammableChip.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimManagers/RenderManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/RenderManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimManagers/RenderManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/RenderManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimManagers/SimManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/circle.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,12 +82,26 @@
       <recent name="D:\CLion Projects\Logic-Sim\SimLogic\ChipBehaviour" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="CMake Application.Logic_Sim">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Logic_Sim" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Logic_Sim" TARGET_NAME="Logic_Sim" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Logic_Sim" RUN_TARGET_NAME="Logic_Sim">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="copy_resources" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Logic_Sim" TARGET_NAME="copy_resources" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.copy_resources" />
+      <item itemvalue="CMake Application.Logic_Sim" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -120,11 +141,23 @@
       <workItem from="1678187534907" duration="1431000" />
       <workItem from="1678228726468" duration="5000" />
       <workItem from="1678263455941" duration="6527000" />
-      <workItem from="1678272127303" duration="343000" />
+      <workItem from="1678272127303" duration="549000" />
+      <workItem from="1678274147375" duration="6767000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/SimLogic/ProgrammableChip.cpp</url>
+          <line>33</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

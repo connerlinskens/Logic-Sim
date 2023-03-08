@@ -4,6 +4,7 @@
 
 #include "RenderManager.h"
 #include <cmath>
+#include <stdexcept>
 
 #define WindowWidthMargin 50
 #define WindowHeightMargin 125
@@ -112,9 +113,43 @@ void RenderManager::RenderButton(const Button& button) {
 
 void RenderManager::RenderWires(const std::vector<std::unique_ptr<Wire>>& wires) {
     for(auto& wire : wires){
-        Color wireColor = GetNodeDrawColor(wire->NodeA().State());
+        Color wireColor = GetNodeDrawColor(wire->NodeA().State() && wire->NodeB().State());
         Vector2 posA = wire->NodeA().Position();
         Vector2 posB = wire->NodeB().Position();
         RenderLine(posA.x, posA.y, posB.x, posB.y, wireColor);
     }
+}
+
+void RenderManager::AddFontResource(const std::string& name, const std::string& path) {
+    _fontResources.insert({name, path});
+}
+
+TTF_Font& RenderManager::LoadFont(const std::string& fontName, int fontSize) {
+    auto loadedFont = _loadedFonts.find(std::make_pair(fontName, fontSize));
+    if(loadedFont != _loadedFonts.end()){
+        // Return cached font
+        return *loadedFont->second;
+    }
+    else{
+        // Load new font
+        auto fontPath = _fontResources.find(fontName);
+        if(fontPath != _fontResources.end()){
+            auto newFont = TTF_OpenFont(fontPath->second.c_str(), fontSize);
+            if(newFont){
+                std::unique_ptr<TTF_Font, void(*)(TTF_Font*)> fontWrapper = {newFont, TTF_CloseFont};
+                std::pair<std::string, int> fontKey = std::make_pair(fontName, fontSize);
+                auto font = _loadedFonts.insert({fontKey, std::move(fontWrapper)});
+                return *font.first->second;
+            }
+        }
+    }
+    // If no loaded font or resource was found, throw exception
+    throw std::runtime_error("No resource found with given path. In LoadFont()");
+}
+
+void RenderManager::RenderText(const std::string &text, const std::string &font, int fontSize) {
+    if(text.empty()) {return;}
+
+    auto& fontResource = LoadFont(font, fontSize);
+
 }

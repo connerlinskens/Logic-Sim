@@ -17,7 +17,9 @@ bool IONode::State() const {
 void IONode::ChangeState() {
     _state = !_state;
     for(auto wire : _wires){
-        wire->UpdateConnection(_state);
+//        if( _ioNodeType == IONodeType::OUTPUT || wire->NodeA().IONodeType() == wire->NodeB().IONodeType()) {
+            wire->UpdateConnection(State());
+//        }
     }
 }
 
@@ -60,13 +62,35 @@ IONodeType IONode::IONodeType() const {
 }
 
 void IONode::SetState(bool newState) {
-    if(newState != State())
+    if(newState != State()){
+        if(_ioNodeType == IONodeType::INPUT){
+            if(!newState){
+                bool positiveWire {false};
+                for(auto wire : _wires){
+                    if(wire->NodeA().IONodeType() == wire->NodeB().IONodeType()) { continue; }
+
+                    if(this != &wire->NodeA()){
+                        positiveWire = wire->NodeA().State();
+                    }
+                    else if(this != &wire->NodeB()){
+                        positiveWire = wire->NodeB().State();
+                    }
+                    if(positiveWire)
+                        break;
+                }
+                if(positiveWire)
+                   return;
+            }
+        }
         ChangeState();
+    }
 }
 
 void IONode::AddWire(Wire* wire) {
     _wires.push_back(wire);
-    wire->UpdateConnection(State());
+//    if( _ioNodeType == IONodeType::OUTPUT || wire->NodeA().IONodeType() == wire->NodeB().IONodeType()) {
+        wire->UpdateConnection(State());
+//    }
 }
 
 std::list<Wire*>& IONode::Wires() {

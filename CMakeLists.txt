@@ -13,6 +13,7 @@ endif()
 find_package(SDL2 REQUIRED)
 find_package(SDL2_TTF REQUIRED)
 
+# Includes
 include_directories(${SDL2_INCLUDE_DIRS})
 
 # Source files
@@ -24,6 +25,16 @@ add_executable(${PROJECT_NAME}
         ${SIM_LOGIC_FILES}
         ${SIM_MANAGER_FILES}
         main.cpp)
+
+# Copying res folder to build dir
+add_custom_target(
+        copy_resources ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/res
+        ${CMAKE_CURRENT_BINARY_DIR}/res
+        COMMENT "Copying resource folder to binary directory"
+)
+add_dependencies(${PROJECT_NAME} copy_resources)
 
 # Linking libraries
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
