@@ -95,10 +95,20 @@ void SimManager::input() {
                     exit();
             }
             else if(e.key.keysym.sym == SDLK_DELETE){
-                Wire* overlappingWire = _mouseCollisionManager->CheckMouseWireCollision(_mouseX, _mouseY, _viewedChip->InternalWires());
+                auto overlappingWire = _mouseCollisionManager->CheckMouseWireCollision(_mouseX, _mouseY, _viewedChip->InternalWires());
                 if(overlappingWire){
                     _viewedChip->RemoveWire(overlappingWire);
                 }
+
+                auto object = _mouseCollisionManager->CheckMouseAABBCollision(_mouseX, _mouseY);
+                if(object) {
+                    auto chip = dynamic_cast<Chip*>(object);
+                    if(chip){
+                        _viewedChip->RemoveChip(chip, *_mouseCollisionManager);
+                        return;
+                    }
+                }
+
             }
         }
         else if(e.type == SDL_MOUSEBUTTONDOWN){

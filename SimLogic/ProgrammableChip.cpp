@@ -42,3 +42,40 @@ void ProgrammableChip::RemoveWire(Wire* wire) {
         _internalWires.erase(std::remove(_internalWires.begin(), _internalWires.end(), *it), _internalWires.end());
     }
 }
+
+void ProgrammableChip::RemoveChip(Chip* chip, MouseCollisionManager& mouseCollisionManager) {
+    if(!chip) { return; }
+
+    auto it = std::find_if(_internalChips.begin(), _internalChips.end(),
+                           [&](std::unique_ptr<Chip>& c){return c.get() == chip; });
+    if(it != _internalChips.end()){
+        for(auto& node : chip->Inputs()){
+            // Remove nodes attached to this node
+            auto& wires = node->Wires();
+            for(auto wire : wires){
+                RemoveWire(wire);
+                if(wires.empty())
+                    break;
+            }
+
+            // Remove node
+            mouseCollisionManager.RemoveClickable(node.get());
+        }
+        for(auto& node : chip->Outputs()){
+            // Remove wires attached to this node
+            auto& wires = node->Wires();
+            for(auto wire : wires){
+                RemoveWire(wire);
+                if(wires.empty())
+                    break;
+            }
+
+            // Remove node
+            mouseCollisionManager.RemoveClickable(node.get());
+        }
+
+        // Remove chip
+        mouseCollisionManager.RemoveClickable(chip);
+        _internalChips.erase(std::remove(_internalChips.begin(), _internalChips.end(), *it), _internalChips.end());
+    }
+}

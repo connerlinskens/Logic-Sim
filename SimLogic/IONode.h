@@ -44,7 +44,7 @@ public:
     void AddWire(Wire* wire);
     void RemoveWire(Wire& wire);
     void ClearWires();
-    [[nodiscard]] const std::list<Wire*>& Wires() const;
+    [[nodiscard]] std::list<Wire*>& Wires();
 
     [[nodiscard]] int ID() const {return _id;}
 protected:

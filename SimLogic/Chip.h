@@ -47,14 +47,16 @@ public:
     [[nodiscard]] Vector2 AABBExtends() const override { return _extends; }
     [[nodiscard]] int ClickLayer() const override { return 1; }
 
-    [[nodiscard]] const std::vector<IONode>& Inputs() const;
-    [[nodiscard]] const std::vector<IONode>& Outputs() const;
+    [[nodiscard]] const std::vector<std::unique_ptr<IONode>>& Inputs() const;
+    [[nodiscard]] const std::vector<std::unique_ptr<IONode>>& Outputs() const;
+
+    void RemoveIONode(IONode* node, bool input);
 
     void RepositionIONodes();
     void RepositionIONodesForInternalView(Vector2 windowSize);
 protected:
-    std::vector<IONode> _inputs;
-    std::vector<IONode> _outputs;
+    std::vector<std::unique_ptr<IONode>> _inputs;
+    std::vector<std::unique_ptr<IONode>> _outputs;
 
     std::string _name;
     Vector2 _position;

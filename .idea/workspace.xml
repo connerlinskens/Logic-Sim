@@ -22,12 +22,19 @@
   <component name="ChangeListManager">
     <list default="true" id="f4b9ff48-cf53-40f2-88b5-415413a67c1a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Vector2.h" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Vector2.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/BasicChips/ChipAND.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/BasicChips/ChipAND.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/BasicChips/ChipNOT.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/BasicChips/ChipNOT.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/BasicChips/ChipOR.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/BasicChips/ChipOR.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/Chip.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/Chip.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/Chip.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/Chip.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimLogic/IONode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/IONode.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/IONode.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/IONode.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimLogic/ProgrammableChip.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/ProgrammableChip.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimLogic/ProgrammableChip.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/ProgrammableChip.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SimManagers/MouseCollisionManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/MouseCollisionManager.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimManagers/MouseCollisionManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/MouseCollisionManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimManagers/RenderManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/RenderManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimManagers/RenderManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/RenderManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimManagers/SimControlManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimControlManager.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimManagers/SimManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimManager.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -121,7 +128,11 @@
       <workItem from="1678095109611" duration="5208000" />
       <workItem from="1678108551897" duration="2528000" />
       <workItem from="1678117758506" duration="3085000" />
-      <workItem from="1678126775845" duration="1613000" />
+      <workItem from="1678126775845" duration="2530000" />
+      <workItem from="1678129344536" duration="2945000" />
+      <workItem from="1678187534907" duration="1431000" />
+      <workItem from="1678228726468" duration="5000" />
+      <workItem from="1678263455941" duration="6235000" />
     </task>
     <servers />
   </component>

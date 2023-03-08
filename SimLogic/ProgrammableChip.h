@@ -7,6 +7,7 @@
 
 #include "Chip.h"
 #include <memory>
+#include <iterator>
 
 class ProgrammableChip : public Chip {
 public:
@@ -27,7 +28,8 @@ public:
     const std::vector<std::unique_ptr<Chip>>& InternalChips();
     const std::vector<std::unique_ptr<Wire>>& InternalWires();
 
-    void RemoveWire(Wire *wire);
+    void RemoveWire(Wire* wire);
+    void RemoveChip(Chip* chip, MouseCollisionManager& mouseCollisionManager);
 
 private:
     std::vector<std::unique_ptr<Chip>> _internalChips;

@@ -81,10 +81,10 @@ void RenderManager::RenderChip(const ChipDrawData& chipDrawData) {
     RenderRect(pos.x, pos.y, width, height, chipDrawData.drawColor, true);
 }
 
-void RenderManager::RenderIONodes(const std::vector<IONode> &nodes) {
+void RenderManager::RenderIONodes(const std::vector<std::unique_ptr<IONode>> &nodes) {
     for(auto& node : nodes){
-        Color nodeColor = GetNodeDrawColor(node.State());
-        RenderCircle(node.Position().x, node.Position().y, node.AABBExtends().x, nodeColor);
+        Color nodeColor = GetNodeDrawColor(node->State());
+        RenderCircle(node->Position().x, node->Position().y, node->AABBExtends().x, nodeColor);
     }
 }
 

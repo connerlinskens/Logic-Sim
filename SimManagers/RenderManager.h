@@ -23,7 +23,7 @@ public:
     void RenderLine(int x1, int y1, int x2, int y2, Color color = {});
 
     void RenderChip(const ChipDrawData& chipDrawData);
-    void RenderIONodes(const std::vector<IONode>& nodes);
+    void RenderIONodes(const std::vector<std::unique_ptr<IONode>>& nodes);
     void RenderChipInternal(const ChipDrawData& chipDrawData);
     void RenderWires(const std::vector<std::unique_ptr<Wire>>& wires);
 

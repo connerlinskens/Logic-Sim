@@ -27,6 +27,8 @@ public:
 
     void Update(int mouseX, int mouseY);
 private:
+    void FinishWire(IONode* node, ProgrammableChip& parentChip);
+private:
     Chip* _selectedChip;
     Vector2 _selectedChipStartOffset;
 

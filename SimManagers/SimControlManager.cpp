@@ -46,13 +46,12 @@ void SimControlManager::PlaceWire(IONode* node, ProgrammableChip& parentChip) {
     }
     // Finish wire placement
     else if(_tempIONodeWire->IONodeType() != node->IONodeType()){
-        _placingWire = false;
-        parentChip.AddInternalWire(_tempIONodeWire, node);
+        FinishWire(node, parentChip);
     }
     else {
         bool parentNodeFound {false};
         for(auto& input : parentChip.Inputs()){
-            if(input.ID() == _tempIONodeWire->ID() || input.ID() == node->ID()){
+            if(input->ID() == _tempIONodeWire->ID() || input->ID() == node->ID()){
                 parentNodeFound = true;
                 break;
             }
@@ -60,7 +59,7 @@ void SimControlManager::PlaceWire(IONode* node, ProgrammableChip& parentChip) {
 
         if(!parentNodeFound){
             for(auto& output : parentChip.Outputs()){
-                if(output.ID() == _tempIONodeWire->ID() || output.ID() == node->ID()){
+                if(output->ID() == _tempIONodeWire->ID() || output->ID() == node->ID()){
                     parentNodeFound = true;
                     break;
                 }
@@ -69,8 +68,7 @@ void SimControlManager::PlaceWire(IONode* node, ProgrammableChip& parentChip) {
 
         if(parentNodeFound){
             if(_tempIONodeWire->IONodeType() == node->IONodeType()){
-                _placingWire = false;
-                parentChip.AddInternalWire(_tempIONodeWire, node);
+                FinishWire(node, parentChip);
             }
         }
     }
@@ -124,4 +122,10 @@ bool SimControlManager::PlacingChip() const {
 
 void SimControlManager::CancelChip() {
     _placingChip = false;
+}
+
+void SimControlManager::FinishWire(IONode* node, ProgrammableChip& parentChip) {
+    _placingWire = false;
+    parentChip.AddInternalWire(_tempIONodeWire, node);
+    _tempIONodeWire = nullptr;
 }

@@ -8,6 +8,6 @@ ChipNOT::ChipNOT(Color color)  : Chip("NOT", 1, 1, color) {
 }
 
 void ChipNOT::Execute() {
-    bool result = !_inputs[0].State();
-    _outputs[0].SetState(result);
+    bool result = !_inputs[0]->State();
+    _outputs[0]->SetState(result);
 }

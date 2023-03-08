@@ -69,7 +69,7 @@ void IONode::AddWire(Wire* wire) {
     wire->UpdateConnection(State());
 }
 
-const std::list<Wire*>& IONode::Wires() const{
+std::list<Wire*>& IONode::Wires() {
     return _wires;
 }
 

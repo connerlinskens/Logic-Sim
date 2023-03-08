@@ -8,6 +8,7 @@
 
 #include <list>
 #include <memory>
+#include <algorithm>
 #include "../Data/IClickable.h"
 #include "../SimLogic/Wire.h"
 
@@ -15,10 +16,14 @@ class MouseCollisionManager {
 public:
     void AddClickable(IClickable* clickable){
         _activeClickables.push_back(clickable);
-        _activeClickables.sort(CompareClickablePriority);
+        std::sort(_activeClickables.begin(), _activeClickables.end(), CompareClickablePriority);
     }
     void RemoveClickable(IClickable* clickable){
-        _activeClickables.remove(clickable);
+        auto it = std::find_if(_activeClickables.begin(), _activeClickables.end(),
+                               [&](IClickable* c){return c == clickable;});
+        if(it != _activeClickables.end()){
+            _activeClickables.erase(it);
+        }
     }
     void ClearClickables(){
         _activeClickables.clear();
@@ -31,7 +36,7 @@ private:
         return left->ClickLayer() > right->ClickLayer();
     }
 private:
-    std::list<IClickable*> _activeClickables;
+    std::vector<IClickable*> _activeClickables;
 };
 
 
