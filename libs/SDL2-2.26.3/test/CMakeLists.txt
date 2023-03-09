@@ -77,7 +77,7 @@ if(WINDOWS)
         link_libraries(-CETCOMPAT)
     endif()
 
-    # FIXME: Parent directory CMakeLists.txt only sets these for mingw/cygwin,
+    # FIXME: Parent directory pugixml-config.cmake only sets these for mingw/cygwin,
     # but we need them for VS as well.
     link_libraries(SDL2main)
     add_definitions(-Dmain=SDL_main)
