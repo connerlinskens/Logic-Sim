@@ -8,7 +8,7 @@
 #include <string>
 #include "../SimLogic/ProgrammableChip.h"
 
-#define ChipSaveDir "SavedChips"
+#define ChipSaveDir "SavedChips/"
 
 class ChipFactory {
 public:

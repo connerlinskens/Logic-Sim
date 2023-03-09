@@ -9,6 +9,7 @@
 #include "../SimLogic/ProgrammableChip.h"
 #include "ChipFactory.h"
 #include "../Services/RandomService.h"
+#include "../Services/FileService.h"
 #include <iostream>
 
 SimManager::SimManager() : SimManager(1920, 1080, true) {
@@ -64,6 +65,8 @@ SimManager::SimManager(int windowWidth, int windowHeight, bool fullscreen) :
     // Start with empty programmable chip
     _topLevelChip = std::make_unique<ProgrammableChip>("",2,1);
     SetViewedChip(_topLevelChip.get());
+
+    FileService::MakeFolder(ChipSaveDir);
 }
 
 SimManager::~SimManager() {
@@ -246,13 +249,12 @@ void SimManager::SetViewedChip(ProgrammableChip* chip) {
 
 void SimManager::PackageNewChip() {
     if(_viewedChip->InternalChips().empty()) { return; }
-    _viewedChip->UpdateChipData(ChipFactory::PackageChip(*_viewedChip));
     _viewedChip->SetName("TEST");
     _viewedChip->SetColor({static_cast<uint8_t>(RandomService::Instance()->Random(0, 255)),
                            static_cast<uint8_t>(RandomService::Instance()->Random(0, 255)),
                             static_cast<uint8_t>(RandomService::Instance()->Random(0, 255)),
                            255});
-
+    _viewedChip->UpdateChipData(ChipFactory::PackageChip(*_viewedChip));
     auto newParentChip {std::make_unique<ProgrammableChip>("", 2, 1)};
     newParentChip->AddChip(std::move(_topLevelChip));
     _topLevelChip = std::move(newParentChip);
