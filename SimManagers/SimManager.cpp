@@ -7,6 +7,7 @@
 #include "../SimLogic/BasicChips/ChipOR.h"
 #include "../SimLogic/BasicChips/ChipNOT.h"
 #include "../SimLogic/ProgrammableChip.h"
+#include "ChipFactory.h"
 #include <iostream>
 
 SimManager::SimManager() : SimManager(1920, 1080, true) {
@@ -45,15 +46,17 @@ SimManager::SimManager(int windowWidth, int windowHeight, bool fullscreen) :
     _renderManager->AddFontResource("ShareTechMono", "res/ShareTechMono-Regular.ttf");
 
     // Create buttons
-    auto& button1 = _placeButtons.emplace_back(Button{"AND", {50, windowHeight - 40}, {50, 25}, [&]()->void{
+    _createButton = std::make_unique<Button>(Button{"CREATE", {70, 40}, [&]() -> void { PackageNewChip(); }});
+
+    auto& button1 = _placeButtons.emplace_back(Button{"AND", {50, windowHeight - 40}, [&]()->void{
         _simControlManager->SelectChip(ChipType::AND);
     }});
 
-    auto& button2 = _placeButtons.emplace_back(Button{"OR", {110, windowHeight - 40}, {50, 25}, [&]()->void{
+    auto& button2 = _placeButtons.emplace_back(Button{"OR", {110, windowHeight - 40}, [&]()->void{
         _simControlManager->SelectChip(ChipType::OR);
     }});
 
-    auto& button3 = _placeButtons.emplace_back(Button{"NOT", {170, windowHeight - 40}, {50, 25}, [&]()->void{
+    auto& button3 = _placeButtons.emplace_back(Button{"NOT", {170, windowHeight - 40}, [&]()->void{
         _simControlManager->SelectChip(ChipType::NOT);
     }});
 
@@ -187,6 +190,7 @@ void SimManager::render() {
     }
 
     // Render buttons
+    _renderManager->RenderButton(*_createButton);
     for(auto& button : _placeButtons){
         _renderManager->RenderButton(button);
     }
@@ -198,7 +202,7 @@ void SimManager::render() {
     }
     // Render indicator when placing a new chip
     else if(_simControlManager->PlacingChip()){
-        _renderManager->RenderCircle(_mouseX, _mouseY, 20, {50, 194, 79, 255});
+        _renderManager->RenderCircle(_mouseX, _mouseY, 15, {90, 217, 17, 255});
     }
 
     // Set color to draw background
@@ -218,6 +222,7 @@ void SimManager::SetViewedChip(ProgrammableChip* chip) {
     // Reset current chip
     if(_viewedChip){
         _viewedChip->RepositionIONodes();
+        _viewedChip->SetPosition({250, 250});
     }
     _mouseCollisionManager->ClearClickables();
 
@@ -235,4 +240,16 @@ void SimManager::SetViewedChip(ProgrammableChip* chip) {
     for(auto& b : _placeButtons){
         _mouseCollisionManager->AddClickable(&b);
     }
+    _mouseCollisionManager->AddClickable(_createButton.get());
+}
+
+void SimManager::PackageNewChip() {
+    if(_viewedChip->InternalChips().empty()) { return; }
+    _viewedChip->UpdateChipData(ChipFactory::PackageChip(*_viewedChip));
+    _viewedChip->SetName("TEST");
+    _viewedChip->SetColor({214, 72, 11, 255});
+    auto newParentChip {std::make_unique<ProgrammableChip>("", 2, 1)};
+    newParentChip->AddChip(std::move(_topLevelChip));
+    _topLevelChip = std::move(newParentChip);
+    SetViewedChip(_topLevelChip.get());
 }

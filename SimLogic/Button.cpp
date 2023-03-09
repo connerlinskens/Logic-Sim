@@ -5,8 +5,20 @@
 #include "Button.h"
 #include <utility>
 
-Button::Button(std::string text, Vector2 position, Vector2 extends, std::function<void()> function)
-: _text{std::move(text)}, _position{position}, _extends{extends}, _function{std::move(function)} {
+#define CharacterSpace 15
+#define ButtonHeight 25
+
+Button::Button(std::string text, Vector2 position, std::function<void()> function)
+: _text{std::move(text)}, _function{std::move(function)} {
+    if(_text.size() < 4){
+        _position = position;
+        _extends = {50, ButtonHeight};
+    }
+    else{
+        int boxWidth = CharacterSpace * _text.size();
+        _position = {position.x, position.y};
+        _extends = {boxWidth, ButtonHeight};
+    }
 }
 
 void Button::Clicked() {

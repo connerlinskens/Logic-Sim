@@ -9,7 +9,7 @@
 
 class ChipAND : public Chip {
 public:
-    explicit ChipAND(Color color = {200, 200, 50, 255});
+    explicit ChipAND(Color color = {200, 150, 50, 255});
     ~ChipAND() override = default;
 
     void Execute() override;

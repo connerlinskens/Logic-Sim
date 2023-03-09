@@ -23,6 +23,8 @@ public:
         return newChip;
     }
 
+    void AddChip(std::unique_ptr<ProgrammableChip> chip);
+
     Wire& AddInternalWire(IONode* nodeA, IONode* nodeB);
 
     const std::vector<std::unique_ptr<Chip>>& InternalChips();
@@ -31,9 +33,13 @@ public:
     void RemoveWire(Wire* wire);
     void RemoveChip(Chip* chip, MouseCollisionManager& mouseCollisionManager);
 
+    [[nodiscard]] const std::string& ChipData() const;
+    void UpdateChipData(const std::string& chipData);
 private:
     std::vector<std::unique_ptr<Chip>> _internalChips;
     std::vector<std::unique_ptr<Wire>> _internalWires;
+
+    std::string _chipData;
 };
 
 

@@ -11,7 +11,7 @@
 
 class Button : public IClickable {
 public:
-    explicit Button(std::string text, Vector2 position, Vector2 extends, std::function<void()> function);
+    explicit Button(std::string text, Vector2 position, std::function<void()> function);
     ~Button() = default;
 
     [[nodiscard]] Vector2 Position() const;

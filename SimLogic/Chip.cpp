@@ -102,3 +102,19 @@ void Chip::RemoveIONode(IONode* node, bool input) {
         list.erase(std::remove(list.begin(), list.end(), *it), list.end());
     }
 }
+
+const std::string &Chip::Name() const {
+    return _name;
+}
+
+void Chip::SetName(const std::string &name) {
+    _name = name;
+}
+
+Color Chip::GetColor() const {
+    return _color;
+}
+
+void Chip::SetColor(Color color){
+    _color = color;
+}

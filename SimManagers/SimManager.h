@@ -29,6 +29,7 @@ private:
     void exit();
 
     void SetViewedChip(ProgrammableChip* chip);
+    void PackageNewChip();
 private:
     SDL_Window* _window;
     SDL_Renderer* _renderer;
@@ -43,6 +44,7 @@ private:
     ProgrammableChip* _viewedChip;
 
     std::vector<Button> _placeButtons;
+    std::unique_ptr<Button> _createButton;
 
     int _mouseX, _mouseY;
 };
