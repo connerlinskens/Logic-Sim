@@ -5,6 +5,7 @@
 #ifndef LOGIC_SIM_SIMCONTROLMANAGER_H
 #define LOGIC_SIM_SIMCONTROLMANAGER_H
 
+#include <SDL_events.h>
 #include "../SimLogic/Chip.h"
 #include "../SimLogic/ProgrammableChip.h"
 
@@ -25,6 +26,10 @@ public:
     void PlaceChip(ProgrammableChip* parentChip, Vector2 position, const std::string& chipData = {}, MouseCollisionManager* mouseCollisionManager = nullptr);
     void CancelChip();
 
+    [[nodiscard]] const std::string& NameBuffer() const;
+    void ResetNameBuffer();
+
+    void TypeLetter(SDL_Keycode key);
     void Update(int mouseX, int mouseY);
 private:
     void FinishWire(IONode* node, ProgrammableChip& parentChip);
@@ -37,6 +42,8 @@ private:
 
     bool _placingChip;
     ChipType _selectedChipType;
+
+    std::string _nameBuffer;
 };
 
 

@@ -117,7 +117,9 @@ void SimManager::input() {
                         return;
                     }
                 }
-
+            }
+            else{
+                _simControlManager->TypeLetter(e.key.keysym.sym);
             }
         }
         else if(e.type == SDL_MOUSEBUTTONDOWN){
@@ -209,6 +211,9 @@ void SimManager::render() {
         _renderManager->RenderCircle(_mouseX, _mouseY, 15, {90, 217, 17, 255});
     }
 
+    // Render name buffer
+    _renderManager->RenderText(_simControlManager->NameBuffer(), "ShareTechMono", 25, {static_cast<int>(_renderManager->WindowSize().x*0.5), 40});
+
     // Set color to draw background
     SDL_SetRenderDrawColor(_renderer, 60, 60, 60, 255);
 
@@ -249,11 +254,13 @@ void SimManager::SetViewedChip(ProgrammableChip* chip) {
 
 void SimManager::PackageNewChip() {
     if(_viewedChip->InternalChips().empty()) { return; }
-    _viewedChip->SetName("TEST");
+    _viewedChip->SetName(_simControlManager->NameBuffer());
     _viewedChip->SetColor({static_cast<uint8_t>(RandomService::Instance()->Random(0, 255)),
                            static_cast<uint8_t>(RandomService::Instance()->Random(0, 255)),
                             static_cast<uint8_t>(RandomService::Instance()->Random(0, 255)),
                            255});
+    _simControlManager->ResetNameBuffer();
+
     auto chipData = ChipFactory::PackageChip(*_viewedChip);
     auto newParentChip {std::make_unique<ProgrammableChip>("", 2, 1)};
     newParentChip->AddChip(std::move(_topLevelChip));

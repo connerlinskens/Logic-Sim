@@ -129,3 +129,29 @@ void SimControlManager::FinishWire(IONode* node, ProgrammableChip& parentChip) {
     parentChip.AddInternalWire(_tempIONodeWire, node);
     _tempIONodeWire = nullptr;
 }
+
+void SimControlManager::TypeLetter(SDL_Keycode key) {
+    switch(key){
+        case SDLK_BACKSPACE:
+            if(!_nameBuffer.empty())
+                _nameBuffer = _nameBuffer.substr(0, _nameBuffer.size()-1);
+            break;
+        case SDLK_SPACE:
+            _nameBuffer.append(" ");
+            break;
+        default:
+            // Add name to buffer if name of key is only character long
+            std::string letter = SDL_GetKeyName(key);
+            if(letter.size() == 1)
+                _nameBuffer.append(letter);
+            break;
+    }
+}
+
+const std::string& SimControlManager::NameBuffer() const {
+    return _nameBuffer;
+}
+
+void SimControlManager::ResetNameBuffer() {
+    _nameBuffer.clear();
+}
