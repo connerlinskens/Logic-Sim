@@ -5,9 +5,12 @@
 #include "Chip.h"
 #include <iostream>
 
+#define DefaultChipSize 100
+#define ChipCharacterWidthStep 20
+
 Chip::Chip(std::string name, int inputs, int outputs, Color color) : _name{std::move(name)}, _position{Vector2()} {
     int maxNodes = inputs > outputs? inputs : outputs;
-    _extends = {100, maxNodes * NodeHeightStep};
+    _extends = {_name.size() < 5? DefaultChipSize : DefaultChipSize + (static_cast<int>(_name.size() - 4) * ChipCharacterWidthStep), maxNodes * NodeHeightStep};
     _color = color;
 
     if(inputs > 0){
@@ -117,4 +120,8 @@ Color Chip::GetColor() const {
 
 void Chip::SetColor(Color color){
     _color = color;
+}
+
+void Chip::ResizeChipToFitName() {
+    _extends.x = _name.size() < 5? DefaultChipSize : DefaultChipSize + (static_cast<int>(_name.size() - 4) * ChipCharacterWidthStep);
 }

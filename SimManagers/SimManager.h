@@ -13,6 +13,7 @@
 #include "MouseCollisionManager.h"
 #include "SimControlManager.h"
 #include "../SimLogic/ProgrammableChip.h"
+#include "../Data/ChipData.h"
 
 class SimManager {
 public:
@@ -47,6 +48,8 @@ private:
     std::unique_ptr<Button> _createButton;
 
     int _mouseX, _mouseY;
+
+    std::vector<ChipData> _chipDataList;
 };
 
 

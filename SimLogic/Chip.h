@@ -55,9 +55,11 @@ public:
     void RepositionIONodes();
     void RepositionIONodesForInternalView(Vector2 windowSize);
 
-    const std::string& Name() const;
+    void ResizeChipToFitName();
+
+    [[nodiscard]] const std::string& Name() const;
     void SetName(const std::string& name);
-    Color GetColor() const;
+    [[nodiscard]] Color GetColor() const;
     void SetColor(Color color);
 protected:
     std::vector<std::unique_ptr<IONode>> _inputs;
