@@ -32,14 +32,9 @@ public:
 
     void RemoveWire(Wire* wire);
     void RemoveChip(Chip* chip, MouseCollisionManager& mouseCollisionManager);
-
-    [[nodiscard]] const std::string& ChipData() const;
-    void UpdateChipData(const std::string& chipData);
 private:
     std::vector<std::unique_ptr<Chip>> _internalChips;
     std::vector<std::unique_ptr<Wire>> _internalWires;
-
-    std::string _chipData;
 };
 
 

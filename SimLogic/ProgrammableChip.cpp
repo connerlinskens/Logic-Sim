@@ -6,7 +6,7 @@
 #include <utility>
 #include <algorithm>
 
-ProgrammableChip::ProgrammableChip(std::string name, int inputs, int outputs, Color color) : Chip(std::move(name), inputs, outputs, color), _chipData{} {
+ProgrammableChip::ProgrammableChip(std::string name, int inputs, int outputs, Color color) : Chip(std::move(name), inputs, outputs, color) {
 }
 
 void ProgrammableChip::Execute() {
@@ -103,14 +103,6 @@ void ProgrammableChip::RemoveChip(Chip* chip, MouseCollisionManager& mouseCollis
         mouseCollisionManager.RemoveClickable(chip);
         _internalChips.erase(std::remove(_internalChips.begin(), _internalChips.end(), *it), _internalChips.end());
     }
-}
-
-const std::string& ProgrammableChip::ChipData() const {
-    return _chipData;
-}
-
-void ProgrammableChip::UpdateChipData(const std::string& chipData) {
-    _chipData = chipData;
 }
 
 void ProgrammableChip::AddChip(std::unique_ptr<ProgrammableChip> chip) {

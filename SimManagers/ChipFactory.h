@@ -7,13 +7,16 @@
 
 #include <string>
 #include "../SimLogic/ProgrammableChip.h"
+#include "../Data/ChipData.h"
 
 #define ChipSaveDir "SavedChips/"
 
 class ChipFactory {
 public:
-    static std::string PackageChip(ProgrammableChip& chip);
-    static std::unique_ptr<ProgrammableChip> FabricateChip(const std::string& chipData);
+    static ChipData PackageChip(ProgrammableChip& chip);
+    static std::unique_ptr<ProgrammableChip> FabricateChip(const ChipData& chipData);
+private:
+    static void SaveChipData(const ChipData& chipData);
 };
 
 

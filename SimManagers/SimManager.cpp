@@ -254,7 +254,7 @@ void SimManager::PackageNewChip() {
                            static_cast<uint8_t>(RandomService::Instance()->Random(0, 255)),
                             static_cast<uint8_t>(RandomService::Instance()->Random(0, 255)),
                            255});
-    _viewedChip->UpdateChipData(ChipFactory::PackageChip(*_viewedChip));
+    auto chipData = ChipFactory::PackageChip(*_viewedChip);
     auto newParentChip {std::make_unique<ProgrammableChip>("", 2, 1)};
     newParentChip->AddChip(std::move(_topLevelChip));
     _topLevelChip = std::move(newParentChip);
