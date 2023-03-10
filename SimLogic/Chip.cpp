@@ -125,3 +125,8 @@ void Chip::SetColor(Color color){
 void Chip::ResizeChipToFitName() {
     _extends.x = _name.size() < 5? DefaultChipSize : DefaultChipSize + (static_cast<int>(_name.size() - 4) * ChipCharacterWidthStep);
 }
+
+void Chip::ResizeChipToFitNodes() {
+    int maxNodes = _inputs.size() > _outputs.size()? static_cast<int>(_inputs.size()) : static_cast<int>(_outputs.size());
+    _extends.y = maxNodes * NodeHeightStep;
+}

@@ -63,7 +63,7 @@ SimManager::SimManager(int windowWidth, int windowHeight, bool fullscreen) :
     }});
 
     // Start with empty programmable chip
-    _topLevelChip = std::make_unique<ProgrammableChip>("",2,1);
+    _topLevelChip = std::make_unique<ProgrammableChip>("",12,1);
     SetViewedChip(_topLevelChip.get());
 
     FileService::MakeFolder(ChipSaveDir);
@@ -230,6 +230,8 @@ void SimManager::SetViewedChip(ProgrammableChip* chip) {
 
     // Reset current chip
     if(_viewedChip){
+        _viewedChip->ResizeChipToFitName();
+        _viewedChip->ResizeChipToFitNodes();
         _viewedChip->RepositionIONodes();
         _viewedChip->SetPosition({250, 250});
     }
@@ -254,15 +256,19 @@ void SimManager::SetViewedChip(ProgrammableChip* chip) {
 
 void SimManager::PackageNewChip() {
     if(_viewedChip->InternalChips().empty()) { return; }
+    // Finalize properties of to package chip
     _viewedChip->SetName(_simControlManager->NameBuffer());
     _viewedChip->SetColor({static_cast<uint8_t>(RandomService::Instance()->Random(0, 255)),
                            static_cast<uint8_t>(RandomService::Instance()->Random(0, 255)),
                             static_cast<uint8_t>(RandomService::Instance()->Random(0, 255)),
                            255});
-    _viewedChip->ResizeChipToFitName();
     _simControlManager->ResetNameBuffer();
 
+    // Package chip and save its data
     auto chipData = ChipFactory::PackageChip(*_viewedChip);
+    _chipDataList.push_back(std::move(chipData));
+
+    // Set new parent chip
     auto newParentChip {std::make_unique<ProgrammableChip>("", 2, 1)};
     newParentChip->AddChip(std::move(_topLevelChip));
     _topLevelChip = std::move(newParentChip);

@@ -56,6 +56,7 @@ public:
     void RepositionIONodesForInternalView(Vector2 windowSize);
 
     void ResizeChipToFitName();
+    void ResizeChipToFitNodes();
 
     [[nodiscard]] const std::string& Name() const;
     void SetName(const std::string& name);
