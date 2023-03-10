@@ -3,14 +3,14 @@
 //
 
 #include "SimManager.h"
-#include "../SimLogic/BasicChips/ChipAND.h"
-#include "../SimLogic/BasicChips/ChipOR.h"
-#include "../SimLogic/BasicChips/ChipNOT.h"
-#include "../SimLogic/ProgrammableChip.h"
 #include "ChipFactory.h"
 #include "../Services/RandomService.h"
 #include "../Services/FileService.h"
 #include <iostream>
+#include <imgui.h>
+#include <imgui_impl_sdl.h>
+#include <imgui_impl_sdlrenderer.h>
+#include <imgui_stdlib.h>
 
 SimManager::SimManager() : SimManager(1920, 1080, true) {
 }
@@ -40,6 +40,21 @@ SimManager::SimManager(int windowWidth, int windowHeight, bool fullscreen) :
         SDL_ShowCursor(1);
     }
 
+    // Setup ImGui
+    {
+        // Create context for ImGui
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO &io = ImGui::GetIO(); (void) io;
+
+        // Setup Dear ImGui style
+        ImGui::StyleColorsDark();
+
+        // Setup Platform/Renderer backends
+        ImGui_ImplSDL2_InitForSDLRenderer(_window, _renderer);
+        ImGui_ImplSDLRenderer_Init(_renderer);
+    }
+
     // Create managers
     _renderManager = std::make_unique<RenderManager>(*_renderer, windowWidth, windowHeight);
     _mouseCollisionManager = std::make_unique<MouseCollisionManager>();
@@ -63,16 +78,22 @@ SimManager::SimManager(int windowWidth, int windowHeight, bool fullscreen) :
     }});
 
     // Start with empty programmable chip
-    _topLevelChip = std::make_unique<ProgrammableChip>("",12,1);
+    _topLevelChip = std::make_unique<ProgrammableChip>("",2,1);
     SetViewedChip(_topLevelChip.get());
 
     FileService::MakeFolder(ChipSaveDir);
 }
 
 SimManager::~SimManager() {
+    // Cleaning up ImGui
+    ImGui_ImplSDLRenderer_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+
     // Cleaning up sdl
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_window);
+    SDL_Quit();
 }
 
 void SimManager::loop() {
@@ -90,6 +111,9 @@ void SimManager::input() {
     
     SDL_Event e;
     while(SDL_PollEvent(&e)) {
+        // Pass input to ImGui
+        ImGui_ImplSDL2_ProcessEvent(&e);
+
         if(e.type == SDL_QUIT){
             exit();
         }

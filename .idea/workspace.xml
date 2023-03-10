@@ -14,6 +14,7 @@
       <config projectName="Logic_Sim" targetName="copy_resources" />
       <config projectName="Logic_Sim" targetName="Logic_Sim" />
       <config projectName="Logic_Sim" targetName="PUGIXML" />
+      <config projectName="Logic_Sim" targetName="IMGUI" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -24,8 +25,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f4b9ff48-cf53-40f2-88b5-415413a67c1a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SimLogic/Chip.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/Chip.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SimLogic/Chip.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/Chip.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimManagers/SimManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimManager.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -87,6 +87,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Logic_Sim">
+    <configuration name="IMGUI" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Logic_Sim" TARGET_NAME="IMGUI" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Logic_Sim" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Logic_Sim" TARGET_NAME="Logic_Sim" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Logic_Sim" RUN_TARGET_NAME="Logic_Sim">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -109,6 +114,7 @@
     </configuration>
     <list>
       <item itemvalue="CMake Application.copy_resources" />
+      <item itemvalue="CMake Application.IMGUI" />
       <item itemvalue="CMake Application.Logic_Sim" />
       <item itemvalue="CMake Application.PUGIXML" />
     </list>
@@ -158,7 +164,7 @@
       <workItem from="1678356041898" duration="5443000" />
       <workItem from="1678368046869" duration="5291000" />
       <workItem from="1678379865864" duration="7362000" />
-      <workItem from="1678439260764" duration="1136000" />
+      <workItem from="1678439260764" duration="2123000" />
     </task>
     <servers />
   </component>
