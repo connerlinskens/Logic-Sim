@@ -31,6 +31,7 @@ private:
 
     void SetViewedChip(ProgrammableChip* chip);
     void PackageNewChip();
+    void UpdateProperties();
 private:
     SDL_Window* _window;
     SDL_Renderer* _renderer;
@@ -41,13 +42,18 @@ private:
     bool _fullscreen;
     bool _running;
 
+    int _mouseX, _mouseY;
+
     std::unique_ptr<ProgrammableChip> _topLevelChip;
     ProgrammableChip* _viewedChip;
 
     std::vector<Button> _placeButtons;
     std::unique_ptr<Button> _createButton;
 
-    int _mouseX, _mouseY;
+    std::unique_ptr<Button> _propertiesButton;
+    bool _editingChipProperties;
+    int _propertiesInputCount, _propertiesOutputCount;
+    float _propertiesColorValue[3];
 
     std::vector<ChipData> _chipDataList;
 };

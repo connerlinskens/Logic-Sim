@@ -108,3 +108,39 @@ void ProgrammableChip::RemoveChip(Chip* chip, MouseCollisionManager& mouseCollis
 void ProgrammableChip::AddChip(std::unique_ptr<ProgrammableChip> chip) {
     _internalChips.push_back(std::move(chip));
 }
+
+void ProgrammableChip::IncrementIONode(bool input, MouseCollisionManager& mouseCollisionManager) {
+    auto& selectedNodes = input? _inputs : _outputs;
+    AddIONode(input, mouseCollisionManager);
+}
+
+void ProgrammableChip::AddIONode(bool input, MouseCollisionManager& mouseCollisionManager) {
+    auto& selectedNodes = input? _inputs : _outputs;
+    auto& newNode = selectedNodes.emplace_back(std::make_unique<IONode>(input? IONodeType::INPUT : IONodeType::OUTPUT));
+    mouseCollisionManager.AddClickable(newNode.get());
+}
+
+void ProgrammableChip::DecrementIONode(bool input, MouseCollisionManager& mouseCollisionManager) {
+    auto& selectedNodes = input? _inputs : _outputs;
+    auto node {selectedNodes.at(input? _inputs.size()-1 : _outputs.size()-1).get()};
+    for(auto wire : node->Wires()) {
+        auto wireIt = std::find_if(_internalWires.begin(), _internalWires.end(),
+                                   [&](std::unique_ptr<Wire> &w) { return w.get() == wire; });
+        if (wireIt != _internalWires.end()) {
+            // Update the state of the attached node
+            wireIt->get()->UpdateConnection(false);
+
+            // Remove reference from other end of the wire
+            if (&wireIt->get()->NodeA() != node)
+                wireIt->get()->NodeA().RemoveWire(*wire);
+            else if (&wireIt->get()->NodeB() != node)
+                wireIt->get()->NodeB().RemoveWire(*wire);
+
+            // Remove wire
+            _internalWires.erase(std::remove(_internalWires.begin(), _internalWires.end(), *wireIt),
+                                 _internalWires.end());
+        }
+    }
+    mouseCollisionManager.RemoveClickable(node);
+    RemoveIONode(node, input);
+}

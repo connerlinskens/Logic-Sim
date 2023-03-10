@@ -16,7 +16,8 @@ SimManager::SimManager() : SimManager(1920, 1080, true) {
 }
 
 SimManager::SimManager(int windowWidth, int windowHeight, bool fullscreen) :
-        _window{}, _renderer{}, _fullscreen{fullscreen}, _running{true}, _mouseX{0}, _mouseY{0}, _viewedChip{nullptr} {
+        _window{}, _renderer{}, _fullscreen{fullscreen}, _running{true}, _mouseX{0}, _mouseY{0}, _viewedChip{nullptr},
+        _editingChipProperties{false}, _propertiesInputCount{0}, _propertiesOutputCount{0}, _propertiesColorValue{} {
     // Setting up SDL and SDL_ttf
     {
         // Init sdl
@@ -64,16 +65,17 @@ SimManager::SimManager(int windowWidth, int windowHeight, bool fullscreen) :
 
     // Create buttons
     _createButton = std::make_unique<Button>(Button{"CREATE", {70, 40}, [&]() -> void { PackageNewChip(); }});
+    _propertiesButton = std::make_unique<Button>(Button("PROPERTIES", {200, 40}, [&]() -> void { _editingChipProperties = !_editingChipProperties; }));
 
-    auto& button1 = _placeButtons.emplace_back(Button{"AND", {50, windowHeight - 40}, [&]()->void{
+    _placeButtons.emplace_back(Button{"AND", {50, windowHeight - 40}, [&]()->void{
         _simControlManager->SelectChip(ChipType::AND);
     }});
 
-    auto& button2 = _placeButtons.emplace_back(Button{"OR", {110, windowHeight - 40}, [&]()->void{
+    _placeButtons.emplace_back(Button{"OR", {110, windowHeight - 40}, [&]()->void{
         _simControlManager->SelectChip(ChipType::OR);
     }});
 
-    auto& button3 = _placeButtons.emplace_back(Button{"NOT", {170, windowHeight - 40}, [&]()->void{
+    _placeButtons.emplace_back(Button{"NOT", {170, windowHeight - 40}, [&]()->void{
         _simControlManager->SelectChip(ChipType::NOT);
     }});
 
@@ -119,13 +121,18 @@ void SimManager::input() {
         }
         else if(e.type == SDL_KEYDOWN){
             if(e.key.keysym.sym == SDLK_ESCAPE) {
-                if(_simControlManager->PlacingWire())
+                if(_editingChipProperties){
+                    _editingChipProperties = false;
+                }
+                else if(_simControlManager->PlacingWire()){
                     _simControlManager->CancelWire();
+                }
                 else if(_simControlManager->PlacingChip()){
                     _simControlManager->CancelChip();
                 }
-                else
+                else{
                     exit();
+                }
             }
             else if(e.key.keysym.sym == SDLK_DELETE){
                 auto overlappingWire = _mouseCollisionManager->CheckMouseWireCollision(_mouseX, _mouseY, _viewedChip->InternalWires());
@@ -195,6 +202,8 @@ void SimManager::input() {
 void SimManager::update() {
     _simControlManager->Update(_mouseX, _mouseY);
 
+    UpdateProperties();
+
     for(auto& chip : _viewedChip->InternalChips()){
         chip->Execute();
     }
@@ -221,6 +230,7 @@ void SimManager::render() {
 
     // Render buttons
     _renderManager->RenderButton(*_createButton);
+    _renderManager->RenderButton(*_propertiesButton);
     for(auto& button : _placeButtons){
         _renderManager->RenderButton(button);
     }
@@ -237,6 +247,25 @@ void SimManager::render() {
 
     // Render name buffer
     _renderManager->RenderText(_simControlManager->NameBuffer(), "ShareTechMono", 25, {static_cast<int>(_renderManager->WindowSize().x*0.5), 40});
+
+    if(_editingChipProperties){
+        ImGui_ImplSDLRenderer_NewFrame();
+        ImGui_ImplSDL2_NewFrame();
+        ImGui::NewFrame();
+        ImGui::Begin("Chip properties", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+
+        ImGui::InputInt("Inputs", &_propertiesInputCount);
+
+        ImGui::InputInt("Outputs", &_propertiesOutputCount);
+
+        ImGui::ColorEdit3("Color", _propertiesColorValue);
+
+        ImGui::End();
+        ImGui::Render();
+        ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
+    }
+
+
 
     // Set color to draw background
     SDL_SetRenderDrawColor(_renderer, 60, 60, 60, 255);
@@ -258,6 +287,10 @@ void SimManager::SetViewedChip(ProgrammableChip* chip) {
         _viewedChip->ResizeChipToFitNodes();
         _viewedChip->RepositionIONodes();
         _viewedChip->SetPosition({250, 250});
+        _viewedChip->SetColor({static_cast<uint8_t>(_propertiesColorValue[0] * 255),
+                               static_cast<uint8_t>(_propertiesColorValue[1] * 255),
+                               static_cast<uint8_t>(_propertiesColorValue[2] * 255),
+                               255});
     }
     _mouseCollisionManager->ClearClickables();
 
@@ -265,6 +298,13 @@ void SimManager::SetViewedChip(ProgrammableChip* chip) {
     _viewedChip = chip;
     _viewedChip->RepositionIONodesForInternalView(_renderManager->WindowSize());
     _viewedChip->RegisterToCollisionManager(*_mouseCollisionManager, false);
+
+    // Set properties for UI
+    _propertiesInputCount = static_cast<int>(_viewedChip->Inputs().size());
+    _propertiesOutputCount = static_cast<int>(_viewedChip->Outputs().size());
+    _propertiesColorValue[0] = static_cast<float>(_viewedChip->GetColor().red) / 255.0f;
+    _propertiesColorValue[1] = static_cast<float>(_viewedChip->GetColor().green) / 255.0f;
+    _propertiesColorValue[2] = static_cast<float>(_viewedChip->GetColor().blue) / 255.0f;
 
     // Add all internal chips to collision manager
     for(auto& c : chip->InternalChips()){
@@ -276,15 +316,16 @@ void SimManager::SetViewedChip(ProgrammableChip* chip) {
         _mouseCollisionManager->AddClickable(&b);
     }
     _mouseCollisionManager->AddClickable(_createButton.get());
+    _mouseCollisionManager->AddClickable(_propertiesButton.get());
 }
 
 void SimManager::PackageNewChip() {
     if(_viewedChip->InternalChips().empty()) { return; }
     // Finalize properties of to package chip
     _viewedChip->SetName(_simControlManager->NameBuffer());
-    _viewedChip->SetColor({static_cast<uint8_t>(RandomService::Instance()->Random(0, 255)),
-                           static_cast<uint8_t>(RandomService::Instance()->Random(0, 255)),
-                            static_cast<uint8_t>(RandomService::Instance()->Random(0, 255)),
+    _viewedChip->SetColor({static_cast<uint8_t>(_propertiesColorValue[0] * 255),
+                           static_cast<uint8_t>(_propertiesColorValue[1] * 255),
+                           static_cast<uint8_t>(_propertiesColorValue[2] * 255),
                            255});
     _simControlManager->ResetNameBuffer();
 
@@ -297,4 +338,28 @@ void SimManager::PackageNewChip() {
     newParentChip->AddChip(std::move(_topLevelChip));
     _topLevelChip = std::move(newParentChip);
     SetViewedChip(_topLevelChip.get());
+}
+
+void SimManager::UpdateProperties() {
+    if(_propertiesInputCount < 0) {_propertiesInputCount = 0;}
+    int currentInputCount = static_cast<int>(_viewedChip->Inputs().size());
+    if(currentInputCount != _propertiesInputCount){
+        if(_propertiesInputCount > currentInputCount)
+            _viewedChip->IncrementIONode(true, *_mouseCollisionManager);
+        else
+            _viewedChip->DecrementIONode(true, *_mouseCollisionManager);
+
+        _viewedChip->RepositionIONodesForInternalView(_renderManager->WindowSize());
+    }
+
+    if(_propertiesOutputCount < 0) {_propertiesOutputCount = 0;}
+    int currentOutputCount = static_cast<int>(_viewedChip->Outputs().size());
+    if(currentOutputCount != _propertiesOutputCount){
+        if(_propertiesOutputCount > currentOutputCount)
+            _viewedChip->IncrementIONode(false, *_mouseCollisionManager);
+        else
+            _viewedChip->DecrementIONode(false, *_mouseCollisionManager);
+
+        _viewedChip->RepositionIONodesForInternalView(_renderManager->WindowSize());
+    }
 }

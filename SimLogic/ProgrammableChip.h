@@ -32,9 +32,15 @@ public:
 
     void RemoveWire(Wire* wire);
     void RemoveChip(Chip* chip, MouseCollisionManager& mouseCollisionManager);
+
+    void IncrementIONode(bool input, MouseCollisionManager& mouseCollisionManager);
+    void DecrementIONode(bool input, MouseCollisionManager& mouseCollisionManager);
+
 private:
     std::vector<std::unique_ptr<Chip>> _internalChips;
     std::vector<std::unique_ptr<Wire>> _internalWires;
+
+    void AddIONode(bool input, MouseCollisionManager& mouseCollisionManager);
 };
 
 
