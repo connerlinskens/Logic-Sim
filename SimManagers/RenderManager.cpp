@@ -81,7 +81,7 @@ void RenderManager::RenderChip(const ChipDrawData& chipDrawData) {
     int height = chipDrawData.extends.y;
 
     RenderRect(pos.x, pos.y, width, height, chipDrawData.drawColor, true);
-    RenderText(chipDrawData.name, "ShareTechMono", 25, chipDrawData.position);
+    RenderText(chipDrawData.name, "ShareTechMono", 20, chipDrawData.position);
 }
 
 void RenderManager::RenderIONodes(const std::vector<std::unique_ptr<IONode>> &nodes) {

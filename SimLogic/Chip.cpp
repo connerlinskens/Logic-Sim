@@ -5,8 +5,8 @@
 #include "Chip.h"
 #include <iostream>
 
-#define DefaultChipSize 100
-#define ChipCharacterWidthStep 20
+#define DefaultChipSize 80
+#define ChipCharacterWidthStep 16
 
 Chip::Chip(std::string name, int inputs, int outputs, Color color) : _name{std::move(name)}, _position{Vector2()} {
     int maxNodes = inputs > outputs? inputs : outputs;
