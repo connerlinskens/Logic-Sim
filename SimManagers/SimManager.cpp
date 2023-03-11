@@ -79,13 +79,19 @@ SimManager::SimManager(int windowWidth, int windowHeight, bool fullscreen) :
         _simControlManager->SelectChip(ChipType::NOT,{});
     }});
 
+    // Create save folder if needed and load all saved chips
+    FileService::MakeFolder(ChipSaveDir);
+    ChipFactory::LoadChipRecipes(_chipRecipes);
+    for(auto& chipRecipe : _chipRecipes){
+        _placeButtons.emplace_back(Button{chipRecipe.first, {}, [&](const std::string& name) -> void{
+            _simControlManager->SelectChip(ChipType::PROGRAMMABLE, _chipRecipes.at(name));
+        }});
+    }
     UpdatePlaceButtonPositions();
 
     // Start with empty programmable chip
     _topLevelChip = std::make_unique<ProgrammableChip>("",2,1);
     SetViewedChip(_topLevelChip.get());
-
-    FileService::MakeFolder(ChipSaveDir);
 }
 
 SimManager::~SimManager() {
@@ -338,9 +344,7 @@ void SimManager::PackageNewChip() {
     // Add button for placing
     _placeButtons.push_back(Button{chipDataIt.first->first, {},
                                       [&](const std::string& name) -> void {
-        auto chipIt = _chipRecipes.find(name);
-        if(chipIt != _chipRecipes.end())
-            _simControlManager->SelectChip(ChipType::PROGRAMMABLE, chipIt->second);
+            _simControlManager->SelectChip(ChipType::PROGRAMMABLE, _chipRecipes.at(name));
     }});
     UpdatePlaceButtonPositions();
 

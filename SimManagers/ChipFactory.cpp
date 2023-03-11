@@ -10,6 +10,8 @@
 #include "../SimLogic/BasicChips/ChipAND.h"
 #include "../SimLogic/BasicChips/ChipOR.h"
 #include "../SimLogic/BasicChips/ChipNOT.h"
+#include <filesystem>
+#include <iostream>
 
 ChipData ChipFactory::PackageChip(ProgrammableChip& chip) {
     ChipData chipData {};
@@ -92,11 +94,9 @@ std::unique_ptr<ProgrammableChip> ChipFactory::FabricateChip(const ChipData& chi
         Chip* newChip{};
         if(name == "AND"){
             newChip = &chip->AddChip<ChipAND>(internalChipData.position);
-
         }
         else if(name == "OR"){
             newChip = &chip->AddChip<ChipOR>(internalChipData.position);
-
         }
         else if(name == "NOT"){
             newChip = &chip->AddChip<ChipNOT>(internalChipData.position);
@@ -147,16 +147,24 @@ void ChipFactory::SaveChipData(const ChipData& chipData) {
     // Internal chips
     pugi::xml_node internalChipsNode = chipNode.append_child("InternalChips");
     for(auto& internalChip : chipData.internalChips){
-        pugi::xml_node internalChipNode = internalChipsNode.append_child(internalChip.name.c_str());
+        std::string chipName = internalChip.name;
+        // Add character in front of name if it starts with a digit
+        if(isdigit(chipName.at(0)) != 0){
+            chipName.insert(0, 1, 'c');
+        }
+        pugi::xml_node internalChipNode = internalChipsNode.append_child(chipName.c_str());
         internalChipNode.append_attribute("PositionX") = internalChip.position.x;
         internalChipNode.append_attribute("PositionY") = internalChip.position.y;
         pugi::xml_node inputsNode = internalChipNode.append_child("Inputs");
         for(auto& inputID : internalChip.inputIDs){
-            inputsNode.append_child(std::to_string(inputID).c_str());
+            auto inputNode = inputsNode.append_child("I");
+            inputNode.append_attribute("ID") = inputID;
+
         }
         pugi::xml_node outputsNode = internalChipNode.append_child("Outputs");
         for(auto& outputID : internalChip.outputIDs){
-            outputsNode.append_child(std::to_string(outputID).c_str());
+            auto outputNode = outputsNode.append_child("O");
+            outputNode.append_attribute("ID") = outputID;
         }
     }
 
@@ -169,4 +177,70 @@ void ChipFactory::SaveChipData(const ChipData& chipData) {
 
     std::string path = ChipSaveDir + chipData.name + ".chip";
     doc.save_file(path.c_str());
+}
+
+void ChipFactory::LoadChipRecipes(std::map<std::string, ChipData>& chipRecipes) {
+    for(auto& file : std::filesystem::directory_iterator(ChipSaveDir)){
+        ChipData chip = LoadChipData(file.path().string());
+        chipRecipes.insert({chip.name, std::move(chip)});
+    }
+}
+
+ChipData ChipFactory::LoadChipData(const std::string& path) {
+    pugi::xml_document doc;
+
+    pugi::xml_parse_result result = doc.load_file(path.c_str());
+    if(!result){
+        std::cerr << result.description() << std::endl;
+        throw std::runtime_error("Unable to load file: " + path + " in ChipFactory::LoadChipData()");
+    }
+
+    pugi::xml_node chipNode = doc.document_element();
+    std::string name = chipNode.attribute("Name").as_string();
+    int inputs = chipNode.attribute("Inputs").as_int();
+    int outputs = chipNode.attribute("Outputs").as_int();
+    pugi::xml_node colorNode = chipNode.child("Color");
+    uint8_t red = colorNode.attribute("Red").as_int();
+    uint8_t green = colorNode.attribute("Green").as_int();
+    uint8_t blue = colorNode.attribute("Blue").as_int();
+
+    ChipData chipData {name, inputs, outputs, {red, green, blue, 255}};
+
+    std::vector<InternalChipData> internalChips;
+    for(auto& internalChipNode : chipNode.child("InternalChips").children()){
+        std::string chipName = internalChipNode.name();
+        // Remove extra c char if added in front
+        if(chipName.at(0) == 'c'){
+            chipName = chipName.substr(1, chipName.size());
+        }
+        int positionX = internalChipNode.attribute("PositionX").as_int();
+        int positionY = internalChipNode.attribute("PositionY").as_int();
+        InternalChipData internalChipData {chipName, {positionX,positionY}};
+
+        std::vector<int> inputIDs;
+        for(auto& input : internalChipNode.child("Inputs").children()){
+            inputIDs.push_back(input.attribute("ID").as_int());
+        }
+
+        std::vector<int> outputIDs;
+        for(auto& output : internalChipNode.child("Outputs").children()){
+            outputIDs.push_back(output.attribute("ID").as_int());
+        }
+
+        internalChipData.inputIDs = std::move(inputIDs);
+        internalChipData.outputIDs = std::move(outputIDs);
+        internalChips.push_back(std::move(internalChipData));
+    }
+    chipData.internalChips = std::move(internalChips);
+
+    std::vector<WireData> wires;
+    for(auto& wireNode : chipNode.child("InternalWires").children()){
+        wires.push_back({
+           wireNode.attribute("IDNodeA").as_int(),
+           wireNode.attribute("IDNodeB").as_int()
+        });
+    }
+    chipData.wires = std::move(wires);
+
+    return chipData;
 }
