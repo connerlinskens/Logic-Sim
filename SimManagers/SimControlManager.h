@@ -8,6 +8,8 @@
 #include <SDL_events.h>
 #include "../SimLogic/Chip.h"
 #include "../SimLogic/ProgrammableChip.h"
+#include "../Data/ChipData.h"
+#include <map>
 
 class SimControlManager {
 public:
@@ -21,9 +23,9 @@ public:
     [[nodiscard]] bool PlacingWire() const;
     [[nodiscard]] Vector2 SelectedNodeForWire() const;
 
-    void SelectChip(ChipType chipType);
+    void SelectChip(ChipType chipType, const ChipData& chipData);
     [[nodiscard]] bool PlacingChip() const;
-    void PlaceChip(ProgrammableChip* parentChip, Vector2 position, const std::string& chipData = {}, MouseCollisionManager* mouseCollisionManager = nullptr);
+    void PlaceChip(ProgrammableChip* parentChip, Vector2 position, const std::map<std::string, ChipData>& chipRecipes, MouseCollisionManager* mouseCollisionManager = nullptr);
     void CancelChip();
 
     [[nodiscard]] const std::string& NameBuffer() const;
@@ -42,6 +44,7 @@ private:
 
     bool _placingChip;
     ChipType _selectedChipType;
+    ChipData _selectedChipData;
 
     std::string _nameBuffer;
 };

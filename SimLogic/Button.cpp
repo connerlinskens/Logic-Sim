@@ -8,21 +8,20 @@
 #define CharacterSpace 15
 #define ButtonHeight 25
 
-Button::Button(std::string text, Vector2 position, std::function<void()> function)
+Button::Button(std::string text, Vector2 position, std::function<void(const std::string& name)> function)
 : _text{std::move(text)}, _function{std::move(function)} {
     if(_text.size() < 4){
-        _position = position;
-        _extends = {50, ButtonHeight};
+        _extends = {3 * CharacterSpace, ButtonHeight};
     }
     else{
-        int boxWidth = CharacterSpace * _text.size();
-        _position = {position.x, position.y};
+        int boxWidth = CharacterSpace * (int)_text.size();
         _extends = {boxWidth, ButtonHeight};
     }
+    _position = position;
 }
 
 void Button::Clicked() {
-    _function();
+    _function(_text);
 }
 
 Vector2 Button::AABBPosition() {
@@ -43,4 +42,8 @@ Vector2 Button::Position() const {
 
 std::string Button::Text() const {
     return _text;
+}
+
+void Button::SetPosition(Vector2 position) {
+    _position = position;
 }

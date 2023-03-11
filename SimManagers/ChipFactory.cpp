@@ -7,6 +7,9 @@
 #include "ChipFactory.h"
 #include "../Services/FileService.h"
 #include "pugixml.hpp"
+#include "../SimLogic/BasicChips/ChipAND.h"
+#include "../SimLogic/BasicChips/ChipOR.h"
+#include "../SimLogic/BasicChips/ChipNOT.h"
 
 ChipData ChipFactory::PackageChip(ProgrammableChip& chip) {
     ChipData chipData {};
@@ -68,10 +71,65 @@ ChipData ChipFactory::PackageChip(ProgrammableChip& chip) {
     return chipData;
 }
 
-std::unique_ptr<ProgrammableChip> ChipFactory::FabricateChip(const ChipData& chipData) {
-    auto chip {std::make_unique<ProgrammableChip>("TEST", 1, 1)};
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "misc-no-recursion"
+std::unique_ptr<ProgrammableChip> ChipFactory::FabricateChip(const ChipData& chipData, const std::map<std::string, ChipData>& chipRecipes) {
+    auto chip {std::make_unique<ProgrammableChip>(chipData.name, chipData.inputs, chipData.outputs, chipData.color)};
+
+    // Keep track of localNodeIDs for wire placement
+    std::map<int, IONode*> localNodeIDs {};
+    int localID {0};
+    for(const auto & inputNode : chip->Inputs()){
+        localNodeIDs.insert({localID++, inputNode.get()});
+    }
+    for(const auto & outputNode : chip->Outputs()){
+        localNodeIDs.insert({localID++, outputNode.get()});
+    }
+
+    // Add internal chips
+    for(auto& internalChipData : chipData.internalChips){
+        auto name = internalChipData.name;
+        Chip* newChip{};
+        if(name == "AND"){
+            newChip = &chip->AddChip<ChipAND>(internalChipData.position);
+
+        }
+        else if(name == "OR"){
+            newChip = &chip->AddChip<ChipOR>(internalChipData.position);
+
+        }
+        else if(name == "NOT"){
+            newChip = &chip->AddChip<ChipNOT>(internalChipData.position);
+        }
+        else {
+            auto chipDataIt = chipRecipes.find(name);
+            if(chipDataIt == chipRecipes.end())
+                throw std::runtime_error("Found unknown internal chip, trying to fabricating chip: " + chipData.name);
+
+            newChip = &chip->AddChip(std::move(FabricateChip(chipDataIt->second, chipRecipes)));
+        }
+
+        // Add nodes to map for wire placement
+        if(newChip){
+            auto& inputs = newChip->Inputs();
+            for(int i = 0; i < inputs.size(); i++){
+                localNodeIDs.insert({internalChipData.inputIDs.at(i), inputs.at(i).get()});
+            }
+            auto& outputs = newChip->Outputs();
+            for(int o = 0; o < outputs.size(); o++){
+                localNodeIDs.insert({internalChipData.outputIDs.at(o), outputs.at(o).get()});
+            }
+        }
+    }
+
+    // Add internal wires
+    for(auto& wire : chipData.wires){
+        chip->AddInternalWire(localNodeIDs.at(wire.IDNodeA), localNodeIDs.at(wire.IDNodeB));
+    }
+
     return std::move(chip);
 }
+#pragma clang diagnostic pop
 
 void ChipFactory::SaveChipData(const ChipData& chipData) {
     pugi::xml_document doc{};

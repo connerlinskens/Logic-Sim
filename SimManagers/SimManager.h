@@ -32,6 +32,7 @@ private:
     void SetViewedChip(ProgrammableChip* chip);
     void PackageNewChip();
     void UpdateProperties();
+    void UpdatePlaceButtonPositions();
 private:
     SDL_Window* _window;
     SDL_Renderer* _renderer;
@@ -55,7 +56,7 @@ private:
     int _propertiesInputCount, _propertiesOutputCount;
     float _propertiesColorValue[3];
 
-    std::vector<ChipData> _chipDataList;
+    std::map<std::string, ChipData> _chipRecipes;
 };
 
 

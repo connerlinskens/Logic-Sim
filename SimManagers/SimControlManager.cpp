@@ -8,6 +8,7 @@
 #include "../SimLogic/BasicChips/ChipAND.h"
 #include "../SimLogic/BasicChips/ChipOR.h"
 #include "../SimLogic/BasicChips/ChipNOT.h"
+#include "ChipFactory.h"
 
 SimControlManager::SimControlManager() : _placingWire{false}, _selectedChip{nullptr}, _tempIONodeWire{nullptr}, _placingChip{false}, _selectedChipType{ChipType::PROGRAMMABLE} {
 }
@@ -89,12 +90,13 @@ Vector2 SimControlManager::SelectedNodeForWire() const {
     return _tempIONodeWire->Position();
 }
 
-void SimControlManager::SelectChip(ChipType chipType) {
+void SimControlManager::SelectChip(ChipType chipType, const ChipData& chipData) {
     _placingChip = true;
     _selectedChipType = chipType;
+    _selectedChipData = chipData;
 }
 
-void SimControlManager::PlaceChip(ProgrammableChip* parentChip, Vector2 position, const std::string& chipData, MouseCollisionManager* mouseCollisionManager) {
+void SimControlManager::PlaceChip(ProgrammableChip* parentChip, Vector2 position, const std::map<std::string, ChipData>& chipRecipes, MouseCollisionManager* mouseCollisionManager) {
     if(_selectedChipType == ChipType::AND){
         auto& chip = parentChip->AddChip<ChipAND>(position);
         if(mouseCollisionManager)
@@ -111,7 +113,9 @@ void SimControlManager::PlaceChip(ProgrammableChip* parentChip, Vector2 position
             chip.RegisterToCollisionManager(*mouseCollisionManager);
     }
     else if(_selectedChipType == ChipType::PROGRAMMABLE){
-        // TODO implement placing programmable chips
+        auto& chip = parentChip->AddChip(std::move(ChipFactory::FabricateChip(_selectedChipData, chipRecipes)), position);
+        if(mouseCollisionManager)
+            chip.RegisterToCollisionManager(*mouseCollisionManager);
     }
     _placingChip = false;
 }

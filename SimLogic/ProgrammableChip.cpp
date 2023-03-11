@@ -105,8 +105,10 @@ void ProgrammableChip::RemoveChip(Chip* chip, MouseCollisionManager& mouseCollis
     }
 }
 
-void ProgrammableChip::AddChip(std::unique_ptr<ProgrammableChip> chip) {
-    _internalChips.push_back(std::move(chip));
+Chip& ProgrammableChip::AddChip(std::unique_ptr<ProgrammableChip> chip, Vector2 position) {
+    auto& newChip = _internalChips.emplace_back(std::move(chip));
+    newChip->SetPosition(position);
+    return *newChip.get();
 }
 
 void ProgrammableChip::IncrementIONode(bool input, MouseCollisionManager& mouseCollisionManager) {

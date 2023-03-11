@@ -64,20 +64,22 @@ SimManager::SimManager(int windowWidth, int windowHeight, bool fullscreen) :
     _renderManager->AddFontResource("ShareTechMono", "res/ShareTechMono-Regular.ttf");
 
     // Create buttons
-    _createButton = std::make_unique<Button>(Button{"CREATE", {70, 40}, [&]() -> void { PackageNewChip(); }});
-    _propertiesButton = std::make_unique<Button>(Button("PROPERTIES", {200, 40}, [&]() -> void { _editingChipProperties = !_editingChipProperties; }));
+    _createButton = std::make_unique<Button>(Button{"CREATE", {70, 40}, [&](const std::string& name) -> void { PackageNewChip(); }});
+    _propertiesButton = std::make_unique<Button>(Button("PROPERTIES", {200, 40}, [&](const std::string& name) -> void { _editingChipProperties = !_editingChipProperties; }));
 
-    _placeButtons.emplace_back(Button{"AND", {50, windowHeight - 40}, [&]()->void{
-        _simControlManager->SelectChip(ChipType::AND);
+    _placeButtons.emplace_back(Button{"AND", {}, [&](const std::string& name)->void{
+        _simControlManager->SelectChip(ChipType::AND,{});
     }});
 
-    _placeButtons.emplace_back(Button{"OR", {110, windowHeight - 40}, [&]()->void{
-        _simControlManager->SelectChip(ChipType::OR);
+    _placeButtons.emplace_back(Button{"OR", {}, [&](const std::string& name)->void{
+        _simControlManager->SelectChip(ChipType::OR,{});
     }});
 
-    _placeButtons.emplace_back(Button{"NOT", {170, windowHeight - 40}, [&]()->void{
-        _simControlManager->SelectChip(ChipType::NOT);
+    _placeButtons.emplace_back(Button{"NOT", {}, [&](const std::string& name)->void{
+        _simControlManager->SelectChip(ChipType::NOT,{});
     }});
+
+    UpdatePlaceButtonPositions();
 
     // Start with empty programmable chip
     _topLevelChip = std::make_unique<ProgrammableChip>("",2,1);
@@ -175,7 +177,7 @@ void SimManager::input() {
                     object->Clicked();
                 }
                 else if(_simControlManager->PlacingChip()){
-                    _simControlManager->PlaceChip(_viewedChip, {_mouseX, _mouseY}, {}, _mouseCollisionManager.get());
+                    _simControlManager->PlaceChip(_viewedChip, {_mouseX, _mouseY}, _chipRecipes,_mouseCollisionManager.get());
                 }
             }
             else if(e.button.button == 3){
@@ -331,7 +333,16 @@ void SimManager::PackageNewChip() {
 
     // Package chip and save its data
     auto chipData = ChipFactory::PackageChip(*_viewedChip);
-    _chipDataList.push_back(std::move(chipData));
+    auto chipDataIt = _chipRecipes.insert({chipData.name, std::move(chipData)});
+
+    // Add button for placing
+    _placeButtons.push_back(Button{chipDataIt.first->first, {},
+                                      [&](const std::string& name) -> void {
+        auto chipIt = _chipRecipes.find(name);
+        if(chipIt != _chipRecipes.end())
+            _simControlManager->SelectChip(ChipType::PROGRAMMABLE, chipIt->second);
+    }});
+    UpdatePlaceButtonPositions();
 
     // Set new parent chip
     auto newParentChip {std::make_unique<ProgrammableChip>("", 2, 1)};
@@ -361,5 +372,17 @@ void SimManager::UpdateProperties() {
             _viewedChip->DecrementIONode(false, *_mouseCollisionManager);
 
         _viewedChip->RepositionIONodesForInternalView(_renderManager->WindowSize());
+    }
+}
+
+void SimManager::UpdatePlaceButtonPositions() {
+    int margin = 10;
+    int startPos = 25;
+    int nextPos = startPos;
+    for(auto & button : _placeButtons){
+        int spaceNeeded = static_cast<int>(button.AABBExtends().x*0.5);
+        nextPos += spaceNeeded;
+        button.SetPosition({nextPos, _renderManager->WindowSize().y - 40});
+        nextPos += spaceNeeded + margin;
     }
 }

@@ -11,11 +11,13 @@
 
 class Button : public IClickable {
 public:
-    explicit Button(std::string text, Vector2 position, std::function<void()> function);
+    explicit Button(std::string text, Vector2 position, std::function<void(const std::string& name)> function);
     ~Button() = default;
 
     [[nodiscard]] Vector2 Position() const;
     [[nodiscard]] std::string Text() const;
+
+    void SetPosition(Vector2 position);
 
     Vector2 AABBPosition() override;
     [[nodiscard]] Vector2 AABBExtends() const override;
@@ -25,7 +27,7 @@ private:
     std::string _text;
     Vector2 _position;
     Vector2 _extends;
-    std::function<void()> _function;
+    std::function<void(const std::string& name)> _function;
 };
 
 

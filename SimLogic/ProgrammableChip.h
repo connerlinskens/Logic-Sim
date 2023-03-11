@@ -23,7 +23,7 @@ public:
         return newChip;
     }
 
-    void AddChip(std::unique_ptr<ProgrammableChip> chip);
+    Chip& AddChip(std::unique_ptr<ProgrammableChip> chip, Vector2 position = {});
 
     Wire& AddInternalWire(IONode* nodeA, IONode* nodeB);
 
