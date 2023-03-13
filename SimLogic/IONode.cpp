@@ -7,7 +7,7 @@
 int IONode::globalIDCounter = 0;
 
 IONode::IONode(enum IONodeType ioNodeType, Vector2 startPos, bool manuallyOverridable)
-: _state {false}, _manuallyOverridable{manuallyOverridable}, _position{startPos}, _ioNodeType{ioNodeType}, _id{globalIDCounter++} {
+: _state {false}, _manuallyOverridable{manuallyOverridable}, _position{startPos}, _ioNodeType{ioNodeType}, _id{globalIDCounter++}, _color{NodeOffStateColor} {
 }
 
 bool IONode::State() const {
@@ -16,10 +16,10 @@ bool IONode::State() const {
 
 void IONode::ChangeState() {
     _state = !_state;
+    _color = _state? NodeOnStateColor : NodeOffStateColor;
+
     for(auto wire : _wires){
-//        if( _ioNodeType == IONodeType::OUTPUT || wire->NodeA().IONodeType() == wire->NodeB().IONodeType()) {
-            wire->UpdateConnection(State());
-//        }
+        wire->UpdateConnection(State());
     }
 }
 
@@ -107,4 +107,16 @@ void IONode::RemoveWire(Wire& wire) {
 
 void IONode::ClearWires() {
     _wires.clear();
+}
+
+void IONode::HoverEnter() {
+    _color = _state? NodeOnStateHighlightedColor : NodeOffStateHighlightedColor;
+}
+
+void IONode::HoverExit() {
+    _color = _state? NodeOnStateColor : NodeOffStateColor;
+}
+
+const Color &IONode::getColor() const {
+    return _color;
 }

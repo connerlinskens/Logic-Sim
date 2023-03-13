@@ -37,6 +37,7 @@ private:
     }
 private:
     std::vector<IClickable*> _activeClickables;
+    IClickable* _lastClickable;
 };
 
 

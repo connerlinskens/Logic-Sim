@@ -19,8 +19,20 @@ IClickable *MouseCollisionManager::CheckMouseAABBCollision(int mouseX, int mouse
             posA.x + extA.x > posB.x &&
             posA.y < posB.y + extB.y &&
             posA.y + extA.y > posB.y) {
+            // Trigger hover events
+            if(_lastClickable != clickable){
+                if(_lastClickable)
+                    _lastClickable->HoverExit();
+                _lastClickable = clickable;
+                clickable->HoverEnter();
+            }
             return clickable;
         }
+    }
+    // Trigger hover events
+    if(_lastClickable){
+        _lastClickable->HoverExit();
+        _lastClickable = nullptr;
     }
     return nullptr;
 }

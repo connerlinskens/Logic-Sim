@@ -84,10 +84,17 @@ void RenderManager::RenderChip(const ChipDrawData& chipDrawData) {
     RenderText(chipDrawData.name, "ShareTechMono", 20, chipDrawData.position);
 }
 
-void RenderManager::RenderIONodes(const std::vector<std::unique_ptr<IONode>> &nodes) {
-    for(auto& node : nodes){
-        Color nodeColor = GetNodeDrawColor(node->State());
-        RenderCircle(node->Position().x, node->Position().y, node->AABBExtends().x, nodeColor);
+void RenderManager::RenderIONodes(const std::vector<std::unique_ptr<IONode>> &nodes, bool internal) {
+    if(!internal){
+        for(auto& node : nodes){
+            RenderCircle(node->Position().x, node->Position().y, node->AABBExtends().x, node->getColor());
+        }
+    }
+    else{
+        for(auto& node : nodes){
+            RenderCircle(node->Position().x, node->Position().y, node->AABBExtends().x + 8, {120, 120, 120, 255});
+            RenderCircle(node->Position().x, node->Position().y, node->AABBExtends().x + 5, node->getColor());
+        }
     }
 }
 

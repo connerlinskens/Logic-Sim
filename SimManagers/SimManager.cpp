@@ -116,9 +116,14 @@ void SimManager::loop() {
 }
 
 void SimManager::input() {
-    // Get mouse position
+    // Get mouse position and clickable object
     SDL_GetMouseState(&_mouseX, &_mouseY);
-    
+    auto clickableObject = _mouseCollisionManager->CheckMouseAABBCollision(_mouseX, _mouseY);
+
+    if(clickableObject){
+
+    }
+
     SDL_Event e;
     while(SDL_PollEvent(&e)) {
         // Pass input to ImGui
@@ -143,14 +148,14 @@ void SimManager::input() {
                 }
             }
             else if(e.key.keysym.sym == SDLK_DELETE){
+                if(_editingChipProperties) {return;}
                 auto overlappingWire = _mouseCollisionManager->CheckMouseWireCollision(_mouseX, _mouseY, _viewedChip->InternalWires());
                 if(overlappingWire){
                     _viewedChip->RemoveWire(overlappingWire);
                 }
 
-                auto object = _mouseCollisionManager->CheckMouseAABBCollision(_mouseX, _mouseY);
-                if(object) {
-                    auto chip = dynamic_cast<Chip*>(object);
+                if(clickableObject) {
+                    auto chip = dynamic_cast<Chip*>(clickableObject);
                     if(chip){
                         _viewedChip->RemoveChip(chip, *_mouseCollisionManager);
                         return;
@@ -162,38 +167,37 @@ void SimManager::input() {
             }
         }
         else if(e.type == SDL_MOUSEBUTTONDOWN){
+            if(_editingChipProperties) {return;}
             std::cout << "Clicked on position " << _mouseX << ":" << _mouseY << std::endl;
             if(e.button.button == 1){
-                auto object = _mouseCollisionManager->CheckMouseAABBCollision(_mouseX, _mouseY);
-                if(object){
+                if(clickableObject){
                     std::cout << "Left clicked a clickable object." << std::endl;
 
-                    auto chip = dynamic_cast<Chip*>(object);
+                    auto chip = dynamic_cast<Chip*>(clickableObject);
                     if(chip){
                         _simControlManager->AttachChipToMouse(chip);
                         return;
                     }
 
-                    auto node = dynamic_cast<IONode*>(object);
+                    auto node = dynamic_cast<IONode*>(clickableObject);
                     if(node){
                         _simControlManager->PlaceWire(node, *_viewedChip);
                         return;
                     }
 
-                    object->Clicked();
+                    clickableObject->Clicked();
                 }
                 else if(_simControlManager->PlacingChip()){
                     _simControlManager->PlaceChip(_viewedChip, {_mouseX, _mouseY}, _chipRecipes,_mouseCollisionManager.get());
                 }
             }
             else if(e.button.button == 3){
-                auto object = _mouseCollisionManager->CheckMouseAABBCollision(_mouseX, _mouseY);
-                if(object){
+                if(clickableObject){
                     std::cout << "Right clicked a clickable object." << std::endl;
 
-                    auto node = dynamic_cast<IONode*>(object);
+                    auto node = dynamic_cast<IONode*>(clickableObject);
                     if(node){
-                        object->Clicked();
+                        node->Clicked();
                         return;
                     }
                 }
@@ -224,8 +228,8 @@ void SimManager::render() {
     // Render chip internal
     if(_viewedChip){
         _renderManager->RenderChipInternal(_viewedChip->GetChipDrawData());
-        _renderManager->RenderIONodes(_viewedChip->Inputs());
-        _renderManager->RenderIONodes(_viewedChip->Outputs());
+        _renderManager->RenderIONodes(_viewedChip->Inputs(), true);
+        _renderManager->RenderIONodes(_viewedChip->Outputs(), true);
         _renderManager->RenderWires(_viewedChip->InternalWires());
 
         // Render all chips

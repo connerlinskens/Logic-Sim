@@ -13,9 +13,6 @@
 #include "../Data/ChipDrawData.h"
 #include "../SimLogic/Button.h"
 
-#define NodeOffStateColor Color(40,40,40,255)
-#define NodeOnStateColor Color(230, 70, 70, 255)
-
 class RenderManager {
 public:
     explicit RenderManager(SDL_Renderer& renderer, int windowWidth, int windowHeight);
@@ -26,7 +23,7 @@ public:
     void RenderText(const std::string& text, const std::string& font, int fontSize, Vector2 position, Color color = {});
 
     void RenderChip(const ChipDrawData& chipDrawData);
-    void RenderIONodes(const std::vector<std::unique_ptr<IONode>>& nodes);
+    void RenderIONodes(const std::vector<std::unique_ptr<IONode>>& nodes, bool internal = false);
     void RenderChipInternal(const ChipDrawData& chipDrawData);
     void RenderWires(const std::vector<std::unique_ptr<Wire>>& wires);
 
