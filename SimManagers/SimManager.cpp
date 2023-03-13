@@ -303,6 +303,11 @@ void SimManager::SetViewedChip(ProgrammableChip* chip) {
                                static_cast<uint8_t>(_propertiesColorValue[1] * 255),
                                static_cast<uint8_t>(_propertiesColorValue[2] * 255),
                                255});
+
+        for(auto& input : _viewedChip->Inputs())
+            input->SetManuallyOverridableState(false);
+        for(auto& output : _viewedChip->Outputs())
+            output->SetManuallyOverridableState(false);
     }
     _mouseCollisionManager->ClearClickables();
 
@@ -310,6 +315,12 @@ void SimManager::SetViewedChip(ProgrammableChip* chip) {
     _viewedChip = chip;
     _viewedChip->RepositionIONodesForInternalView(_renderManager->WindowSize());
     _viewedChip->RegisterToCollisionManager(*_mouseCollisionManager, false);
+
+
+    for(auto& input : _viewedChip->Inputs())
+        input->SetManuallyOverridableState(true);
+    for(auto& output : _viewedChip->Outputs())
+        output->SetManuallyOverridableState(true);
 
     // Set properties for UI
     _propertiesInputCount = static_cast<int>(_viewedChip->Inputs().size());

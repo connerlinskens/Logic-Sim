@@ -9,6 +9,10 @@
 
 #define WindowWidthMargin 50
 #define WindowHeightMargin 125
+#define NodeTagMargin 30
+#define NodeTagHeight 15
+#define NodeTagBoxColor Color(140, 140, 140, 120)
+#define NodeTagFontSize 10
 
 RenderManager::RenderManager(SDL_Renderer& renderer, int windowWidth, int windowHeight) : _renderer{renderer}, _windowWidth{windowWidth}, _windowHeight{windowHeight} {
 }
@@ -88,12 +92,20 @@ void RenderManager::RenderIONodes(const std::vector<std::unique_ptr<IONode>> &no
     if(!internal){
         for(auto& node : nodes){
             RenderCircle(node->Position().x, node->Position().y, node->AABBExtends().x, node->getColor());
+            if(node->Highlighted()){
+                if(!node->Tag().empty()){
+                    RenderNodeTag(node->Tag(), node->Position(), node->IONodeType() == IONodeType::OUTPUT);
+                }
+            }
         }
     }
     else{
         for(auto& node : nodes){
-            RenderCircle(node->Position().x, node->Position().y, node->AABBExtends().x + 8, {120, 120, 120, 255});
-            RenderCircle(node->Position().x, node->Position().y, node->AABBExtends().x + 5, node->getColor());
+            RenderCircle(node->Position().x, node->Position().y, node->AABBExtends().x + 3, {120, 120, 120, 255});
+            RenderCircle(node->Position().x, node->Position().y, node->AABBExtends().x, node->getColor());
+            if(!node->Tag().empty()){
+                RenderNodeTag(node->Tag(), node->Position(), node->IONodeType() == IONodeType::INPUT);
+            }
         }
     }
 }
@@ -117,7 +129,8 @@ Vector2 RenderManager::WindowSize() const {
 }
 
 void RenderManager::RenderButton(const Button& button) {
-    RenderRect(button.Position().x, button.Position().y, button.AABBExtends().x, button.AABBExtends().y, {200, 200, 200, 255}, false);
+    RenderRect(button.Position().x, button.Position().y, button.AABBExtends().x + 2, button.AABBExtends().y + 2, {200, 200, 200, 255}, false);
+    RenderRect(button.Position().x, button.Position().y, button.AABBExtends().x, button.AABBExtends().y, button.BackgroundColor(), true);
     RenderText(button.Text(), "ShareTechMono", 20, button.Position());
 }
 
@@ -173,6 +186,43 @@ void RenderManager::RenderText(const std::string& text, const std::string& font,
         position.y - (textSurface->h/2),
         textSurface->w,
         textSurface->h };
+
+    auto textTexture = SDL_CreateTextureFromSurface(&_renderer, textSurface);
+    SDL_FreeSurface(textSurface);
+    if(!textTexture){
+        std::cerr << "Unable to create texture from surface, Error: " << TTF_GetError() << std::endl;
+        return;
+    }
+
+    SDL_RenderCopy(&_renderer, textTexture, nullptr, &dstRect);
+    SDL_DestroyTexture(textTexture);
+}
+
+void RenderManager::RenderNodeTag(const std::string& tag, Vector2 nodePosition, bool rightAlign) {
+    Vector2 position = nodePosition;
+    position.x += rightAlign? NodeTagMargin : -NodeTagMargin;
+
+    auto& fontRef = LoadFont("ShareTechMono", NodeTagFontSize);
+
+    auto textSurface = TTF_RenderText_Solid(&fontRef, tag.c_str(), {255, 255, 255, 255});
+    if(!textSurface){
+        std::cerr << "Unable to load text to surface, Error: " << TTF_GetError() << std::endl;
+        return;
+    }
+
+    int boxWidth = textSurface->w + 6;
+    RenderRect(position.x, position.y, boxWidth, NodeTagHeight, NodeTagBoxColor, true);
+    RenderText(textSurface, position);
+}
+
+void RenderManager::RenderText(SDL_Surface* textSurface, Vector2 position) {
+    if(!textSurface) {return;}
+
+    SDL_Rect dstRect{
+            position.x - (textSurface->w/2),
+            position.y - (textSurface->h/2),
+            textSurface->w,
+            textSurface->h };
 
     auto textTexture = SDL_CreateTextureFromSurface(&_renderer, textSurface);
     SDL_FreeSurface(textSurface);

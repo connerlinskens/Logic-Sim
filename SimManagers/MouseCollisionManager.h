@@ -19,6 +19,10 @@ public:
         std::sort(_activeClickables.begin(), _activeClickables.end(), CompareClickablePriority);
     }
     void RemoveClickable(IClickable* clickable){
+        if(clickable == _lastClickable){
+            _lastClickable = nullptr;
+        }
+
         auto it = std::find_if(_activeClickables.begin(), _activeClickables.end(),
                                [&](IClickable* c){return c == clickable;});
         if(it != _activeClickables.end()){

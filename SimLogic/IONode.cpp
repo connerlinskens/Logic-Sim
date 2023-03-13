@@ -4,10 +4,13 @@
 
 #include "IONode.h"
 
+#include <utility>
+
 int IONode::globalIDCounter = 0;
 
-IONode::IONode(enum IONodeType ioNodeType, Vector2 startPos, bool manuallyOverridable)
-: _state {false}, _manuallyOverridable{manuallyOverridable}, _position{startPos}, _ioNodeType{ioNodeType}, _id{globalIDCounter++}, _color{NodeOffStateColor} {
+IONode::IONode(enum IONodeType ioNodeType, Vector2 startPos, bool manuallyOverridable, std::string tag)
+: _state {false}, _manuallyOverridable{manuallyOverridable}, _position{startPos}, _ioNodeType{ioNodeType},
+_id{globalIDCounter++}, _color{NodeOffStateColor}, _tag{std::move(tag)}, _highlighted{false} {
 }
 
 bool IONode::State() const {
@@ -110,13 +113,27 @@ void IONode::ClearWires() {
 }
 
 void IONode::HoverEnter() {
+    _highlighted = true;
     _color = _state? NodeOnStateHighlightedColor : NodeOffStateHighlightedColor;
 }
 
 void IONode::HoverExit() {
+    _highlighted = false;
     _color = _state? NodeOnStateColor : NodeOffStateColor;
 }
 
 const Color &IONode::getColor() const {
     return _color;
+}
+
+const std::string &IONode::Tag() const {
+    return _tag;
+}
+
+void IONode::SetTag(const std::string &tag) {
+    _tag = tag;
+}
+
+bool IONode::Highlighted() const {
+    return _highlighted;
 }

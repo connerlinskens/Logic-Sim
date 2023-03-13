@@ -21,6 +21,7 @@ public:
     void RenderCircle(int x, int y, int radius, Color color = {});
     void RenderLine(int x1, int y1, int x2, int y2, Color color = {});
     void RenderText(const std::string& text, const std::string& font, int fontSize, Vector2 position, Color color = {});
+    void RenderText(SDL_Surface* textSurface, Vector2 position);
 
     void RenderChip(const ChipDrawData& chipDrawData);
     void RenderIONodes(const std::vector<std::unique_ptr<IONode>>& nodes, bool internal = false);
@@ -36,6 +37,7 @@ public:
     TTF_Font& LoadFont(const std::string& fontName, int fontSize);
 private:
     static Color GetNodeDrawColor(bool state);
+    void RenderNodeTag(const std::string& tag, Vector2 nodePosition, bool rightAlign = true);
 private:
     SDL_Renderer& _renderer;
     int _windowWidth, _windowHeight;

@@ -9,7 +9,7 @@
 #define ButtonHeight 25
 
 Button::Button(std::string text, Vector2 position, std::function<void(const std::string& name)> function)
-: _text{std::move(text)}, _function{std::move(function)} {
+: _text{std::move(text)}, _function{std::move(function)}, _backgroundColor{DefaultBackgroundColor} {
     if(_text.size() < 4){
         _extends = {3 * CharacterSpace, ButtonHeight};
     }
@@ -46,4 +46,16 @@ std::string Button::Text() const {
 
 void Button::SetPosition(Vector2 position) {
     _position = position;
+}
+
+const Color &Button::BackgroundColor() const {
+    return _backgroundColor;
+}
+
+void Button::HoverEnter() {
+    _backgroundColor = DefaultBackgroundHighlightedColor;
+}
+
+void Button::HoverExit() {
+    _backgroundColor = DefaultBackgroundColor;
 }

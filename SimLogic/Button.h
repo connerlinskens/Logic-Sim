@@ -8,6 +8,10 @@
 #include <string>
 #include <functional>
 #include "../Data/IClickable.h"
+#include "../Data/Color.h"
+
+#define DefaultBackgroundColor Color (70, 70, 70, 255)
+#define DefaultBackgroundHighlightedColor Color (100, 100, 100, 255)
 
 class Button : public IClickable {
 public:
@@ -23,11 +27,19 @@ public:
     [[nodiscard]] Vector2 AABBExtends() const override;
     [[nodiscard]] int ClickLayer() const override;
     void Clicked() override;
+
+    void HoverEnter() override;
+
+    void HoverExit() override;
+
+    [[nodiscard]] const Color& BackgroundColor() const;
+
 private:
     std::string _text;
     Vector2 _position;
     Vector2 _extends;
     std::function<void(const std::string& name)> _function;
+    Color _backgroundColor;
 };
 
 

@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <list>
+#include <string>
 #include "../Data/IClickable.h"
 #include "Wire.h"
 #include "../Data/Color.h"
@@ -26,7 +27,7 @@ class Wire;
 
 class IONode : public IClickable{
 public:
-    explicit IONode(IONodeType ioNodeType, Vector2 startPos = Vector2(), bool manuallyOverridable = true);
+    explicit IONode(IONodeType ioNodeType, Vector2 startPos = Vector2(), bool manuallyOverridable = false, std::string tag = "");
     void ChangeState();
     [[nodiscard]] bool State() const;
 
@@ -55,6 +56,9 @@ public:
 
     [[nodiscard]] int ID() const {return _id;}
     [[nodiscard]] const Color& getColor() const;
+    [[nodiscard]] const std::string& Tag() const;
+    void SetTag(const std::string& tag);
+    bool Highlighted() const;
 
 protected:
     bool _state;
@@ -65,6 +69,8 @@ protected:
     int _id;
     static int globalIDCounter;
     Color _color;
+    std::string _tag;
+    bool _highlighted;
 };
 
 #endif //LOGIC_SIM_IONODE_H
