@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "Color.h"
 #include "InternalChipData.h"
 #include "WireData.h"
@@ -16,6 +17,7 @@ struct ChipData{
     int inputs;
     int outputs;
     Color color;
+    std::map<int, std::string> nodeTags;
     std::vector<InternalChipData> internalChips;
     std::vector<WireData> wires;
 };

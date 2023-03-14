@@ -119,10 +119,17 @@ void SimManager::input() {
     // Get mouse position and clickable object
     SDL_GetMouseState(&_mouseX, &_mouseY);
     auto clickableObject = _mouseCollisionManager->CheckMouseAABBCollision(_mouseX, _mouseY);
-
-    if(clickableObject){
-
-    }
+//    auto nodeCast = dynamic_cast<IONode*>(clickableObject);
+//    if(nodeCast){
+//        _simControlManager->SetHighlightedNode();
+//    }
+//    else{
+//
+//    }
+//
+//    if(clickableObject){
+//
+//    }
 
     SDL_Event e;
     while(SDL_PollEvent(&e)) {

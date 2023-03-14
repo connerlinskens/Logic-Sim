@@ -10,6 +10,8 @@
 #include "../SimLogic/BasicChips/ChipNOT.h"
 #include "ChipFactory.h"
 
+IONode* SimControlManager::_highlightedIONode = nullptr;
+
 SimControlManager::SimControlManager() : _placingWire{false}, _selectedChip{nullptr}, _tempIONodeWire{nullptr}, _placingChip{false}, _selectedChipType{ChipType::PROGRAMMABLE} {
 }
 
@@ -137,17 +139,32 @@ void SimControlManager::FinishWire(IONode* node, ProgrammableChip& parentChip) {
 void SimControlManager::TypeLetter(SDL_Keycode key) {
     switch(key){
         case SDLK_BACKSPACE:
-            if(!_nameBuffer.empty())
+            if(_highlightedIONode){
+                if(!_highlightedIONode->Tag().empty()){
+                    _highlightedIONode->SetTag(_highlightedIONode->Tag().substr(0, _highlightedIONode->Tag().size()-1));
+                }
+            }
+            else if(!_nameBuffer.empty()){
                 _nameBuffer = _nameBuffer.substr(0, _nameBuffer.size()-1);
+            }
             break;
         case SDLK_SPACE:
-            _nameBuffer.append(" ");
+            if(_highlightedIONode)
+                _highlightedIONode->SetTag(_highlightedIONode->Tag() + " ");
+            else
+                _nameBuffer.append(" ");
             break;
         default:
             // Add name to buffer if name of key is only character long
             std::string letter = SDL_GetKeyName(key);
-            if(letter.size() == 1)
-                _nameBuffer.append(letter);
+            if(letter.size() == 1){
+                if(_highlightedIONode){
+                    _highlightedIONode->SetTag(_highlightedIONode->Tag() + letter);
+                }
+                else{
+                    _nameBuffer.append(letter);
+                }
+            }
             break;
     }
 }
@@ -158,4 +175,8 @@ const std::string& SimControlManager::NameBuffer() const {
 
 void SimControlManager::ResetNameBuffer() {
     _nameBuffer.clear();
+}
+
+void SimControlManager::SetHighlightedIONode(IONode* node) {
+    _highlightedIONode = node;
 }

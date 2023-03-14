@@ -9,10 +9,10 @@
 
 #define WindowWidthMargin 50
 #define WindowHeightMargin 125
-#define NodeTagMargin 30
-#define NodeTagHeight 15
+#define NodeTagMargin 20
+#define NodeTagHeight 17
 #define NodeTagBoxColor Color(140, 140, 140, 120)
-#define NodeTagFontSize 10
+#define NodeTagFontSize 12
 
 RenderManager::RenderManager(SDL_Renderer& renderer, int windowWidth, int windowHeight) : _renderer{renderer}, _windowWidth{windowWidth}, _windowHeight{windowHeight} {
 }
@@ -200,7 +200,7 @@ void RenderManager::RenderText(const std::string& text, const std::string& font,
 
 void RenderManager::RenderNodeTag(const std::string& tag, Vector2 nodePosition, bool rightAlign) {
     Vector2 position = nodePosition;
-    position.x += rightAlign? NodeTagMargin : -NodeTagMargin;
+//    position.x += rightAlign? NodeTagMargin : -NodeTagMargin;
 
     auto& fontRef = LoadFont("ShareTechMono", NodeTagFontSize);
 
@@ -211,6 +211,7 @@ void RenderManager::RenderNodeTag(const std::string& tag, Vector2 nodePosition, 
     }
 
     int boxWidth = textSurface->w + 6;
+    position.x += rightAlign? boxWidth/2 + NodeTagMargin : -boxWidth/2 - NodeTagMargin;
     RenderRect(position.x, position.y, boxWidth, NodeTagHeight, NodeTagBoxColor, true);
     RenderText(textSurface, position);
 }

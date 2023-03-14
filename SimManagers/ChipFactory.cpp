@@ -22,17 +22,25 @@ ChipData ChipFactory::PackageChip(ProgrammableChip& chip) {
     chipData.outputs = static_cast<int>(chip.Outputs().size());
     chipData.color = chip.GetColor();
 
+    std::map<int, std::string> nodeTags {};
     // Create a local node id to know where to place wires when creating an instance of the chip
     int localNodeID = 0;
     std::map<IONode*, int> localNodes {};
     for(auto& node : chip.Inputs()){
+        if(!node->Tag().empty())
+            nodeTags.insert({localNodeID, node->Tag()});
+
         localNodes.insert({node.get(), localNodeID});
         localNodeID++;
     }
     for(auto& node : chip.Outputs()){
+        if(!node->Tag().empty())
+            nodeTags.insert({localNodeID, node->Tag()});
+
         localNodes.insert({node.get(), localNodeID});
         localNodeID++;
     }
+    chipData.nodeTags = std::move(nodeTags);
 
     std::vector<InternalChipData> internalChips;
     for(auto& internalChip : chip.InternalChips()){
@@ -82,9 +90,17 @@ std::unique_ptr<ProgrammableChip> ChipFactory::FabricateChip(const ChipData& chi
     std::map<int, IONode*> localNodeIDs {};
     int localID {0};
     for(const auto & inputNode : chip->Inputs()){
+        auto nodeTagIt = chipData.nodeTags.find(localID);
+        if(nodeTagIt != chipData.nodeTags.end())
+            inputNode->SetTag(nodeTagIt->second);
+
         localNodeIDs.insert({localID++, inputNode.get()});
     }
     for(const auto & outputNode : chip->Outputs()){
+        auto nodeTagIt = chipData.nodeTags.find(localID);
+        if(nodeTagIt != chipData.nodeTags.end())
+            outputNode->SetTag(nodeTagIt->second);
+
         localNodeIDs.insert({localID++, outputNode.get()});
     }
 
@@ -144,6 +160,12 @@ void ChipFactory::SaveChipData(const ChipData& chipData) {
     colorNode.append_attribute("Green") = chipData.color.green;
     colorNode.append_attribute("Blue") = chipData.color.blue;
 
+    pugi::xml_node nodeTagsNode = chipNode.append_child("NodeTags");
+    for(auto& nodeTag : chipData.nodeTags){
+        auto nodeTagNode = nodeTagsNode.append_child(nodeTag.second.c_str());
+        nodeTagNode.append_attribute("ID") = nodeTag.first;
+    }
+
     // Internal chips
     pugi::xml_node internalChipsNode = chipNode.append_child("InternalChips");
     for(auto& internalChip : chipData.internalChips){
@@ -195,6 +217,7 @@ ChipData ChipFactory::LoadChipData(const std::string& path) {
         throw std::runtime_error("Unable to load file: " + path + " in ChipFactory::LoadChipData()");
     }
 
+    // Get chip properties
     pugi::xml_node chipNode = doc.document_element();
     std::string name = chipNode.attribute("Name").as_string();
     int inputs = chipNode.attribute("Inputs").as_int();
@@ -206,6 +229,14 @@ ChipData ChipFactory::LoadChipData(const std::string& path) {
 
     ChipData chipData {name, inputs, outputs, {red, green, blue, 255}};
 
+    // Retrieve node tags
+    std::map<int, std::string> nodeTags;
+    for(auto& nodeTag : chipNode.child("NodeTags").children()){
+        nodeTags.insert({nodeTag.attribute("ID").as_int(), nodeTag.name()});
+    }
+    chipData.nodeTags = std::move(nodeTags);
+
+    // Get all internal chip data
     std::vector<InternalChipData> internalChips;
     for(auto& internalChipNode : chipNode.child("InternalChips").children()){
         std::string chipName = internalChipNode.name();
@@ -233,6 +264,7 @@ ChipData ChipFactory::LoadChipData(const std::string& path) {
     }
     chipData.internalChips = std::move(internalChips);
 
+    // Get all wire data
     std::vector<WireData> wires;
     for(auto& wireNode : chipNode.child("InternalWires").children()){
         wires.push_back({

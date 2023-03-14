@@ -3,6 +3,7 @@
 //
 
 #include "IONode.h"
+#include "../SimManagers/SimControlManager.h"
 
 #include <utility>
 
@@ -91,9 +92,7 @@ void IONode::SetState(bool newState) {
 
 void IONode::AddWire(Wire* wire) {
     _wires.push_back(wire);
-//    if( _ioNodeType == IONodeType::OUTPUT || wire->NodeA().IONodeType() == wire->NodeB().IONodeType()) {
-        wire->UpdateConnection(State());
-//    }
+    wire->UpdateConnection(State());
 }
 
 std::list<Wire*>& IONode::Wires() {
@@ -115,11 +114,13 @@ void IONode::ClearWires() {
 void IONode::HoverEnter() {
     _highlighted = true;
     _color = _state? NodeOnStateHighlightedColor : NodeOffStateHighlightedColor;
+    SimControlManager::SetHighlightedIONode(this);
 }
 
 void IONode::HoverExit() {
     _highlighted = false;
     _color = _state? NodeOnStateColor : NodeOffStateColor;
+    SimControlManager::SetHighlightedIONode(nullptr);
 }
 
 const Color &IONode::getColor() const {
