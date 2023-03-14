@@ -174,6 +174,9 @@ void ChipFactory::SaveChipData(const ChipData& chipData) {
         if(isdigit(chipName.at(0)) != 0){
             chipName.insert(0, 1, 'c');
         }
+        // Replace all spaces in string with an underscore, xml is unable to create children with spaces
+        std::replace(chipName.begin(), chipName.end(), ' ', '_');
+
         pugi::xml_node internalChipNode = internalChipsNode.append_child(chipName.c_str());
         internalChipNode.append_attribute("PositionX") = internalChip.position.x;
         internalChipNode.append_attribute("PositionY") = internalChip.position.y;
@@ -244,6 +247,9 @@ ChipData ChipFactory::LoadChipData(const std::string& path) {
         if(chipName.at(0) == 'c'){
             chipName = chipName.substr(1, chipName.size());
         }
+        // Change all underscores back to spaces to get original names
+        std::replace(chipName.begin(), chipName.end(), '_', ' ');
+
         int positionX = internalChipNode.attribute("PositionX").as_int();
         int positionY = internalChipNode.attribute("PositionY").as_int();
         InternalChipData internalChipData {chipName, {positionX,positionY}};

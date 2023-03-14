@@ -120,6 +120,7 @@ void ProgrammableChip::AddIONode(bool input, MouseCollisionManager& mouseCollisi
     auto& selectedNodes = input? _inputs : _outputs;
     auto& newNode = selectedNodes.emplace_back(std::make_unique<IONode>(input? IONodeType::INPUT : IONodeType::OUTPUT));
     mouseCollisionManager.AddClickable(newNode.get());
+    newNode->SetManuallyOverridableState(true);
 }
 
 void ProgrammableChip::DecrementIONode(bool input, MouseCollisionManager& mouseCollisionManager) {

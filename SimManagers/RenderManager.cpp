@@ -91,7 +91,7 @@ void RenderManager::RenderChip(const ChipDrawData& chipDrawData) {
 void RenderManager::RenderIONodes(const std::vector<std::unique_ptr<IONode>> &nodes, bool internal) {
     if(!internal){
         for(auto& node : nodes){
-            RenderCircle(node->Position().x, node->Position().y, node->AABBExtends().x, node->getColor());
+            RenderCircle(node->Position().x, node->Position().y, node->AABBExtends().x, NodeOffStateColor);
             if(node->Highlighted()){
                 if(!node->Tag().empty()){
                     RenderNodeTag(node->Tag(), node->Position(), node->IONodeType() == IONodeType::OUTPUT);
