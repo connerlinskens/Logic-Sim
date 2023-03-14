@@ -162,7 +162,9 @@ void ChipFactory::SaveChipData(const ChipData& chipData) {
 
     pugi::xml_node nodeTagsNode = chipNode.append_child("NodeTags");
     for(auto& nodeTag : chipData.nodeTags){
-        auto nodeTagNode = nodeTagsNode.append_child(nodeTag.second.c_str());
+        auto tag = nodeTag.second;
+        std::replace(tag.begin(), tag.end(), ' ', '_');
+        auto nodeTagNode = nodeTagsNode.append_child(tag.c_str());
         nodeTagNode.append_attribute("ID") = nodeTag.first;
     }
 
@@ -235,7 +237,9 @@ ChipData ChipFactory::LoadChipData(const std::string& path) {
     // Retrieve node tags
     std::map<int, std::string> nodeTags;
     for(auto& nodeTag : chipNode.child("NodeTags").children()){
-        nodeTags.insert({nodeTag.attribute("ID").as_int(), nodeTag.name()});
+        std::string tag = nodeTag.name();
+        std::replace(tag.begin(), tag.end(), '_', ' ');
+        nodeTags.insert({nodeTag.attribute("ID").as_int(), std::move(tag)});
     }
     chipData.nodeTags = std::move(nodeTags);
 

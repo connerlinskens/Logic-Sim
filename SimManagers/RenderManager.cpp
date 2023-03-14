@@ -91,7 +91,7 @@ void RenderManager::RenderChip(const ChipDrawData& chipDrawData) {
 void RenderManager::RenderIONodes(const std::vector<std::unique_ptr<IONode>> &nodes, bool internal) {
     if(!internal){
         for(auto& node : nodes){
-            RenderCircle(node->Position().x, node->Position().y, node->AABBExtends().x, NodeOffStateColor);
+            RenderCircle(node->Position().x, node->Position().y, node->AABBExtends().x, node->Highlighted()? NodeOffStateHighlightedColor : NodeOffStateColor);
             if(node->Highlighted()){
                 if(!node->Tag().empty()){
                     RenderNodeTag(node->Tag(), node->Position(), node->IONodeType() == IONodeType::OUTPUT);
@@ -200,7 +200,6 @@ void RenderManager::RenderText(const std::string& text, const std::string& font,
 
 void RenderManager::RenderNodeTag(const std::string& tag, Vector2 nodePosition, bool rightAlign) {
     Vector2 position = nodePosition;
-//    position.x += rightAlign? NodeTagMargin : -NodeTagMargin;
 
     auto& fontRef = LoadFont("ShareTechMono", NodeTagFontSize);
 

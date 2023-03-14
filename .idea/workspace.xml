@@ -25,10 +25,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f4b9ff48-cf53-40f2-88b5-415413a67c1a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SimLogic/ProgrammableChip.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/ProgrammableChip.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimManagers/ChipFactory.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/ChipFactory.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimManagers/RenderManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/RenderManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SimManagers/SimManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimManager.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +172,7 @@
       <workItem from="1678722844148" duration="3011000" />
       <workItem from="1678729840081" duration="2376000" />
       <workItem from="1678734861203" duration="1669000" />
-      <workItem from="1678794487154" duration="5471000" />
+      <workItem from="1678794487154" duration="6532000" />
     </task>
     <servers />
   </component>
