@@ -19,9 +19,11 @@ public:
     void ReleaseChip();
 
     void PlaceWire(IONode* node, ProgrammableChip& parentChip);
+    void PlaceWireCheckPoint(const Vector2& checkPoint);
     void CancelWire();
     [[nodiscard]] bool PlacingWire() const;
     [[nodiscard]] Vector2 SelectedNodeForWire() const;
+    [[nodiscard]] const std::vector<Vector2>& TempWireCheckPoints() const;
 
     void SelectChip(ChipType chipType, const ChipData& chipData);
     [[nodiscard]] bool PlacingChip() const;
@@ -50,6 +52,8 @@ private:
 
     std::string _nameBuffer;
     static IONode* _highlightedIONode;
+
+    std::vector<Vector2> _tempWireCheckPoints;
 };
 
 

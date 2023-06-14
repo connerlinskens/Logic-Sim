@@ -12,7 +12,7 @@
 
 IONode* SimControlManager::_highlightedIONode = nullptr;
 
-SimControlManager::SimControlManager() : _placingWire{false}, _selectedChip{nullptr}, _tempIONodeWire{nullptr}, _placingChip{false}, _selectedChipType{ChipType::PROGRAMMABLE} {
+SimControlManager::SimControlManager() : _placingWire{false}, _selectedChip{nullptr}, _tempIONodeWire{nullptr}, _placingChip{false}, _selectedChipType{ChipType::PROGRAMMABLE}, _tempWireCheckPoints{{}} {
 }
 
 void SimControlManager::AttachChipToMouse(Chip *chip) {
@@ -46,6 +46,7 @@ void SimControlManager::PlaceWire(IONode* node, ProgrammableChip& parentChip) {
     if(!_placingWire){
         _placingWire = true;
         _tempIONodeWire = node;
+        _tempWireCheckPoints.clear();
     }
     // Finish wire placement
     else if(_tempIONodeWire->IONodeType() != node->IONodeType()){
@@ -80,6 +81,7 @@ void SimControlManager::PlaceWire(IONode* node, ProgrammableChip& parentChip) {
 void SimControlManager::CancelWire() {
     _tempIONodeWire = nullptr;
     _placingWire = false;
+    _tempWireCheckPoints.clear();
 }
 
 bool SimControlManager::PlacingWire() const {
@@ -88,7 +90,6 @@ bool SimControlManager::PlacingWire() const {
 
 Vector2 SimControlManager::SelectedNodeForWire() const {
     if(!_placingWire) return {};
-
     return _tempIONodeWire->Position();
 }
 
@@ -132,8 +133,9 @@ void SimControlManager::CancelChip() {
 
 void SimControlManager::FinishWire(IONode* node, ProgrammableChip& parentChip) {
     _placingWire = false;
-    parentChip.AddInternalWire(_tempIONodeWire, node);
+    parentChip.AddInternalWire(_tempIONodeWire, node, _tempWireCheckPoints);
     _tempIONodeWire = nullptr;
+    _tempWireCheckPoints.clear();
 }
 
 void SimControlManager::TypeLetter(SDL_Keycode key) {
@@ -179,4 +181,13 @@ void SimControlManager::ResetNameBuffer() {
 
 void SimControlManager::SetHighlightedIONode(IONode* node) {
     _highlightedIONode = node;
+}
+
+void SimControlManager::PlaceWireCheckPoint(const Vector2& checkPoint) {
+    if(!_placingWire) return;
+    _tempWireCheckPoints.push_back(checkPoint);
+}
+
+const std::vector<Vector2>& SimControlManager::TempWireCheckPoints() const {
+    return _tempWireCheckPoints;
 }

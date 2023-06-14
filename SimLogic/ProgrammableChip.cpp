@@ -19,8 +19,8 @@ const std::vector<std::unique_ptr<Chip>>& ProgrammableChip::InternalChips() {
     return _internalChips;
 }
 
-Wire& ProgrammableChip::AddInternalWire(IONode* nodeA, IONode* nodeB) {
-    auto& wire = _internalWires.emplace_back(std::make_unique<Wire>(nodeA, nodeB));
+Wire& ProgrammableChip::AddInternalWire(IONode* nodeA, IONode* nodeB, const std::vector<Vector2>& checkPoints) {
+    auto& wire = _internalWires.emplace_back(std::make_unique<Wire>(nodeA, nodeB, checkPoints));
     nodeA->AddWire(wire.get());
     nodeB->AddWire(wire.get());
     return *wire.get();

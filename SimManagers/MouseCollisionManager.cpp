@@ -39,10 +39,25 @@ IClickable *MouseCollisionManager::CheckMouseAABBCollision(int mouseX, int mouse
 
 Wire* MouseCollisionManager::CheckMouseWireCollision(int mouseX, int mouseY, const std::vector<std::unique_ptr<Wire>>& wires) {
     for(auto& wire : wires){
-        float lineLength = Vector2::Distance(wire->NodeA().Position(), wire->NodeB().Position());
-        float d1 = Vector2::Distance({mouseX, mouseY}, wire->NodeA().Position());
-        float d2 = Vector2::Distance({mouseX, mouseY}, wire->NodeB().Position());
+        float lineLength;
+        Vector2 firstPoint = wire->NodeA().Position();
+        Vector2 secondPoint {};
+        float d1 = Vector2::Distance({mouseX, mouseY}, firstPoint);
+        float d2;
 
+        for(auto& checkPoint : wire->Checkpoints()){
+            secondPoint = checkPoint;
+            lineLength = Vector2::Distance(firstPoint, secondPoint);
+            d2 = Vector2::Distance({mouseX, mouseY}, secondPoint);
+            if(d1+d2 >= lineLength-MouseBufferSize && d1+d2 <= lineLength+MouseBufferSize){
+                return wire.get();
+            }
+            d1 = d2;
+            firstPoint = secondPoint;
+        }
+        secondPoint = wire->NodeB().Position();
+        lineLength = Vector2::Distance(firstPoint, secondPoint);
+        d2 = Vector2::Distance({mouseX, mouseY}, secondPoint);;
         if(d1+d2 >= lineLength-MouseBufferSize && d1+d2 <= lineLength+MouseBufferSize){
             return wire.get();
         }

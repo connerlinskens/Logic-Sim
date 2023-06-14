@@ -186,6 +186,9 @@ void SimManager::input() {
                 else if(_simControlManager->PlacingChip()){
                     _simControlManager->PlaceChip(_viewedChip, {_mouseX, _mouseY}, _chipRecipes,_mouseCollisionManager.get());
                 }
+                else if(_simControlManager->PlacingWire()){
+                    _simControlManager->PlaceWireCheckPoint({_mouseX, _mouseY});
+                }
             }
             else if(e.button.button == 3){
                 if(clickableObject){
@@ -245,8 +248,15 @@ void SimManager::render() {
 
     // Render temp wire when placing a new wire
     if(_simControlManager->PlacingWire()){
-        auto node = _simControlManager->SelectedNodeForWire();
-        _renderManager->RenderLine(node.x, node.y, _mouseX, _mouseY, NodeOffStateColor);
+        Vector2 posA = _simControlManager->SelectedNodeForWire();
+        Vector2 posB {};
+        for(auto& tempCheckPoint : _simControlManager->TempWireCheckPoints()){
+            posB = tempCheckPoint;
+            _renderManager->RenderLine(posA.x, posA.y, posB.x, posB.y, NodeOffStateColor);
+            posA = posB;
+        }
+        posB = {_mouseX, _mouseY};
+        _renderManager->RenderLine(posA.x, posA.y, posB.x, posB.y, NodeOffStateColor);
     }
     // Render indicator when placing a new chip
     else if(_simControlManager->PlacingChip()){

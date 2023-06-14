@@ -4,7 +4,9 @@
 
 #include "Wire.h"
 
-Wire::Wire(IONode* nodeA, IONode* nodeB) : _nodeA{nodeA}, _nodeB{nodeB} {
+#include <utility>
+
+Wire::Wire(IONode* nodeA, IONode* nodeB, std::vector<Vector2> checkPoints) : _nodeA{nodeA}, _nodeB{nodeB}, _checkpoints{std::move(checkPoints)} {
 }
 
 void Wire::UpdateConnection(bool state) {
@@ -18,4 +20,8 @@ IONode& Wire::NodeA() const {
 
 IONode& Wire::NodeB() const {
     return *_nodeB;
+}
+
+const std::vector<Vector2>& Wire::Checkpoints() const {
+    return _checkpoints;
 }

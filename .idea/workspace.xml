@@ -25,8 +25,16 @@
   <component name="ChangeListManager">
     <list default="true" id="f4b9ff48-cf53-40f2-88b5-415413a67c1a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SimManagers/ChipFactory.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/ChipFactory.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/ProgrammableChip.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/ProgrammableChip.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/ProgrammableChip.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/ProgrammableChip.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/Wire.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/Wire.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimLogic/Wire.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimLogic/Wire.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimManagers/MouseCollisionManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/MouseCollisionManager.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SimManagers/RenderManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/RenderManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimManagers/SimControlManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimControlManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimManagers/SimControlManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimControlManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimManagers/SimManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SimManagers/SimManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,10 +119,10 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="CMake Application.copy_resources" />
       <item itemvalue="CMake Application.IMGUI" />
       <item itemvalue="CMake Application.Logic_Sim" />
       <item itemvalue="CMake Application.PUGIXML" />
+      <item itemvalue="CMake Application.copy_resources" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -172,7 +180,11 @@
       <workItem from="1678722844148" duration="3011000" />
       <workItem from="1678729840081" duration="2376000" />
       <workItem from="1678734861203" duration="1669000" />
-      <workItem from="1678794487154" duration="6532000" />
+      <workItem from="1678794487154" duration="10704000" />
+      <workItem from="1678871852104" duration="636000" />
+      <workItem from="1679088327705" duration="6000" />
+      <workItem from="1680434602002" duration="59000" />
+      <workItem from="1686733635966" duration="1000" />
     </task>
     <servers />
   </component>

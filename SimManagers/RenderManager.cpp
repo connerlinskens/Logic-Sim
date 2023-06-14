@@ -137,9 +137,18 @@ void RenderManager::RenderButton(const Button& button) {
 void RenderManager::RenderWires(const std::vector<std::unique_ptr<Wire>>& wires) {
     for(auto& wire : wires){
         Color wireColor = GetNodeDrawColor(wire->NodeA().State() && wire->NodeB().State());
+        // Render lines from NodeA through all checkpoint
         Vector2 posA = wire->NodeA().Position();
-        Vector2 posB = wire->NodeB().Position();
+        Vector2 posB {};
+        for(auto& checkPoint : wire->Checkpoints()){
+            posB = checkPoint;
+            RenderLine(posA.x, posA.y, posB.x, posB.y, wireColor);
+            posA = posB;
+        }
+        // Render last line from last checkpoint to NodeB
+        posB = wire->NodeB().Position();
         RenderLine(posA.x, posA.y, posB.x, posB.y, wireColor);
+
     }
 }
 

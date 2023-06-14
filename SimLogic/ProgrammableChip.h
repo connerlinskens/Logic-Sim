@@ -25,7 +25,7 @@ public:
 
     Chip& AddChip(std::unique_ptr<ProgrammableChip> chip, Vector2 position = {});
 
-    Wire& AddInternalWire(IONode* nodeA, IONode* nodeB);
+    Wire& AddInternalWire(IONode* nodeA, IONode* nodeB, const std::vector<Vector2>& checkPoints = {});
 
     const std::vector<std::unique_ptr<Chip>>& InternalChips();
     const std::vector<std::unique_ptr<Wire>>& InternalWires();
